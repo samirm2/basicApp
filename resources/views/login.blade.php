@@ -26,8 +26,8 @@
   </div>
   <div class="row"></div>
   <div class="row">
-  	<div class="container">
-  		<a class="left" href="#">Olvide mi contraseña</a>
+  	<div class="center">
+  		<a href="#">Olvide mi contraseña?</a>
     	{{-- <a href="/register">Quiero Registrarme</a> --}}
   	</div>
   </div>
@@ -59,7 +59,7 @@
           </div>
          </form> 
         </div>
-        <a href="#">Olvide mi contraseña</a>
+        <a href="#">Olvide mi contraseña?</a>
         {{-- <a href="/register">Quiero Registrarme</a> --}}
       </div>
     </div>
