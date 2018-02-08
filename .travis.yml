@@ -1,0 +1,18 @@
+language: php
+
+php:
+ - 7.0
+
+cache:
+  directories: 
+    - vendor
+
+before_script:
+ - mysql -e 'create database test'
+ - composer install
+ - cp .env.travis .env
+ - php artisan key:generate
+ - php artisan migrate --seed
+
+script:
+ - vendor/bin/phpunit
