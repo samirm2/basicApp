@@ -22,7 +22,7 @@
 					<tbody>
 						<tr>
 							<td>1</td>
-							<td>Arreglo del porton</td>
+							<td><b>Arreglo del porton</b></td>
 							<td>125.000</td>
 							<td>2018/01/12 15:21:01</td>
 							<td>Evidencia</td>
@@ -30,7 +30,7 @@
 						</tr>
 						<tr>
 							<td>2</td>
-							<td>utencilios de oficina</td>
+							<td><b>utencilios de oficina</b></td>
 							<td>25.000</td>
 							<td>2018/01/16 09:20:10</td>
 							<td>Evidencia</td>
@@ -74,8 +74,8 @@
 			</div>	
 	</div>
 	<div class="modal-footer">
-		<a href="#" class="btn-flat">Registrar</a>
-		<a class="modal-action modal-close btn-flat">Cerrar</a>
+		<a class="modal-action modal-close btn-flat">Cerrar <i class="material-icons red-text right">cancel</i></a>
+		<a href="#" class="btn-flat waves-effect waves-light">Registrar <i class="material-icons light-green-text right">check_circle</i></a>
 	</div>
 </div>
 

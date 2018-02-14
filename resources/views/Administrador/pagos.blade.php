@@ -14,7 +14,7 @@
 						</select>
 						<label for="filtro">Mostar</label>
 					</div>
-					<table>
+					<table class="striped">
 						<thead>
 							<tr>
 								<th>N° de Factura</th>
@@ -28,7 +28,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<td>23143</td>
+							<td><b>23143</b></td>
 								<td>Casa 1</td>
 								<td>Enero</td>
 								<td>01/01/2018 - 31/01/2018</td>
@@ -99,8 +99,8 @@
 			</div>
 		</div>
 		<div class="modal-footer">
-			<a class="btn-flat">Registrar</a>
-			<a class="btn-flat modal-action modal-close">Cancelar</a>
+			<a class="btn-flat modal-action modal-close">Cancelar <i class="material-icons right red-text">cancel</i></a>
+			<a class="btn-flat">Registrar <i class="material-icons right light-green-text">check_circle</i></a>
 		</div>
 	</div>
 @endsection

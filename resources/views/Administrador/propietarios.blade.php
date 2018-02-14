@@ -8,7 +8,7 @@
 	<div class="row">
 		<div class="col s12">
 			<div class="card-panel">
-				<table>
+				<table class="striped">
 					<thead>
 						<tr>
 							<th>Casa</th>
@@ -17,12 +17,12 @@
 							<th>Apellidos</th>
 							<th>Telefono</th>
 							<th>Correo Electronico</th>
-							<th>Opcion</th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
-							<td>Casa 1</td>
+							<td><b>Casa 1</b></td>
 							<td>1111111111</td>
 							<td>Ana Maria</td>
 							<td>Acosta Melendez</td>
@@ -49,10 +49,15 @@
 @section('scripts')
 <script type="text/javascript">
 	$(function(){
-		$('[name=casa]').autocomplete({
-			data: {'Casa 1':null,'Casa 2':null,'Casa 3':null,'Casa 4':null,'Casa 5':null},
-			limit: 3
-		})
+		$('[name=casa]').material_chip({
+			autocompleteOptions: {
+	    	  data: {
+		        'Casa 1':null,'Casa 2':null,'Casa 3':null,'Casa 4':null,'Casa 5':null
+	      	},
+	      	limit: 3,
+	      	minLength: 1
+	    	}
+		});
 	});
 </script>
 @endsection

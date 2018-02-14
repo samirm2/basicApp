@@ -5,6 +5,14 @@
 
 @section('contenido')
 	<div class="caja">
+    <div class="row valign-wrapper">
+      <div class="input-field">
+        <i class="material-icons prefix">payment</i>
+        <input type="number" name="cuota" value="55000" readonly="true">
+        <label for="couta">Valor Administración</label>
+      </div>
+      <button id="btnCuota" class="btn-floating blue"><i class="material-icons">edit</i></button>
+    </div>
 		<div class="row">
 			<div class="col s6">
 				<canvas id="graficoBarras"></canvas>		
@@ -19,83 +27,97 @@
 @section('scripts')
 <script src="{{asset('js/chart.min.js')}}"></script>
 <script type="text/javascript">
-	var ctx =$('#graficoBarras');
-	var ctxx =$('#graficoPie');
-	var graficas = new Chart(ctx,{
-		type: 'bar',
-		data: {
-			labels: ["Noviembre", "Diciembre", "Enero"],
-			datasets: [{
-        label: 'Ingresos',
-        data: [12, 16, 20],
-        backgroundColor: [
-          'rgba(76, 209, 55,0.2)',
-          'rgba(76, 209, 55,0.2)',
-          'rgba(76, 209, 55,0.2)'
-      	],
-        borderColor: [
-          'rgba(76, 209, 55,1.0)',
-          'rgba(76, 209, 55,1.0)',
-          'rgba(76, 209, 55,1.0)'
-        ],
-        borderWidth: 1
-      },
-      {
-      	label: 'Gastos',
-        data: [7, 10, 18],
-        backgroundColor: [
-          'rgba(231, 76, 60,0.4)',
-          'rgba(231, 76, 60,0.4)',
-          'rgba(231, 76, 60,0.4)'
-      	],
-        borderColor: [
-          'rgba(231, 76, 60,1.0)',
-          'rgba(231, 76, 60,1.0)',
-          'rgba(231, 76, 60,1.0)'
-        ],
-        borderWidth: 1
+	$(function(){
+    $("#btnCuota").click(function(){
+      if($(this).text() == "edit"){
+        $("[name=cuota]").removeAttr('readonly');
+        $("[name=cuota]").focus();
+        $(this).html('<i class="material-icons">save</i>');
+      }else{
+        Materialize.toast('Modificado correctamente',3000);
+        $(this).html('<i class="material-icons">edit</i>');
+        $("[name=cuota]").attr('readonly','true');
       }
-      ]
-		},
-		options: {
-	    title: {
-	      display: true,
-	      fontSize: 18,
-        text: 'Balance Mensual de Ingresos y Gastos'
+    });
+
+    var ctx =$('#graficoBarras');
+    var ctxx =$('#graficoPie');
+    var graficas = new Chart(ctx,{
+      type: 'bar',
+      data: {
+        labels: ["Noviembre", "Diciembre", "Enero"],
+        datasets: [{
+          label: 'Ingresos',
+          data: [1200000, 1600000, 2000000],
+          backgroundColor: [
+            'rgba(76, 209, 55,0.2)',
+            'rgba(76, 209, 55,0.2)',
+            'rgba(76, 209, 55,0.2)'
+          ],
+          borderColor: [
+            'rgba(76, 209, 55,1.0)',
+            'rgba(76, 209, 55,1.0)',
+            'rgba(76, 209, 55,1.0)'
+          ],
+          borderWidth: 1
+        },
+        {
+          label: 'Gastos',
+          data: [700000, 1000000, 1800000],
+          backgroundColor: [
+            'rgba(231, 76, 60,0.4)',
+            'rgba(231, 76, 60,0.4)',
+            'rgba(231, 76, 60,0.4)'
+          ],
+          borderColor: [
+            'rgba(231, 76, 60,1.0)',
+            'rgba(231, 76, 60,1.0)',
+            'rgba(231, 76, 60,1.0)'
+          ],
+          borderWidth: 1
+        }
+        ]
       },
-	    scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero:true
-          }
+      options: {
+        title: {
+          display: true,
+          fontSize: 18,
+          text: 'Balance Mensual de Ingresos y Gastos'
+        },
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero:true
+            }
+          }]
+        }
+      }
+    });
+    var graficass = new Chart(ctxx,{
+      type: 'pie',
+      data: {
+        labels: ["Casas al Dia", "Casas Deudoras"],
+        datasets: [{
+          data: [54, 38],
+          backgroundColor: [
+            'rgba(241, 196, 15,1)',
+            'rgba(0, 209, 55,1)'
+          ],
+          borderColor: [
+            'rgba(241, 196, 15,1)',
+            'rgba(76, 209, 55,1.0)'
+          ],
+          borderWidth: 1
         }]
-	    }
-    }
-	});
-	var graficass = new Chart(ctxx,{
-		type: 'pie',
-		data: {
-			labels: ["Casas al Dia", "Casas Deudoras"],
-			datasets: [{
-        data: [18, 38],
-        backgroundColor: [
-          'rgba(241, 196, 15,1)',
-          'rgba(0, 209, 55,1)'
-      	],
-        borderColor: [
-          'rgba(241, 196, 15,1)',
-          'rgba(76, 209, 55,1.0)'
-        ],
-        borderWidth: 1
-      }]
-		},
-	options: {
-	    title: {
-	      display: true,
-	      fontSize: 18,
-        text: 'Balance de Pagos mes Enero 2018'
-      }
-  }   
-});
+      },
+      options: {
+          title: {
+            display: true,
+            fontSize: 18,
+            text: 'Balance de Pagos mes Enero 2018'
+          }
+      }   
+    });
+  });
 </script>
 @endsection

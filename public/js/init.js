@@ -1,16 +1,5 @@
 $(function(){
 	$('#modal').modal();
-	$('.chips-autocomplete').material_chip({
-		autocompleteOptions: {
-    	  data: {
-	        'Apple': null,
-	        'Microsoft': null,
-	        'Google': null
-      	},
-      	limit: Infinity,
-      	minLength: 3
-    	}
-	});
 	$('select').material_select();
 	$('.datepicker').pickadate();
 	$('.dropify').dropify({

@@ -7,6 +7,14 @@
 	<link rel="stylesheet" type="text/css" href="{{asset('css/dropify.min.css')}}">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<style type="text/css">
+		body::-webkit-scrollbar {
+			width: 10px;			
+		}
+		body::-webkit-scrollbar-thumb {
+			background: #1976d2;
+			border-radius: 3px;
+		}
+
 		.caja{
 			padding-left: 305px;
 			margin-top: 20px;
