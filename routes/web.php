@@ -16,12 +16,16 @@ Route::get('/', function () {
     return view('login');
 });
 Route::get('/trabaja-con-nosotros', function () {
-    return view('trabajar');
+    $datos =\App\empleo::all();
+    return view('trabajar')->with('arrayEmpleos',$datos);
 });
+Route::post('/postularme', 'empleoController@registrarPostulante');
 
 Route::get('/pdf', function () {
-    $pdf = PDF::loadHtml('<h1>Hello World</h1><img src="http://barcode.tec-it.com/barcode.ashx?data=123456&code=Code128&dpi=75">');
-	return $pdf->stream('recib.pdf');
+ //    $pdf = PDF::loadHtml('<h1>Hello World</h1><img src="http://barcode.tec-it.com/barcode.ashx?data=123456&code=Code128&dpi=75">');
+	// return $pdf->stream('recib.pdf');
+	// return dd(\App\empleo::find(1)->aspirantes->count());
+	return Storage::url('hojas_de_vida/pedro_navajas.pdf');
 });
 
 Route::prefix('Administrador')->group(function(){
@@ -48,10 +52,14 @@ Route::prefix('Administrador')->group(function(){
 	    return view('Administrador.pagos');
 	});
 	Route::get('Empleo', function () {
-	    return view('Administrador.empleo');
+		$datos =\App\empleo::all();
+	    return view('Administrador.empleo')->with('arrayEmpleos',$datos);
 	});
+	Route::post('Empleo','empleoController@registrarNuevaOferta')->name('empleo.guardar');
+	
 	Route::get('Empleo/{id}', function ($id) {
-	    return view('Administrador.showAspirantes')->with('id',$id);
+		$empleo = \App\empleo::find($id);
+	    return view('Administrador.showAspirantes')->with('empleo',$empleo);
 	});
 });
 

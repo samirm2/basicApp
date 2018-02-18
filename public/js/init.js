@@ -7,7 +7,7 @@ $(function(){
         'default': 'Has Clic o Arrastra y Suelta Un Archivo Aqui',
         'replace': 'Has Clic o Arrastra y Suelta Un Archivo Aqui Para Reemplazar',
         'remove':  'Eliminar',
-        'error':   'Ooops, Ha ocurrido un Error.'
+        'error':   'Ha ocurrido un Error.'
     	},
     	error: {
         'fileSize': 'The file size is too big ({{ value }} max).',

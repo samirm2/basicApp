@@ -8,8 +8,11 @@
 		<div class="row">
 			<div class="col s12">
 				<div class="card-panel">
-					<span class="spanEstado {{(1==2) ? 'light-green' : 'grey'}}">Activo</span> <br>
-					<h4>{{$id}}Algo</h4>
+					<a href="{{url('Administrador/Empleo')}}" class="btn-floating light-blue"><i class="material-icons">arrow_back</i></a>
+					<div class="row"></div>
+					<h4>{{$empleo->cargo}}</h4>
+					<span class="spanEstado {{($empleo->estado == 'Activo') ? 'light-green' : 'grey'}}">{{$empleo->estado}}</span>
+
 					<table class="striped centered">
 						<thead>
 							<tr>
@@ -21,15 +24,17 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>Sara Yisel</td>
-								<td>Montero Lopez</td>
-								<td>saralosa@outlook.com</td>
-								<td><a href="http://www.unal.edu.co/dnp/Archivos_base/Formato_Unico_de_Hoja_de_Vida-Persona_natural-DAFP.pdf">Ver</a></td>
-								<td>
-									<a class="btn-floating light-blue"><i class="material-icons">assignment_turned_in</i></a>
-								</td>
-							</tr>
+							@foreach($empleo->aspirantes as $aspirante)
+								<tr>
+									<td>{{$aspirante->nombres}}</td>
+									<td>{{$aspirante->apellidos}}</td>
+									<td>{{$aspirante->email}}</td>
+									<td><a href="{{Storage::url($aspirante->hoja_vida)}}">Ver</a></td>
+									<td>
+										<a class="btn-floating light-blue tooltipped" data-tooltip="contratar" data-position="bottom" data-delay="50"><i class="material-icons">assignment_turned_in</i></a>
+									</td>
+								</tr>
+							@endforeach
 						</tbody>
 					</table>
 				</div>

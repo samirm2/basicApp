@@ -21,7 +21,7 @@ class CreateEmpleosTable extends Migration
             $table->string('tipo_salario');
             $table->string('duracion');
             $table->string('tipo_duracion');
-            $table->string('Estado');
+            $table->string('estado');
             $table->timestamps();
         });
     }
