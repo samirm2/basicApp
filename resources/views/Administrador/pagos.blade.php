@@ -14,6 +14,7 @@
 						</select>
 						<label for="filtro">Mostar</label>
 					</div>
+					<button class="btn light-green right">Generar Recibos <i class="material-icons left">note_add</i></button>
 					<table class="striped">
 						<thead>
 							<tr>
