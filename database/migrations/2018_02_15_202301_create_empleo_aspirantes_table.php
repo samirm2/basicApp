@@ -22,7 +22,7 @@ class CreateEmpleoAspirantesTable extends Migration
             $table->integer('id_empleo')->unsigned();
             $table->timestamps();
 
-            $table->foreign('id_empleo')->references('id')->on('empleos');
+            $table->foreign('id_empleo')->references('id')->on('empleos')->onDelete('cascade');
         });
     }
 

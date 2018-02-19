@@ -51,16 +51,20 @@ Route::prefix('Administrador')->group(function(){
 	Route::get('Pagos', function () {
 	    return view('Administrador.pagos');
 	});
+
 	Route::get('Empleo', function () {
 		$datos =\App\empleo::all();
 	    return view('Administrador.empleo')->with('arrayEmpleos',$datos);
 	});
 	Route::post('Empleo','empleoController@registrarNuevaOferta')->name('empleo.guardar');
 	
+	Route::delete('Empleo/{id}','empleoController@eliminarEmpleo')->name('empleo.eliminar');
+	
 	Route::get('Empleo/{id}', function ($id) {
 		$empleo = \App\empleo::find($id);
 	    return view('Administrador.showAspirantes')->with('empleo',$empleo);
 	});
+
 });
 
 

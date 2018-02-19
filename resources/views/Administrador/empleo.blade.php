@@ -36,7 +36,11 @@
 								<td>
 									<a class="btn-floating light-blue tooltipped" data-tooltip="Examinar" data-position="botton" data-delay="50"><i class="material-icons">find_in_page</i></a>
 									<a href="{{url('Administrador/Empleo/'.$empleo->id)}}" class="btn-floating light-blue tooltipped" data-tooltip="ver aspirantes" data-position="botton" data-delay="50"><i class="material-icons">class</i></a>
-									<a class="btn-floating light-blue tooltipped" data-tooltip="Eliminar" data-position="botton" data-delay="50"><i class="material-icons">delete</i></a>
+									<form method="post" action="{{route('empleo.eliminar',['id'=>$empleo->id])}}">
+										{{csrf_field()}}
+										{{method_field('DELETE')}}
+										<button type="button" class="btnEliminar btn-floating light-blue tooltipped" data-tooltip="Eliminar" data-position="botton" data-delay="50"><i class="material-icons">delete</i></button>
+									</form>
 								</td>
 							</tr>
 							@endforeach
@@ -116,4 +120,16 @@
 		</div>
 	</form>
 	</div>
+@endsection
+
+@section('scripts')
+<script>
+	$(function(){
+		$('.btnEliminar').click(function(){
+			if(confirm('¿Esta seguro de eliminar este empleo?')){
+				$(this).parent().submit();
+			}
+		});
+	});
+</script>
 @endsection

@@ -29,6 +29,12 @@ class empleoController extends Controller
     	}
     }
 
+    public function eliminarEmpleo($id){
+	   	$empleo = empleo::find($id);
+	   	$empleo->delete();
+	   	return back()->with('mensaje_exitoso','¡Enhorabuena! empleo eliminado correctamente');
+    }
+
     public function registrarPostulante(){
     	$aspirante = new EmpleoAspirante();
     	$aspirante->nombres = request()->nombres;
