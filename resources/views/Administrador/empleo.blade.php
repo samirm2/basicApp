@@ -20,7 +20,7 @@
 								<th>Fecha de Publicación</th>
 								<th>Aspirantes</th>
 								<th>Estado</th>
-								<th>Opciones</th>
+								<th colspan="2">Opciones</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -37,7 +37,8 @@
 									<a class="btn-floating light-blue tooltipped btnExaminar" data-tooltip="Examinar" data-position="botton" data-delay="50" data-empleo_id="{{$empleo->id}}" data-cargo="{{$empleo->cargo}}" data-descripcion="{{$empleo->descripcion}}" data-salario="{{$empleo->salario}}" data-tipo_salario="{{$empleo->tipo_salario}}" data-duracion="{{$empleo->duracion}}" data-tipo_duracion="{{$empleo->tipo_duracion}}" data-estado="{{$empleo->estado}}"><i class="material-icons">find_in_page</i></a>
 									
 									<a href="{{url('Administrador/Empleo/'.$empleo->id)}}" class="btn-floating light-blue tooltipped" data-tooltip="ver aspirantes" data-position="botton" data-delay="50"><i class="material-icons">class</i></a>
-									
+								</td>
+								<td>
 									<form method="post" action="{{route('empleo.eliminar',['id'=>$empleo->id])}}">
 										{{csrf_field()}}
 										{{method_field('DELETE')}}
