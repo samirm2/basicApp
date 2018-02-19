@@ -8,7 +8,7 @@ use App\EmpleoAspirante;
 
 class empleoController extends Controller
 {
-    public function registrarNuevaOferta(){
+    public function registrarNuevoEmpleo(){
     	request()->validate([
     		'cargo'=> 'required',
     		'descripcion'=> 'required',
@@ -33,6 +33,19 @@ class empleoController extends Controller
 	   	$empleo = empleo::find($id);
 	   	$empleo->delete();
 	   	return back()->with('mensaje_exitoso','¡Enhorabuena! empleo eliminado correctamente');
+    }
+
+    public function actualizarEmpleo($id){
+	   	$empleo = empleo::find($id);
+	   	$empleo->cargo = request()->cargo;
+	   	$empleo->descripcion = request()->descripcion;
+	   	$empleo->salario = request()->salario;
+	   	$empleo->estado = request()->estado;
+	   	$empleo->duracion = request()->duracion;
+	   	$empleo->tipo_salario = request()->tipo_salario;
+	   	$empleo->tipo_duracion = request()->tipo_duracion;
+	   	$empleo->save();
+	   	return back()->with('mensaje_exitoso','¡Enhorabuena! empleo actualizado correctamente');
     }
 
     public function registrarPostulante(){

@@ -34,8 +34,10 @@
 								<td><b>{{$empleo->aspirantes()->count()}}</b></td>
 								<td><span class="spanEstado {{($empleo->estado == 'Activo') ? 'lime': 'grey'}}">{{$empleo->estado}}</span></td>
 								<td>
-									<a class="btn-floating light-blue tooltipped" data-tooltip="Examinar" data-position="botton" data-delay="50"><i class="material-icons">find_in_page</i></a>
+									<a class="btn-floating light-blue tooltipped btnExaminar" data-tooltip="Examinar" data-position="botton" data-delay="50" data-empleo_id="{{$empleo->id}}" data-cargo="{{$empleo->cargo}}" data-descripcion="{{$empleo->descripcion}}" data-salario="{{$empleo->salario}}" data-tipo_salario="{{$empleo->tipo_salario}}" data-duracion="{{$empleo->duracion}}" data-tipo_duracion="{{$empleo->tipo_duracion}}" data-estado="{{$empleo->estado}}"><i class="material-icons">find_in_page</i></a>
+									
 									<a href="{{url('Administrador/Empleo/'.$empleo->id)}}" class="btn-floating light-blue tooltipped" data-tooltip="ver aspirantes" data-position="botton" data-delay="50"><i class="material-icons">class</i></a>
+									
 									<form method="post" action="{{route('empleo.eliminar',['id'=>$empleo->id])}}">
 										{{csrf_field()}}
 										{{method_field('DELETE')}}
@@ -58,8 +60,10 @@
 			<h4>Registrar Vacante</h4>
 			<div class="divider"></div>
 			<div class="row">
-		<form method="post" action="{{route('empleo.guardar')}}">
+		<form id="formModal" method="post" action="{{route('empleo.guardar')}}">
 			{{csrf_field()}}
+			{{method_field('PUT')}}
+			<input type="hidden" name="empleo_id">
 				<div class="input-field col s6">
 					<i class="material-icons prefix">work</i>
 					<input type="text" name="cargo" value="{{old('cargo')}}">
@@ -116,7 +120,7 @@
 		</div>
 		<div class="modal-footer">
 			<a class="btn-flat modal-action modal-close">Cancelar <i class="material-icons red-text right">cancel</i></a>
-			<button class="btn-flat">Registrar <i class="material-icons light-green-text right">check_circle</i></button>
+			<button type="button" id="btnRegistro" class="btn-flat" data-opcion="registrar">Registrar <i class="material-icons light-green-text right">check_circle</i></button>
 		</div>
 	</form>
 	</div>
@@ -125,11 +129,57 @@
 @section('scripts')
 <script>
 	$(function(){
+		$('#botonRojo').click(function(){
+			limpiarModal();
+			$('#btnRegistro').html('Registrar <i class="material-icons light-green-text right">check_circle</i>');
+			$('#btnRegistro').data('opcion','registrar');
+		});
+
+		$('#btnRegistro').click(function(){
+			if ($(this).data('opcion') == 'registrar') {
+				//registro un empleo
+				$('[name=_method]').remove();
+				$('#formModal').submit();
+			}else{
+				//actalizo un empleo existente
+				$('#formModal').attr('action','Empleo/'+$('[name=empleo_id]').val());
+				$('#formModal').submit();
+			}
+		});
+
 		$('.btnEliminar').click(function(){
 			if(confirm('¿Esta seguro de eliminar este empleo?')){
 				$(this).parent().submit();
 			}
 		});
+
+		$('.btnExaminar').click(function(){
+			$('[name=empleo_id]').val($(this).data('empleo_id'));
+			$('[name=estado]').val($(this).data('estado'));
+			$('[name=cargo]').val($(this).data('cargo'));
+			$('[name=descripcion]').val($(this).data('descripcion'));
+			$('[name=salario]').val($(this).data('salario'));
+			$('[name=tipo_salario]').val($(this).data('tipo_salario'));
+			$('[name=duracion]').val($(this).data('duracion'));
+			$('[name=tipo_duracion]').val($(this).data('tipo_duracion'));
+			Materialize.updateTextFields();
+			$('select').material_select('update');
+			$('#btnRegistro').html('Actualizar <i class="material-icons light-green-text right">autorenew</i>');
+			$('#btnRegistro').data('opcion','actualizar');
+			$('#modal').modal('open');
+		});
+
+		function limpiarModal(){
+			$('[name=estado]').val('Activo');
+			$('[name=empleo_id]').val('');
+			$('[name=cargo]').val('');
+			$('[name=descripcion]').val('');
+			$('[name=salario]').val('');
+			$('[name=tipo_salario]').val('Diario');
+			$('[name=duracion]').val('1');
+			$('[name=tipo_duracion]').val('Dias');
+			$('select').material_select('update');
+		}
 	});
 </script>
 @endsection

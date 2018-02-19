@@ -29,9 +29,8 @@ Route::get('/pdf', function () {
 });
 
 Route::prefix('Administrador')->group(function(){
-	Route::get('/', function () {
-    	return view('Administrador.index');
-	});
+	Route::get('/', 'administradorController@index');
+	
 	Route::get('Propietarios', function () {
    		return view('Administrador.propietarios');
 	});
@@ -56,9 +55,11 @@ Route::prefix('Administrador')->group(function(){
 		$datos =\App\empleo::all();
 	    return view('Administrador.empleo')->with('arrayEmpleos',$datos);
 	});
-	Route::post('Empleo','empleoController@registrarNuevaOferta')->name('empleo.guardar');
-	
+	Route::post('Empleo','empleoController@registrarNuevoEmpleo')->name('empleo.guardar');
+
 	Route::delete('Empleo/{id}','empleoController@eliminarEmpleo')->name('empleo.eliminar');
+
+	Route::put('Empleo/{id}','empleoController@actualizarEmpleo')->name('empleo.actualizar');
 	
 	Route::get('Empleo/{id}', function ($id) {
 		$empleo = \App\empleo::find($id);
