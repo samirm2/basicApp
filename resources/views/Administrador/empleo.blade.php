@@ -132,6 +132,7 @@
 	$(function(){
 		$('#botonRojo').click(function(){
 			limpiarModal();
+			Materialize.updateTextFields();
 			$('#btnRegistro').html('Registrar <i class="material-icons light-green-text right">check_circle</i>');
 			$('#btnRegistro').data('opcion','registrar');
 		});

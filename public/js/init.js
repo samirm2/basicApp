@@ -1,7 +1,16 @@
 $(function(){
 	$('#modal').modal();
 	$('select').material_select();
-	$('.datepicker').pickadate();
+	$('.datepicker').pickadate({
+        formatSubmit: 'yyyy/mm/dd',
+        max: true,
+        today: 'Hoy',
+        clear: 'Limpiar',
+        selectYears: true,
+        selectMonths: true,
+        monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab']
+    });
 	$('.dropify').dropify({
 		messages: {
         'default': 'Has Clic o Arrastra y Suelta Un Archivo Aqui',

@@ -1,4 +1,6 @@
 <div id="modal" class="modal modal-fixed-footer" style="width: 50%">
+	<form method="post" action="{{route('propietario.guardar')}}">
+	{{csrf_field()}}
 	<div class="modal-content">
 		<h4>Registro de {{(request()->is('Administrador/*')) ? "Propietarios": "Arrendatarios" }}</h4>
 		<div class="divider"></div>
@@ -13,10 +15,13 @@
 							<label for="cedula">Cedula</label>
 						</div>
 						
+						<input type="hidden" name="rol" value="{{(request()->is('Administrador/*')) ? "Propietario": "Arrendatario" }}">
+						<input type="hidden" name="casas">
+
 						@if(request()->is('Administrador/*'))
 						<div class="input-field col s6">
 							<i class="material-icons prefix">home</i>
-							<div type="text" name="casa" class=" chips chips-autocomplete"></div>
+							<div type="text" name="casa" class="chips chips-autocomplete"></div>
 							<label for="casa">Casa</label>
 						</div>
 						@endif
@@ -71,12 +76,12 @@
 					<div class="row">
 						<div class="input-field col s6">
 							<i class="material-icons prefix">lock</i>
-							<input type="password" name="password">
+							<input type="password" name="password" value="ziruma1">
 							<label for="password">Contraseña</label>
 						</div>
 						<div class="input-field col s6">
 							<i class="material-icons prefix">lock_outline</i>
-							<input type="password" name="repeat-password">
+							<input type="password" name="repeat-password" value="ziruma1">
 							<label for="repeat-password">Repetir Contraseña</label>
 						</div>
 					</div>	
@@ -86,6 +91,7 @@
 	</div>
 	<div class="modal-footer">
 		<a class="modal-action modal-close btn-flat waves-effect waves-light">Cancelar<i class="material-icons prefix right red-text">cancel</i></a>
-		<a href="#" class="btn-flat waves-effect waves-light">Registrar <i class="material-icons prefix right light-green-text">check_circle</i></a>
+		<button type="button" id="btnRegistro" class="btn-flat waves-effect waves-light"  data-opcion='registrar'>Registrar <i class="material-icons prefix right light-green-text">check_circle</i></button>
 	</div>
+	</form>
 </div>

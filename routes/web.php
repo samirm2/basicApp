@@ -15,25 +15,29 @@
 Route::get('/', function () {
     return view('login');
 });
+
 Route::get('/trabaja-con-nosotros', function () {
     $datos =\App\empleo::all();
     return view('trabajar')->with('arrayEmpleos',$datos);
 });
+
+Route::get('api/casas', function () {
+    return \App\casa::all();
+})->name('api.casas');
+
 Route::post('/postularme', 'empleoController@registrarPostulante');
 
 Route::get('/pdf', function () {
- //    $pdf = PDF::loadHtml('<h1>Hello World</h1><img src="http://barcode.tec-it.com/barcode.ashx?data=123456&code=Code128&dpi=75">');
-	// return $pdf->stream('recib.pdf');
-	// return dd(\App\empleo::find(1)->aspirantes->count());
-	return Storage::url('hojas_de_vida/pedro_navajas.pdf');
+    $pdf = PDF::loadHtml('<h1>Hello World</h1><img src="http://barcode.tec-it.com/barcode.ashx?data=123456&code=Code128&dpi=75">');
+	return $pdf->stream('recib.pdf');
 });
 
 Route::prefix('Administrador')->group(function(){
 	Route::get('/', 'administradorController@index');
 	
-	Route::get('Propietarios', function () {
-   		return view('Administrador.propietarios');
-	});
+	Route::get('Propietarios', 'administradorController@propietariosIndex');
+	Route::post('Propietarios', 'administradorController@registrarPropietario')->name('propietario.guardar');
+
 	Route::get('pqrs', function () {
 	    return view('Administrador.pqrs');
 	});
@@ -51,21 +55,12 @@ Route::prefix('Administrador')->group(function(){
 	    return view('Administrador.pagos');
 	});
 
-	Route::get('Empleo', function () {
-		$datos =\App\empleo::all();
-	    return view('Administrador.empleo')->with('arrayEmpleos',$datos);
-	});
+	Route::get('Empleo', 'empleoController@empleoIndex');
 	Route::post('Empleo','empleoController@registrarNuevoEmpleo')->name('empleo.guardar');
-
-	Route::delete('Empleo/{id}','empleoController@eliminarEmpleo')->name('empleo.eliminar');
-
+	Route::get('Empleo/{id}', 'empleoController@verEmpleo');
 	Route::put('Empleo/{id}','empleoController@actualizarEmpleo')->name('empleo.actualizar');
+	Route::delete('Empleo/{id}','empleoController@eliminarEmpleo')->name('empleo.eliminar');
 	
-	Route::get('Empleo/{id}', function ($id) {
-		$empleo = \App\empleo::find($id);
-	    return view('Administrador.showAspirantes')->with('empleo',$empleo);
-	});
-
 });
 
 

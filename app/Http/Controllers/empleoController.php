@@ -8,6 +8,11 @@ use App\EmpleoAspirante;
 
 class empleoController extends Controller
 {
+    public function empleoIndex(){
+    	$datos =empleo::all();
+	    return view('Administrador.empleo')->with('arrayEmpleos',$datos);
+    }
+
     public function registrarNuevoEmpleo(){
     	request()->validate([
     		'cargo'=> 'required',
@@ -27,6 +32,11 @@ class empleoController extends Controller
     	}else{
     		return 'ocurrion un error al guardar el emplo';
     	}
+    }
+
+    public function verEmpleo($id){
+    	$empleo = empleo::find($id);
+	    return view('Administrador.showAspirantes')->with('empleo',$empleo);
     }
 
     public function eliminarEmpleo($id){
@@ -62,6 +72,5 @@ class empleoController extends Controller
     	}else{
     		return "error";
     	}
-
     }
 }
