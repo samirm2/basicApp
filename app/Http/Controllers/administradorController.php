@@ -8,6 +8,7 @@ use App\Persona;
 use App\propietario;
 use App\User;
 use App\propietariosCasas;
+use App\Gasto;
 
 
 class administradorController extends Controller
@@ -80,5 +81,19 @@ class administradorController extends Controller
     	$usuarioPersona->save();
 
     	return back()->with('mensaje_exitoso','¡Enhorabuena! Propietario '.$persona->nombres." ".$persona->apellidos .' Actualizado con exito.');
+    }
+
+    public function gastosIndex(){
+    	return view('Administrador.gastos');
+    }
+
+    public function registrarGasto(){
+    	$gasto = new Gasto();
+    	$gasto->concepto = request()->concepto;
+    	$gasto->valor = request()->valor;
+    	$gasto->observaciones = request()->observaciones;
+    	$gasto->evidencia = request()->file('imagen')->store('public/gastos');
+    	$gasto->save();
+    	return back()->with('mensaje_exitoso','¡Enhorabuena! Gasto registrado satisfactoriamente.');
     }
 }

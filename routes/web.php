@@ -49,9 +49,8 @@ Route::prefix('Administrador')->group(function(){
 						consequat.',"asunto"=>'La señora no limpia su frente',"tipo"=>'Queja',"estado"=>"Cerrado"];
 	    return view('showPqrs')->with('datos',$datos);
 	});
-	Route::get('Gastos', function () {
-	    return view('Administrador.gastos');
-	});
+	Route::get('Gastos', 'administradorController@gastosIndex');
+	Route::post('Gastos','administradorController@registrarGasto')->name('gasto.registrar');
 	Route::get('Pagos', function () {
 	    return view('Administrador.pagos');
 	});

@@ -5,6 +5,7 @@
 
 @section('contenido')
 <div class="caja">
+		@include('layout._mostrarMensajeFlash')
 	<div class="row">
 		<div class="col s12">
 			<div class="card-panel">
@@ -46,6 +47,8 @@
 @include('layout._botonRojo')
 
 <div id="modal" class="modal modal-fixed-footer" style="width: 40%">
+	<form method="post" action="{{route('gasto.registrar')}}" enctype="multipart/form-data">
+		{{csrf_field()}}
 	<div class="modal-content">
 		<h4>Registro de Gastos</h4>
 		<div class="divider"></div>
@@ -75,8 +78,9 @@
 	</div>
 	<div class="modal-footer">
 		<a class="modal-action modal-close btn-flat">Cerrar <i class="material-icons red-text right">cancel</i></a>
-		<a href="#" class="btn-flat waves-effect waves-light">Registrar <i class="material-icons light-green-text right">check_circle</i></a>
+		<button class="btn-flat waves-effect waves-light">Registrar <i class="material-icons light-green-text right">check_circle</i></button>
 	</div>
+	</form>
 </div>
 
 @endsection
