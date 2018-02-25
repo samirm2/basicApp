@@ -32,7 +32,7 @@
 									<td></td>
 									<td></td>
 									<td>
-										<a href="#modal" class="btnEditar modal-trigger btn-floating cyan" data-casa="{{$casa->nombre}}"><i class="material-icons">edit</i></a>
+										{{-- <a href="#modal" class="btnEditar modal-trigger btn-floating cyan" data-casa="{{$casa->nombre}}"><i class="material-icons">edit</i></a> --}}
 										{{-- <a href="#" class="btn-floating"><i class="material-icons">delete</i></a> --}}
 									</td>
 								@else
@@ -42,7 +42,7 @@
 									<td>{{$casa->miPropietario->datosPropietario->persona->telefono}}</td>
 									<td>{{$casa->miPropietario->datosPropietario->persona->email}}</td>
 									<td>
-										<a href="#modal" class="btnEditar modal-trigger btn-floating cyan" data-casa="{{$casa->nombre}}" data-cedula="{{$casa->miPropietario->datosPropietario->persona->cedula}}" data-nombres="{{$casa->miPropietario->datosPropietario->persona->nombres}}" data-apellidos="{{$casa->miPropietario->datosPropietario->persona->apellidos}}" data-telefono="{{$casa->miPropietario->datosPropietario->persona->telefono}}" data-email="{{$casa->miPropietario->datosPropietario->persona->email}}" data-sexo="{{$casa->miPropietario->datosPropietario->persona->sexo}}" data-nacimiento="{{$casa->miPropietario->datosPropietario->persona->fecha_nacimiento}}"><i class="material-icons">edit</i></a>
+										<a href="#modal" class="btnEditar modal-trigger btn-floating cyan" data-casa="{{$casa->nombre}}" data-cedula="{{$casa->miPropietario->datosPropietario->persona->cedula}}" data-nombres="{{$casa->miPropietario->datosPropietario->persona->nombres}}" data-apellidos="{{$casa->miPropietario->datosPropietario->persona->apellidos}}" data-telefono="{{$casa->miPropietario->datosPropietario->persona->telefono}}" data-email="{{$casa->miPropietario->datosPropietario->persona->email}}" data-sexo="{{$casa->miPropietario->datosPropietario->persona->sexo}}" data-nacimiento="{{$casa->miPropietario->datosPropietario->persona->fecha_nacimiento}}" data-propietario_id="{{$casa->miPropietario->datosPropietario->persona->id}}" data-usuario="{{$casa->miPropietario->datosPropietario->persona->usuario->name}}"><i class="material-icons">edit</i></a>
 										{{-- <a href="#" class="btn-floating"><i class="material-icons">delete</i></a> --}}
 									</td>
 								@endif
@@ -74,6 +74,8 @@
 		      	minLength: 1
 		    	}
 			});
+			$("[name=password]").val('ziruma1');
+			$("[name=repeat-password]").val('ziruma1');
 			Materialize.updateTextFields();
 			$("[name=sexo]").material_select('update');
 			$('#btnRegistro').html('Registrar <i class="material-icons light-green-text right">check_circle</i>');
@@ -83,12 +85,13 @@
 		$('.btnEditar').click(function(){
 			$('[name=casa]').material_chip({
 				data: [{tag: $(this).data('casa')}],
-				autocompleteOptions: {
-	    	  data: casas,
-	      	limit: 3,
-	      	minLength: 1
-	    	}
+				// autocompleteOptions: {
+	   //  	  data: casas,
+	   //    	limit: 3,
+	   //    	minLength: 1
+	   //  	}
 			});
+			$('[name=casa]').children()[1].remove()
 			$("[name=cedula]").val($(this).data('cedula'));
 			$("[name=nombres]").val($(this).data('nombres'));
 			$("[name=apellidos]").val($(this).data('apellidos'));
@@ -96,6 +99,10 @@
 			$("[name=birthday]").val($(this).data('nacimiento'));
 			$("[name=telefono]").val($(this).data('telefono'));
 			$("[name=email]").val($(this).data('email'));
+			$("[name=persona_id]").val($(this).data('propietario_id'));
+			$("[name=usuario]").val($(this).data('usuario'));
+			$("[name=password]").val('');
+			$("[name=repeat-password]").val('');
 			Materialize.updateTextFields();
 			$("[name=sexo]").material_select('update');
 			$('#btnRegistro').html('Actualizar <i class="material-icons light-green-text right">autorenew</i>');
@@ -103,17 +110,24 @@
 		});
 
 		$('#btnRegistro').click(function(){
+			var casasSubmit = [];
 			if ($(this).data('opcion') == 'registrar') {
 				//registara un propietario
-				var casasSubmit = [];
 				for (casa in $('[name=casa]').material_chip('data')){
 					casasSubmit.push($('[name=casa]').material_chip('data')[casa].tag);
 				}
 				$("[name=casas]").val(casasSubmit);
+				$('[name=_method]').remove();
 				$('form').submit();
 			}else{
 				//actualizara un propietario
+				for (casa in $('[name=casa]').material_chip('data')){
+					casasSubmit.push($('[name=casa]').material_chip('data')[casa].tag);
+				}
+				$("[name=casas]").val(casasSubmit);
 				Materialize.toast('Actulizando Propietario',3000);
+				$('form').attr('action','Propietarios/'+$('[name=persona_id]').val());
+				$('form').submit();
 			}
 		});
 

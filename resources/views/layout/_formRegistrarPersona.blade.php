@@ -1,6 +1,7 @@
 <div id="modal" class="modal modal-fixed-footer" style="width: 50%">
 	<form method="post" action="{{route('propietario.guardar')}}">
 	{{csrf_field()}}
+	{{method_field('PUT')}}
 	<div class="modal-content">
 		<h4>Registro de {{(request()->is('Administrador/*')) ? "Propietarios": "Arrendatarios" }}</h4>
 		<div class="divider"></div>
@@ -17,6 +18,7 @@
 						
 						<input type="hidden" name="rol" value="{{(request()->is('Administrador/*')) ? "Propietario": "Arrendatario" }}">
 						<input type="hidden" name="casas">
+						<input type="hidden" name="persona_id">
 
 						@if(request()->is('Administrador/*'))
 						<div class="input-field col s6">

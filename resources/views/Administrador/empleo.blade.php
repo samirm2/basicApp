@@ -143,7 +143,7 @@
 				$('[name=_method]').remove();
 				$('#formModal').submit();
 			}else{
-				//actalizo un empleo existente
+				//actualizo un empleo existente
 				$('#formModal').attr('action','Empleo/'+$('[name=empleo_id]').val());
 				$('#formModal').submit();
 			}

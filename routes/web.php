@@ -37,6 +37,7 @@ Route::prefix('Administrador')->group(function(){
 	
 	Route::get('Propietarios', 'administradorController@propietariosIndex');
 	Route::post('Propietarios', 'administradorController@registrarPropietario')->name('propietario.guardar');
+	Route::put('Propietarios/{id}', 'administradorController@actualizarPropietario')->name('propietario.actualizar');
 
 	Route::get('pqrs', function () {
 	    return view('Administrador.pqrs');

@@ -18,9 +18,11 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('password');
             $table->string('rol');
+            $table->unsignedInteger('persona_id');
             // $table->rememberToken();
             $table->timestamps();
             
+            $table->foreign('persona_id')->references('id')->on('personas');
             $table->foreign('rol')->references('nombre')->on('roles');
         });
     }

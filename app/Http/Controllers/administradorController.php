@@ -36,6 +36,7 @@ class administradorController extends Controller
     	$usuario->name = request()->usuario;
     	$usuario->password = bcrypt(request()->password);
     	$usuario->rol = request()->rol;
+    	$usuario->persona_id = $persona->id;
     	$usuario->save();
 
     	$propietario = new propietario();
@@ -51,5 +52,33 @@ class administradorController extends Controller
 
    		return back()->with('mensaje_exitoso','¡Enhorabuena! Propietario registrado con exito.');
     	
+    }
+
+    public function actualizarPropietario($id){
+    	$persona = Persona::find($id);
+    	$persona->cedula = request()->cedula;
+    	$persona->nombres = request()->nombres;
+    	$persona->apellidos = request()->apellidos;
+    	$persona->sexo = request()->sexo;
+    	if (is_null(request()->birthday)) {
+    		$persona->fecha_nacimiento = request()->birthday_submit;
+    	}else{
+    		$persona->fecha_nacimiento = request()->birthday;
+    	}
+    	
+    	$persona->telefono = request()->telefono;
+    	$persona->email = request()->email;
+    	$persona->save();
+    	
+    	$usuarioPersona = $persona->usuario;
+    	$usuarioPersona->name = request()->usuario;
+
+    	if (!is_null(request()->password)) {
+    		$usuarioPersona->password = bcrypt(request()->password);
+    	}
+
+    	$usuarioPersona->save();
+
+    	return back()->with('mensaje_exitoso','¡Enhorabuena! Propietario '.$persona->nombres." ".$persona->apellidos .' Actualizado con exito.');
     }
 }
