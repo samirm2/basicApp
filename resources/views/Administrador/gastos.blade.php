@@ -21,22 +21,16 @@
 						</tr>
 					</thead>
 					<tbody>
+						@foreach($gastos as $gasto)
 						<tr>
-							<td>1</td>
-							<td><b>Arreglo del porton</b></td>
-							<td>125.000</td>
-							<td>2018/01/12 15:21:01</td>
-							<td>Evidencia</td>
-							<td><a href="#" class="btn-floating cyan"><i class="material-icons">description</i></a></td>
+							<td>{{$gasto->id}}</td>
+							<td><b>{{$gasto->concepto}}</b></td>
+							<td>{{$gasto->valor}}</td>
+							<td>{{$gasto->created_at->diffForHumans()}}</td>
+							<td><img class="materialboxed" src="{{Storage::url($gasto->evidencia)}}" height="100"></td>
+							<td><a href="#modal" class="btnExaminar btn-floating cyan modal-trigger" data-concepto="{{$gasto->concepto}}" data-valor="{{$gasto->valor}}" data-observacion="{{$gasto->observaciones}}" data-evidencia="{{$gasto->evidencia}}"><i class="material-icons">description</i></a></td>
 						</tr>
-						<tr>
-							<td>2</td>
-							<td><b>utencilios de oficina</b></td>
-							<td>25.000</td>
-							<td>2018/01/16 09:20:10</td>
-							<td>Evidencia</td>
-							<td><a href="#" class="btn-floating cyan"><i class="material-icons">description</i></a></td>
-						</tr>
+						@endforeach
 					</tbody>
 				</table>
 			</div>
@@ -65,9 +59,12 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="input-field col s6">
+				<div id="fileEvidencia" class="input-field col s6">
 					<input type="file" class="dropify" name="imagen">
 					<label for="imagen">Evidencia</label>
+				</div>
+				<div id="imgMostrarEvidencia" class="col s6 hide">
+					<img class="responsive-img" src="{{asset('img/imgDefault.png')}}">
 				</div>
 				<div class="input-field col s6">
 					<i class="material-icons prefix">insert_comment</i>
@@ -78,9 +75,62 @@
 	</div>
 	<div class="modal-footer">
 		<a class="modal-action modal-close btn-flat">Cerrar <i class="material-icons red-text right">cancel</i></a>
-		<button class="btn-flat waves-effect waves-light">Registrar <i class="material-icons light-green-text right">check_circle</i></button>
+		<button id="btnRegistrar" class="btn-flat waves-effect waves-light">Registrar <i class="material-icons light-green-text right">check_circle</i></button>
 	</div>
 	</form>
 </div>
 
+@endsection
+@section('scripts')
+<script type="text/javascript">
+	$(function(){
+		$('#botonRojo').click(function(){
+			limpiarCampos();
+			inputsDisabled(false);
+			$('#imgMostrarEvidencia').addClass('hide');
+			$('#fileEvidencia').removeClass('hide');
+			$('#btnRegistrar').attr('disabled',false);
+			Materialize.updateTextFields();
+		});
+
+		$(".btnExaminar").click(function(){
+			inputsDisabled(true);	
+			$('[name=concepto]').val($(this).data('concepto'));
+			$('[name=valor]').val($(this).data('valor'));
+			$('[name=observaciones]').val($(this).data('observacion'));
+			$('#imgMostrarEvidencia').removeClass('hide');
+			$('#imgMostrarEvidencia').children().attr('src',renderizarImagen($(this).data('evidencia')));
+			$('#fileEvidencia').addClass('hide');
+			Materialize.updateTextFields();
+		});
+
+		function renderizarImagen(url){
+			var img = url;
+			img = img.split('/');
+			img[0] = '/storage';
+			img = img.join('/');
+			return img;
+		}
+
+		function limpiarCampos(){
+			$('[name=concepto]').val('');
+			$('[name=valor]').val('');
+			$('[name=observaciones]').val('');
+		}
+
+		function inputsDisabled(bandera){
+			if(bandera){
+				$('[name=concepto]').attr('disabled',true);
+				$('[name=valor]').attr('disabled',true);
+				$('[name=observaciones]').attr('disabled',true);
+				$('#btnRegistrar').attr('disabled',true);
+			}else{
+				$('[name=concepto]').attr('disabled',false);
+				$('[name=valor]').attr('disabled',false);
+				$('[name=observaciones]').attr('disabled',false);
+				$('#btnRegistrar').attr('disabled',false);
+			}
+		}
+	});
+</script>
 @endsection

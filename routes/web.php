@@ -16,10 +16,7 @@ Route::get('/', function () {
     return view('login');
 });
 
-Route::get('/trabaja-con-nosotros', function () {
-    $datos =\App\empleo::all();
-    return view('trabajar')->with('arrayEmpleos',$datos);
-});
+Route::get('/trabaja-con-nosotros', 'empleoController@trabajaIndex');
 
 Route::get('api/casas', function () {
     return \App\casa::all();
@@ -49,8 +46,9 @@ Route::prefix('Administrador')->group(function(){
 						consequat.',"asunto"=>'La señora no limpia su frente',"tipo"=>'Queja',"estado"=>"Cerrado"];
 	    return view('showPqrs')->with('datos',$datos);
 	});
-	Route::get('Gastos', 'administradorController@gastosIndex');
-	Route::post('Gastos','administradorController@registrarGasto')->name('gasto.registrar');
+	Route::get('Gastos', 'gastosController@index');
+	Route::post('Gastos','gastosController@registrarGasto')->name('gasto.registrar');
+	
 	Route::get('Pagos', function () {
 	    return view('Administrador.pagos');
 	});

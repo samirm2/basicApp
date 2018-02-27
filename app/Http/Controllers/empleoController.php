@@ -12,7 +12,11 @@ class empleoController extends Controller
     	$datos =empleo::all();
 	    return view('Administrador.empleo')->with('arrayEmpleos',$datos);
     }
-
+    public function trabajaIndex(){
+        $datos =empleo::all();
+    return view('trabajar')->with('arrayEmpleos',$datos);
+    }
+    
     public function registrarNuevoEmpleo(){
     	request()->validate([
     		'cargo'=> 'required',
