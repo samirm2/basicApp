@@ -27,6 +27,8 @@ Route::post('/postularme', 'empleoController@registrarPostulante');
 Route::get('/pdf', function () {
     $pdf = PDF::loadHtml('<h1>Hello World</h1><img src="http://barcode.tec-it.com/barcode.ashx?data=123456&code=Code128&dpi=75">');
 	return $pdf->stream('recib.pdf');
+	// Alert::success('te has postulado exitosamente','¡Enhorabuena!');//->autoclose(false);
+	// return redirect('/');
 });
 
 Route::prefix('Administrador')->group(function(){
