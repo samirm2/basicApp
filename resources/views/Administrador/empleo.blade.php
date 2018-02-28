@@ -5,7 +5,7 @@
 @section('contenido')
 	<div class="caja">
 
-		@include('layout._mostrarMensajeFlash')
+		{{-- @include('layout._mostrarMensajeFlash') --}}
 
 		<div class="row">
 			<div class="col s12">
@@ -150,9 +150,20 @@
 		});
 
 		$('.btnEliminar').click(function(){
-			if(confirm('¿Esta seguro de eliminar este empleo?')){
-				$(this).parent().submit();
-			}
+			swal({
+				title: '¿Está Seguro?',
+				text: 'una vez confirmada la opcion no podrá recuperar la información',
+				icon: 'warning',
+				buttons:['Cancelar','Eliminar'],
+				dangerMode: true
+			}).then((valor)=>{
+				if(valor){
+					$(this).parent().submit();
+				}
+			});
+			// if(confirm('¿Esta seguro de eliminar este empleo?')){
+			// 	$(this).parent().submit();
+			// }
 		});
 
 		$('.btnExaminar').click(function(){
@@ -184,4 +195,5 @@
 		}
 	});
 </script>
+@include('sweet::alert')
 @endsection

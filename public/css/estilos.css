@@ -6,15 +6,19 @@ body::-webkit-scrollbar-thumb {
 	border-radius: 3px;
 }
 
+button:focus{
+	background-color: #aaa;
+}
+
 .caja{
 	padding-left: 305px;
 	margin-top: 20px;
 }
 
 @media only screen and (max-width : 992px) {
-		 .caja {
-		padding-left: 0;
-		}
+	 .caja {
+	padding-left: 0;
+	}
 }
 
 .modal{
