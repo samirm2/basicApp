@@ -117,7 +117,7 @@
 					<label for="tipo_duracion">tipo</label>
 				</div>
 			</div>
-			<span class="red-text" style="font-size: 0.9rem">Nota: Los contratos celebrados son de prestación de servicio</span>
+			<span class="red-text nota"><b>Nota:</b> Los contratos celebrados son de prestación de servicio</span>
 		</div>
 		<div class="modal-footer">
 			<a class="btn-flat modal-action modal-close">Cancelar <i class="material-icons red-text right">cancel</i></a>

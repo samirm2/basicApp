@@ -43,7 +43,7 @@
 <div id="modal" class="modal modal-fixed-footer" style="width: 40%">
 	<form method="post" action="{{route('gasto.registrar')}}" enctype="multipart/form-data">
 		{{csrf_field()}}
-	<div class="modal-content">
+	<div class="modal-content" style="padding-bottom: 0px">
 		<h4>Registro de Gastos</h4>
 		<div class="divider"></div>
 			<div class="row">
@@ -60,7 +60,7 @@
 			</div>
 			<div class="row">
 				<div id="fileEvidencia" class="input-field col s6">
-					<input type="file" class="dropify" name="imagen">
+					<input type="file" class="dropify" name="imagen" data-allowed-file-extensions="jpg png gif jpeg">
 					<label for="imagen">Evidencia</label>
 				</div>
 				<div id="imgMostrarEvidencia" class="col s6 hide">
@@ -71,11 +71,12 @@
 					<textarea name="observaciones" class="materialize-textarea"></textarea>
 					<label for="observaciones">Observaciones</label>
 				</div>
-			</div>	
+			</div>
+			<span class="nota"><b>Para tener en cuenta:</b> Una vez se registre el gasto en el sistema, no podra modificar su informacion. Solo son permitidos archivos tipo imagen para las evidencias.</span>
 	</div>
 	<div class="modal-footer">
 		<a class="modal-action modal-close btn-flat">Cerrar <i class="material-icons red-text right">cancel</i></a>
-		<button id="btnRegistrar" class="btn-flat waves-effect waves-light">Registrar <i class="material-icons light-green-text right">check_circle</i></button>
+		<button type="button" id="btnRegistrar" class="btn-flat waves-effect waves-light">Registrar <i class="material-icons light-green-text right">check_circle</i></button>
 	</div>
 	</form>
 </div>
@@ -104,33 +105,62 @@
 			Materialize.updateTextFields();
 		});
 
-		function renderizarImagen(url){
-			var img = url;
-			img = img.split('/');
-			img[0] = '/storage';
-			img = img.join('/');
-			return img;
-		}
-
-		function limpiarCampos(){
-			$('[name=concepto]').val('');
-			$('[name=valor]').val('');
-			$('[name=observaciones]').val('');
-		}
-
-		function inputsDisabled(bandera){
-			if(bandera){
-				$('[name=concepto]').attr('disabled',true);
-				$('[name=valor]').attr('disabled',true);
-				$('[name=observaciones]').attr('disabled',true);
-				$('#btnRegistrar').attr('disabled',true);
-			}else{
-				$('[name=concepto]').attr('disabled',false);
-				$('[name=valor]').attr('disabled',false);
-				$('[name=observaciones]').attr('disabled',false);
-				$('#btnRegistrar').attr('disabled',false);
+		$('#btnRegistrar').click(function(){
+			if (validarCampos() == 0) {
+				$('form').submit();
 			}
-		}
+		});
+
 	});
+
+	function renderizarImagen(url){
+		var img = url;
+		img = img.split('/');
+		img[0] = '/storage';
+		img = img.join('/');
+		return img;
+	}
+
+	function limpiarCampos(){
+		$('[name=concepto]').val('');
+		$('[name=valor]').val('');
+		$('[name=observaciones]').val('');
+	}
+
+	function inputsDisabled(bandera){
+		if(bandera){
+			$('[name=concepto]').attr('disabled',true);
+			$('[name=valor]').attr('disabled',true);
+			$('[name=observaciones]').attr('disabled',true);
+			$('#btnRegistrar').attr('disabled',true);
+		}else{
+			$('[name=concepto]').attr('disabled',false);
+			$('[name=valor]').attr('disabled',false);
+			$('[name=observaciones]').attr('disabled',false);
+			$('#btnRegistrar').attr('disabled',false);
+		}
+	}
+
+	function validarCampos(){
+		var bandera = 0;
+		if ($('[name=concepto]').val() == '') {
+			Materialize.toast('El campo Concepto esta vacio, verifique',3000,'red');
+			bandera++;
+		}
+		if ($('[name=valor]').val() == '') {
+			Materialize.toast('El campo Valor esta vacio, verifique',3000,'red');
+			bandera++;
+		}
+		if ($('[name=observaciones]').val() == '') {
+			Materialize.toast('El campo Observaciones esta vacio, verifique',3000,'red');
+			bandera++;
+		}
+		if ($('[name=imagen]').val() == '') {
+			Materialize.toast('No hay ninguna evidencia adjuntada',3000,'red');
+			bandera++;
+		}
+		return bandera;
+	}
 </script>
+@include('sweet::alert')
 @endsection

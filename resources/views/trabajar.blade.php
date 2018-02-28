@@ -56,7 +56,7 @@
 					<label for="Hoja de vida">Hoja de Vida</label>
 				</div>
 				
-				<span class="red-text" style="font-size: 0.9rem"><b>Recuerde: </b>Los Campos que tienen el icono en color rojo, son campos obligatorios. Debe adjuntar su hoja de vida en el campo indicado. el tipo de archivo aceptado será .pdf o .docx.</span>
+				<span class="red-text nota"><b>Recuerde: </b>Los Campos que tienen el icono en color rojo, son campos obligatorios. Debe adjuntar su hoja de vida en el campo indicado. el tipo de archivo aceptado será .pdf o .docx.</span>
 				
 			</div>
 		</div>
