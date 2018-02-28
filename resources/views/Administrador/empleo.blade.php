@@ -140,12 +140,16 @@
 		$('#btnRegistro').click(function(){
 			if ($(this).data('opcion') == 'registrar') {
 				//registro un empleo
-				$('[name=_method]').remove();
-				$('#formModal').submit();
+				if(validarCampos() == 0){
+					$('[name=_method]').remove();
+					$('#formModal').submit();
+				}
 			}else{
 				//actualizo un empleo existente
 				$('#formModal').attr('action','Empleo/'+$('[name=empleo_id]').val());
-				$('#formModal').submit();
+				if (validarCampos() == 0) {
+					$('#formModal').submit();		
+				}
 			}
 		});
 
@@ -194,6 +198,22 @@
 			$('select').material_select('update');
 		}
 	});
+	function validarCampos(){
+		var bandera = 0;	
+		if($('[name=cargo]').val() == ''){
+			Materialize.toast('el campo Cargo esta vacio, verifique',3000);
+			bandera++;
+		}
+		if ($('[name=descripcion]').val() == '') {
+			Materialize.toast('el campo Descripción esta vacio, verifique',3000);
+			bandera++;
+		}
+		if ($('[name=salario]').val() == '') {
+			Materialize.toast('el campo Salario esta vacio, verifique',3000);
+			bandera++;
+		}
+		return bandera;
+	}
 </script>
 @include('sweet::alert')
 @endsection
