@@ -18,10 +18,6 @@ Route::get('/', function () {
 
 Route::get('/trabaja-con-nosotros', 'empleoController@trabajaIndex');
 
-Route::get('api/casas', function () {
-    return \App\casa::all();
-})->name('api.casas');
-
 Route::post('/postularme', 'empleoController@registrarPostulante');
 
 Route::get('/pdf', function () {
@@ -41,6 +37,7 @@ Route::prefix('Administrador')->group(function(){
 	Route::get('pqrs', function () {
 	    return view('Administrador.pqrs');
 	});
+
 	Route::get('pqrs/{id}', function ($id) {
 	    $datos = ['pqrs'=>$id, 'mensaje'=>'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
@@ -48,6 +45,7 @@ Route::prefix('Administrador')->group(function(){
 						consequat.',"asunto"=>'La señora no limpia su frente',"tipo"=>'Queja',"estado"=>"Cerrado"];
 	    return view('showPqrs')->with('datos',$datos);
 	});
+	
 	Route::get('Gastos', 'gastosController@index');
 	Route::post('Gastos','gastosController@registrarGasto')->name('gasto.registrar');
 	

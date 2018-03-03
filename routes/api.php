@@ -16,3 +16,27 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/casas', function () {
+    $casas = \App\Casa::pluck('nombre');
+    $array = [];
+    foreach ($casas as $casa) {
+    	$array += ["$casa" => null];
+    }
+    return $array;
+    // return \App\Casa::pluck('nombre');
+})->name('api.casas');
+
+Route::get('/personas/{cedula}',function($cedula){
+	$busqueda = \App\Persona::where('cedula',$cedula)->first();
+
+	if ($busqueda == "") {
+		return ["bandera"=>0];
+	}else{
+		return [
+			"bandera"=>1,
+			"persona"=>$busqueda,
+			"usuario"=>$busqueda->usuario,
+		];
+	}
+});

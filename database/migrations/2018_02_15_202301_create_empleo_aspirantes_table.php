@@ -19,10 +19,10 @@ class CreateEmpleoAspirantesTable extends Migration
             $table->string('apellidos');
             $table->string('email');
             $table->string('hoja_vida');
-            $table->integer('id_empleo')->unsigned();
+            $table->integer('empleo_id')->unsigned();
             $table->timestamps();
 
-            $table->foreign('id_empleo')->references('id')->on('empleos')->onDelete('cascade');
+            $table->foreign('empleo_id')->references('id')->on('empleos')->onDelete('cascade');
         });
     }
 

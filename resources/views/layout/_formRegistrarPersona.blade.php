@@ -9,13 +9,13 @@
 			<li>
 				<div class="collapsible-header active"><i class="material-icons">face</i> <b>Datos Personales</b></div>
 				<div class="collapsible-body">
-					<div class="row">
-						<div class="input-field col s6">
+					<div class="row valign-wrapper">
+						<div class="input-field col s5">
 							<i class="material-icons prefix">face</i>
 							<input type="number" name="cedula" data-length='11'>
 							<label for="cedula">Cedula</label>
 						</div>
-						
+						<button type="button" id="btnBuscar" class="btn-floating blue waves-effect waves-light"><i class="material-icons">search</i></button>
 						<input type="hidden" name="rol" value="{{(request()->is('Administrador/*')) ? "Propietario": "Arrendatario" }}">
 						<input type="hidden" name="casas">
 						<input type="hidden" name="persona_id">

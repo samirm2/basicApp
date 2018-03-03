@@ -12,7 +12,7 @@ class casasSeeder extends Seeder
     public function run()
     {
         for ($i = 1; $i <= 60; $i++){
-        	$ob = new \App\casa();
+        	$ob = new \App\Casa();
         	$ob->nombre = 'Casa '."$i";
         	$ob->save();
         }

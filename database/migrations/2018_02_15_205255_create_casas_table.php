@@ -16,7 +16,9 @@ class CreateCasasTable extends Migration
         Schema::create('casas', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre');
+            $table->unsignedInteger('propietario_id')->nullable();
             $table->timestamps();
+            $table->foreign('propietario_id')->references('id')->on('propietarios');
         });
     }
 

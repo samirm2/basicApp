@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Persona extends Model
 {
     public function usuario(){
-    	return $this->hasOne('\App\User','persona_id');
+    	return $this->hasOne('\App\User');
+    }
+    public function propietario(){
+    	return $this->hasOne('\App\Propietario');
     }
 }

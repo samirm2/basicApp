@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\casa;
+use App\Casa;
 use App\Persona;
 use App\propietario;
 use App\User;
-use App\propietariosCasas;
-
+use Alert;
 
 class administradorController extends Controller
 {
@@ -17,7 +16,7 @@ class administradorController extends Controller
     }
 
     public function propietariosIndex(){
-    	$casas = casa::paginate(10);
+    	$casas = Casa::paginate(10);
     	return view('Administrador.propietarios')->with('listadoCasas',$casas);
     }
 
@@ -39,31 +38,29 @@ class administradorController extends Controller
     	$usuario->persona_id = $persona->id;
     	$usuario->save();
 
-    	$propietario = new propietario();
+    	$propietario = new Propietario();
     	$propietario->persona_id = $persona->id;
     	$propietario->save();
 
    		foreach (explode(",",request()->casas) as $casa) {
-   			$casaPropietario = new propietariosCasas();
+   			$casaPropietario = Casa::where('nombre',$casa)->first();
    			$casaPropietario->propietario_id = $propietario->id;
-   			$casaPropietario->casa = casa::where('nombre',$casa)->first()->id;
    			$casaPropietario->save();
    		}
 
-   		return back()->with('mensaje_exitoso','¡Enhorabuena! Propietario registrado con exito.');
-    	
+      Alert::success('Propietario registrado con exito.',"¡Enhorabuena!");
+   		return back();
     }
 
     public function actualizarPropietario($id){
-    	$persona = Persona::find($id);
+      $persona = Persona::find($id);
     	$persona->cedula = request()->cedula;
     	$persona->nombres = request()->nombres;
     	$persona->apellidos = request()->apellidos;
     	$persona->sexo = request()->sexo;
-    	if (is_null(request()->birthday)) {
+    	
+      if (!is_null(request()->birthday_submit)) {
     		$persona->fecha_nacimiento = request()->birthday_submit;
-    	}else{
-    		$persona->fecha_nacimiento = request()->birthday;
     	}
     	
     	$persona->telefono = request()->telefono;
@@ -79,7 +76,8 @@ class administradorController extends Controller
 
     	$usuarioPersona->save();
 
-    	return back()->with('mensaje_exitoso','¡Enhorabuena! Propietario '.$persona->nombres." ".$persona->apellidos .' Actualizado con exito.');
+    	Alert::success('El propietario '.$persona->nombres." ".$persona->apellidos .' fue actualizado con exito.',"¡Enhorabuena!");
+      return back();
     }
 
     

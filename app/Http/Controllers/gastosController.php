@@ -20,9 +20,9 @@ class gastosController extends Controller
     	$gasto->observaciones = request()->observaciones;
     	$gasto->evidencia = request()->file('imagen')->store('public/gastos');
     	if($gasto->save()){
-            Alert::success('Gasto registrado correctamente','¡Enhorabuena!');
+          Alert::success('Gasto registrado correctamente','¡Enhorabuena!');
         }else{
-            Alert::error('Ocurrio un error al guardar el gasto, intente nuevamente','¡Ups!');
+          Alert::error('Ocurrio un error al guardar el gasto, intente nuevamente','¡Ups!');
         }
         return back();
     }

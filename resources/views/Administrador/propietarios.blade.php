@@ -36,13 +36,13 @@
 										{{-- <a href="#" class="btn-floating"><i class="material-icons">delete</i></a> --}}
 									</td>
 								@else
-									<td>{{$casa->miPropietario->datosPropietario->persona->cedula}}</td>
-									<td>{{$casa->miPropietario->datosPropietario->persona->nombres}}</td>
-									<td>{{$casa->miPropietario->datosPropietario->persona->apellidos}}</td>
-									<td>{{$casa->miPropietario->datosPropietario->persona->telefono}}</td>
-									<td>{{$casa->miPropietario->datosPropietario->persona->email}}</td>
+									<td>{{$casa->miPropietario->persona->cedula}}</td>
+									<td>{{$casa->miPropietario->persona->nombres}}</td>
+									<td>{{$casa->miPropietario->persona->apellidos}}</td>
+									<td>{{$casa->miPropietario->persona->telefono}}</td>
+									<td>{{$casa->miPropietario->persona->email}}</td>
 									<td>
-										<a href="#modal" class="btnEditar modal-trigger btn-floating cyan" data-casa="{{$casa->nombre}}" data-cedula="{{$casa->miPropietario->datosPropietario->persona->cedula}}" data-nombres="{{$casa->miPropietario->datosPropietario->persona->nombres}}" data-apellidos="{{$casa->miPropietario->datosPropietario->persona->apellidos}}" data-telefono="{{$casa->miPropietario->datosPropietario->persona->telefono}}" data-email="{{$casa->miPropietario->datosPropietario->persona->email}}" data-sexo="{{$casa->miPropietario->datosPropietario->persona->sexo}}" data-nacimiento="{{$casa->miPropietario->datosPropietario->persona->fecha_nacimiento}}" data-propietario_id="{{$casa->miPropietario->datosPropietario->persona->id}}" data-usuario="{{$casa->miPropietario->datosPropietario->persona->usuario->name}}"><i class="material-icons">edit</i></a>
+										<a href="#modal" class="btnEditar modal-trigger btn-floating cyan" data-casa="{{$casa->nombre}}" data-cedula="{{$casa->miPropietario->persona->cedula}}" data-nombres="{{$casa->miPropietario->persona->nombres}}" data-apellidos="{{$casa->miPropietario->persona->apellidos}}" data-telefono="{{$casa->miPropietario->persona->telefono}}" data-email="{{$casa->miPropietario->persona->email}}" data-sexo="{{$casa->miPropietario->persona->sexo}}" data-nacimiento="{{$casa->miPropietario->persona->fecha_nacimiento}}" data-propietario_id="{{$casa->miPropietario->persona->id}}" data-usuario="{{$casa->miPropietario->persona->usuario->name}}"><i class="material-icons">edit</i></a>
 										{{-- <a href="#" class="btn-floating"><i class="material-icons">delete</i></a> --}}
 									</td>
 								@endif
@@ -65,7 +65,36 @@
 @section('scripts')
 <script type="text/javascript">
 	$(function(){
+		$('#btnBuscar').click(function(){
+			if ($('[name=cedula]').val() != ''){
+				Materialize.toast('Buscando Persona',1500);
+				$.ajax({
+					url:'/api/personas/'+$('[name=cedula]').val(),
+					// url: '/api/casas',
+					type:'get',
+					dataType: 'json',
+					success: function(persona){
+						console.log(persona);
+					// 	if (persona.bandera == 0) {
+					// 		Materialize.toast('Persona no encontrada',2000);
+					// 		limpiarModal();
+					// 	}else{
+					// 		$('[name=nombres]').val(persona.datos.nombres);
+					// 		$('[name=apellidos]').val(persona.datos.apellidos);
+					// 		$('[name=telefono]').val(persona.datos.telefono);
+					// 		$('[name=email]').val(persona.datos.email);
+					// 		$('[name=birthday]').val(persona.datos.fecha_nacimiento);
+					// 		$('[name=sexo]').val(persona.datos.sexo);
+					// 		$('[name=sexo]').material_select('update');
+					// 		Materialize.updateTextFields();
+					// 	}
+					}
+				});
+			}
+		});
+
 		$('#botonRojo').click(function(){
+			$('#btnBuscar').show();
 			limpiarModal();
 			$('[name=casa]').material_chip({
 				autocompleteOptions: {
@@ -83,6 +112,7 @@
 		});
 
 		$('.btnEditar').click(function(){
+			$('#btnBuscar').hide();
 			$('[name=casa]').material_chip({
 				data: [{tag: $(this).data('casa')}],
 				// autocompleteOptions: {
@@ -139,6 +169,8 @@
 		casas[casas.length-1] = "}";
 		casas = casas.join("");
 		casas = JSON.parse(casas);		
+		console.log('lista de casas local');
+		console.log(casas);
 
 		//estableciendo el username
 		$('[name=apellidos]').change(function(){
@@ -158,4 +190,5 @@
 		}
 	});
 </script>
+@include('sweet::alert')
 @endsection

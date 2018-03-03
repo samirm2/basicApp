@@ -3,18 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\empleo;
+use App\Empleo;
 use App\EmpleoAspirante;
 use Alert;
 
 class empleoController extends Controller
 {
     public function empleoIndex(){
-    	$datos =empleo::all();
+    	$datos =Empleo::all();
 	    return view('Administrador.empleo')->with('arrayEmpleos',$datos);
     }
     public function trabajaIndex(){
-        $datos =empleo::all();
+        $datos =Empleo::all();
         return view('trabajar')->with('arrayEmpleos',$datos);
     }
     
@@ -25,7 +25,7 @@ class empleoController extends Controller
     		'salario'=> 'required'
     	]); //se validan los campos que vienen en la peticion
 
-    	$empleo = new empleo();
+    	$empleo = new Empleo();
     	$empleo->cargo = request()->cargo;
     	$empleo->descripcion = request()->descripcion;
     	$empleo->salario = request()->salario;
@@ -45,12 +45,12 @@ class empleoController extends Controller
     }
 
     public function verEmpleo($id){
-    	$empleo = empleo::find($id);
+    	$empleo = Empleo::find($id);
 	    return view('Administrador.showAspirantes')->with('empleo',$empleo);
     }
 
     public function eliminarEmpleo($id){
-	   	$empleo = empleo::find($id);
+	   	$empleo = Empleo::find($id);
 	   	$empleo->delete();
 	   	Alert::success('Oferta de empleo eliminada correctamente','¡Enhorabuena!');
       return back();
@@ -58,7 +58,7 @@ class empleoController extends Controller
     }
 
     public function actualizarEmpleo($id){
-	   	$empleo = empleo::find($id);
+	   	$empleo = Empleo::find($id);
 	   	$empleo->cargo = request()->cargo;
 	   	$empleo->descripcion = request()->descripcion;
 	   	$empleo->salario = request()->salario;
@@ -79,7 +79,7 @@ class empleoController extends Controller
     	$aspirante->email = request()->email;
     	$nombreArchivo = request()->nombres."_".$aspirante->apellidos.".".request()->archivo->extension();
     	$aspirante->hoja_vida = request()->archivo->storeAs('public/hojas_de_vida',$nombreArchivo);
-    	$aspirante->id_empleo = request()->empleo;
+    	$aspirante->empleo_id = request()->empleo;
     	
     	if($aspirante->save()){
     		Alert::success("Te has postulado correctamente ,¡Suerte!","¡Felicidades!");
