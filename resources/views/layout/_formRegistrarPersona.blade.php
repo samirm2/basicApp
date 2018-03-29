@@ -1,7 +1,7 @@
 <div id="modal" class="modal modal-fixed-footer" style="width: 50%">
 	<form method="post" action="{{route('propietario.guardar')}}">
 	{{csrf_field()}}
-	{{method_field('PUT')}}
+	{{-- {{method_field('PUT')}} --}}
 	<div class="modal-content">
 		<h4>Registro de {{(request()->is('Administrador/*')) ? "Propietarios": "Arrendatarios" }}</h4>
 		<div class="divider"></div>
@@ -24,7 +24,7 @@
 						<div class="input-field col s6">
 							<i class="material-icons prefix">home</i>
 							<div type="text" name="casa" class="chips chips-autocomplete"></div>
-							<label for="casa">Casa</label>
+							<label for="casa">Casa(s)</label>
 						</div>
 						@endif
 					</div>

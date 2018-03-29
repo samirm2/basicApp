@@ -37,6 +37,7 @@ Route::get('/personas/{cedula}',function($cedula){
 			"bandera"=>1,
 			"persona"=>$busqueda,
 			"usuario"=>$busqueda->usuario,
+			"casas"  =>$busqueda->propietario->misCasas
 		];
 	}
 });

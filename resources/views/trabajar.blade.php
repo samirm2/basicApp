@@ -14,17 +14,21 @@
 		<div class="row" style="margin-top: 20px">
 			<i class="material-icons left medium">work</i> <h2>Ofertas de Empleo</h2>
 			<div class="col s12">
-				@foreach($arrayEmpleos as $empleo)
-					@if($empleo->estado == 'Activo')
-						<div class="card-panel">
-							<h5>{{$empleo->cargo}}</h5>
-							<p>{{$empleo->descripcion}}. <b>Salario: </b>{{$empleo->salario}} pesos {{$empleo->tipo_salario}}
-							<b>Tiempo del contrato: </b>{{$empleo->duracion ." ". $empleo->tipo_duracion}}.</p>
-							<button class="btn-flat right btnPostularme" data-empleoid='{{$empleo->id}}'><i class="material-icons left">spellcheck</i>Postularme</button>
-							<br>
-						</div>
-					@endif
-				@endforeach
+				@if($arrayEmpleos->count() > 0)
+					@foreach($arrayEmpleos as $empleo)
+						@if($empleo->estado == 'Activo')
+							<div class="card-panel">
+								<h5>{{$empleo->cargo}}</h5>
+								<p>{{$empleo->descripcion}}. <b>Salario: </b>{{$empleo->salario}} pesos {{$empleo->tipo_salario}}
+								<b>Tiempo del contrato: </b>{{$empleo->duracion ." ". $empleo->tipo_duracion}}.</p>
+								<button class="btn-flat right btnPostularme" data-empleoid='{{$empleo->id}}'><i class="material-icons left">spellcheck</i>Postularme</button>
+								<br>
+							</div>
+						@endif
+					@endforeach
+				@else
+					<h3 class="center grey-text"><i>NO HAY OFERTAS DE EMPLEO<i></h3>
+				@endif
 			</div>
 		</div>
 	</div>

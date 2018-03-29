@@ -17,7 +17,7 @@ class CreatePropietariosTable extends Migration
             $table->increments('id');
             $table->integer('persona_id')->unsigned();
             $table->timestamps();
-            $table->foreign('persona_id')->references('id')->on('personas');
+            $table->foreign('persona_id')->references('id')->on('personas')->onDelete('cascade');
         });
     }
 

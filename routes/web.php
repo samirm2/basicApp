@@ -34,6 +34,8 @@ Route::prefix('Administrador')->group(function(){
 	Route::post('Propietarios', 'administradorController@registrarPropietario')->name('propietario.guardar');
 	Route::put('Propietarios/{id}', 'administradorController@actualizarPropietario')->name('propietario.actualizar');
 
+	Route::post('Casas/Liberar/{casaId}','casaController@liberar')->name('liberar.casa');
+
 	Route::get('pqrs', function () {
 	    return view('Administrador.pqrs');
 	});
@@ -57,10 +59,8 @@ Route::prefix('Administrador')->group(function(){
 	Route::post('Empleo','empleoController@registrarNuevoEmpleo')->name('empleo.guardar');
 	Route::get('Empleo/{id}', 'empleoController@verEmpleo');
 	Route::put('Empleo/{id}','empleoController@actualizarEmpleo')->name('empleo.actualizar');
-	Route::delete('Empleo/{id}','empleoController@eliminarEmpleo')->name('empleo.eliminar');
-	
+	Route::delete('Empleo/{id}','empleoController@eliminarEmpleo')->name('empleo.eliminar');	
 });
-
 
 Route::get('/Propietario', function () {
     return view('Propietario.index');

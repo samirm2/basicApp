@@ -2,7 +2,7 @@ $(function(){
 	$('#modal').modal();
 	$('select').material_select();
 	$('.datepicker').pickadate({
-        formatSubmit: 'yyyy/mm/dd',
+        format: 'yyyy/mm/dd',
         max: true,
         today: 'Hoy',
         clear: 'Limpiar',
