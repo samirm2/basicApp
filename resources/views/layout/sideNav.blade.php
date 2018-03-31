@@ -5,12 +5,14 @@
 <ul class="side-nav fixed">
 	<li>
 		<div class="user-view">
-			<div class="background">
-	        	<img class="responsive-img" src="{{asset('img/background.jpeg')}}">
-	      	</div>
-	      <a href="#!user"><img class="circle" src="{{asset('img/user.jpg')}}"></a>
-	      <a href="#!name"><span class="white-text name">Samir Miranda</span></a>
-	      <a href="#!email"><span class="white-text email">Administrador</span></a>
+			<a href="#miPerfil">
+				<div class="background">
+		     	<img class="responsive-img" src="{{asset('img/background.jpeg')}}">
+		    </div>
+	      <img class="circle" src="{{asset('img/user.jpg')}}">
+	      <span class="white-text name">Samir Miranda</span>
+	      <span class="white-text email">Administrador</span>
+	    </a>
 		</div>
 	</li>
 	

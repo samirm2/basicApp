@@ -17,6 +17,7 @@ class CreatePqrsTable extends Migration
             $table->increments('id');
             $table->string('asunto');
             $table->string('tipo');
+            $table->string('estado');
             $table->timestamps();
 
             $table->foreign('tipo')->references('nombre')->on('tipo_pqrs');

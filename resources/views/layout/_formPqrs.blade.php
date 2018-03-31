@@ -21,10 +21,9 @@
 			<div class="input-field col s6">
 				<i class="material-icons prefix">dashboard</i>
 				<select name="tipo">
-					<option>Peticion</option>
-					<option>Queja</option>
-					<option>Reclamo</option>
-					<option>Sugerencia</option>
+					@foreach($listaPqrs as $pqrs)
+					<option>{{$pqrs}}</option>
+					@endforeach
 				</select>
 				<label for="tipo">Tipo</label>
 			</div>

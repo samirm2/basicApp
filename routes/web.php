@@ -37,7 +37,8 @@ Route::prefix('Administrador')->group(function(){
 	Route::post('Casas/Liberar/{casaId}','casaController@liberar')->name('liberar.casa');
 
 	Route::get('pqrs', function () {
-	    return view('Administrador.pqrs');
+	    $listaPqrs = \App\TipoPqrs::all()->pluck('nombre');
+	    return view('Administrador.pqrs',compact('listaPqrs'));
 	});
 
 	Route::get('pqrs/{id}', function ($id) {
@@ -66,7 +67,8 @@ Route::get('/Propietario', function () {
     return view('Propietario.index');
 });
 Route::get('/Propietario/pqrs', function () {
-    return view('Propietario.pqrs');
+    $listaPqrs = \App\TipoPqrs::all()->pluck('nombre');
+    return view('Propietario.pqrs',compact('listaPqrs'));
 });
 Route::get('/Propietario/pqrs/{id}', function ($id) {
     $datos = ['pqrs'=>$id, 'texto'=>'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
