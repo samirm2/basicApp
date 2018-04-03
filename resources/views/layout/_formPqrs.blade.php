@@ -7,8 +7,8 @@
 			@if(request()->is('Administrador/*'))
 			<div class="input-field col s12">
 				<i class="material-icons prefix">contacts</i>
-				<div name="para" class="chips-autocomplete"></div>
-				<label for="para">Destinatario</label>
+				<div id="inputDestinatario" class="chips-autocomplete"></div>
+				<label for="inputDestinatario">Destinatario</label>
 			</div>
 			@endif
 		</div>
@@ -38,6 +38,6 @@
 	</div>
 	<div class="modal-footer">
 		<a class="modal-action modal-close btn-flat waves-effect waves-light">Cancelar <i class="material-icons red-text right">cancel</i></a>
-		<a class="btn-flat waves-effect waves-light"><i class="material-icons right light-green-text">send</i>Enviar</a>
+		<button id="btnEnviarPqrs" class="btn-flat waves-effect waves-light"><i class="material-icons right light-green-text">send</i>Enviar</button>
 	</div>
 </div>

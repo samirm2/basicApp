@@ -41,6 +41,10 @@ Route::prefix('Administrador')->group(function(){
 	    return view('Administrador.pqrs',compact('listaPqrs'));
 	});
 
+	Route::post('pqrs', function () {
+	    return ['recibo en el controlador tu peticion'];
+	})->name("pqrs.guardar");
+
 	Route::get('pqrs/{id}', function ($id) {
 	    $datos = ['pqrs'=>$id, 'mensaje'=>'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,

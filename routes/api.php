@@ -27,6 +27,18 @@ Route::get('/casas', function () {
     // return \App\Casa::pluck('nombre');
 })->name('api.casas');
 
+Route::get('/personas',function(){
+	$busqueda = \App\Persona::all()->pluck('NombreCompleto');
+	$rta = ['bandera'=>0];
+	if ($busqueda->count() < 1) {
+		return $rta;
+	}else{
+		$rta['bandera'] = 1;
+	 	$rta['contactos'] = $busqueda;
+		return $rta;
+	}
+})->name('api.personas');
+
 Route::get('/personas/{cedula}',function($cedula){
 	$busqueda = \App\Persona::where('cedula',$cedula)->first();
 

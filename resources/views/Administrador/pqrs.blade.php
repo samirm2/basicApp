@@ -71,16 +71,109 @@
 
 @section('scripts')
 <script type="text/javascript">
+	var contactos = "{";
 	$(function(){
-		$('[name=para]').material_chip({
+		$.ajax({
+			url:'{{route('api.personas')}}',
+			method: 'get',
+			dataType: 'json',
+			success: function(rta){
+				if (rta.bandera == 0) {
+					Materialize.toast('No hay Personas en el sistema');
+				}else{
+					contactos = convertiraJson(rta.contactos);
+					// console.log(contactos);
+					inicializarMaterialChip($('#inputDestinatario'),contactos);
+					
+					$('.chips').on('chip.add', function(e, chip){
+			    	// Materialize.toast('agregaste un destinatario',3000);
+			    	$('#inputDestinatario').children('input').remove();
+			  	});
+			  	$('.chips').on('chip.delete', function(e, chip){
+			    	// Materialize.toast('Borriaste un chip',3000);
+			    	inicializarMaterialChip($('#inputDestinatario'),contactos);
+			  	});
+				}
+			}
+		});
+		
+		$('#btnEnviarPqrs').click(function(){
+			if (!validarCamposFormPqrs()) {
+				$.ajax({
+					url: '{{route('pqrs.guardar')}}',
+					method:'post',
+					data:{
+						'_token': '{{csrf_token()}}',
+						'destinatario': $('#inputDestinatario').material_chip('data')[0].tag,
+						'asunto':$('[name=asunto]').val(),
+						'tipoPqrs':$('[name=tipo]').val(),
+						'mensaje':$('[name=mensaje]').val()
+					},
+					dataType: 'json',
+					success: function(response){
+						console.log(response);
+					},
+					error: function(response){
+						console.log(response);
+					}
+				});
+				console.log($('#inputDestinatario').material_chip('data')[0].tag);
+				console.log($('[name=asunto]').val());
+				console.log($('[name=tipo]').val());
+				console.log($('[name=mensaje]').val());
+			}	
+		});
+	});
+
+	function validarCamposFormPqrs(){
+		var getDestinatario = $('#inputDestinatario').material_chip('data');
+		var salida = false, bandera = false;
+		if (getDestinatario.length <= 0){
+			Materialize.toast('El campo destinatario esta Vacio',3000,'red');
+			salida = true;
+		}else{
+			for (persona in contactos){
+				if(persona == getDestinatario[0].tag){
+					bandera = true;
+					break;
+				}
+			}
+			if (!bandera) {
+				Materialize.toast(getDestinatario[0].tag+' no es un contacto valido');
+				salida = true;
+			}
+		}
+		if ($('[name=asunto]').val() == ''){
+			Materialize.toast('El campo asunto esta Vacio',3000,'red');
+			salida = true;
+		}
+		if ($('[name=mensaje]').val() == ''){
+			Materialize.toast('El campo mensaje esta Vacio',3000,'red');	
+			salida = true;
+		}
+		return salida;
+	}
+
+	function convertiraJson(consulta){
+		var json = '{';
+		for (ob in consulta){
+			json += '"'+consulta[ob] + '":' + null + ",";
+		}
+		json = json.split('');
+		json[json.length-1]="}";
+		json = json.join('');
+		json = JSON.parse(json);
+		return json;
+	}
+
+	function inicializarMaterialChip(id,listaJson){
+		id.material_chip({
 			autocompleteOptions:{
-				data:{
-					'algo':null
-				},
-				limit: 2,
+				data:listaJson,
+				limit: 3,
 				minLength: 3
 			}			
-		})
-	});
+		});
+	}
 </script>
 @endsection
