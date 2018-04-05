@@ -42,7 +42,9 @@ Route::prefix('Administrador')->group(function(){
 	});
 
 	Route::post('pqrs', function () {
-	    return ['recibo en el controlador tu peticion'];
+	    $nombreCompleto = explode('  ', request()->destinatario);
+	    $persona =\App\Persona::where('nombres',$nombreCompleto[0])->first();
+	    return $persona;
 	})->name("pqrs.guardar");
 
 	Route::get('pqrs/{id}', function ($id) {

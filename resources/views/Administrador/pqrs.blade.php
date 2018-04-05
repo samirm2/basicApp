@@ -117,10 +117,6 @@
 						console.log(response);
 					}
 				});
-				console.log($('#inputDestinatario').material_chip('data')[0].tag);
-				console.log($('[name=asunto]').val());
-				console.log($('[name=tipo]').val());
-				console.log($('[name=mensaje]').val());
 			}	
 		});
 	});
