@@ -17,10 +17,14 @@ class CreatePqrsTable extends Migration
             $table->increments('id');
             $table->string('asunto');
             $table->string('tipo');
-            $table->string('estado');
+            $table->string('estado')->default('Activo');
+            $table->unsignedInteger('destinatario');
+            $table->unsignedInteger('remitente');
             $table->timestamps();
 
             $table->foreign('tipo')->references('nombre')->on('tipo_pqrs');
+            $table->foreign('destinatario')->references('id')->on('users');
+            $table->foreign('remitente')->references('id')->on('users');
         });
     }
 

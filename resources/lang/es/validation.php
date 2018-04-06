@@ -119,7 +119,8 @@ return [
     'attributes' => [
         "email" => "correo electronico",
         "birthday" => "fecha de nacimiento",
-        "password" => "contraseña"
+        "password" => "contraseña",
+        "username" => 'usuario'
     ],
 
 ];

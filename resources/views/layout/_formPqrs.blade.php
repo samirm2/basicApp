@@ -21,7 +21,7 @@
 			<div class="input-field col s6">
 				<i class="material-icons prefix">dashboard</i>
 				<select name="tipo">
-					@foreach($listaPqrs as $pqrs)
+					@foreach($tipoPqrs as $pqrs)
 					<option>{{$pqrs}}</option>
 					@endforeach
 				</select>

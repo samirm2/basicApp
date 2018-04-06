@@ -34,17 +34,21 @@
 						</tr>
 					</thead>
 					<tbody>
+						@foreach($listaPqrs as $pqrs)
 						<tr>
-							<td>1</td>
-							<td><b>Peticion</b></td>
-							<td>Vecino Ruidoso</td>
+							<td>{{$pqrs->id}}</td>
+							<td><b>{{$pqrs->tipo}}</b></td>
+							<td>{{$pqrs->asunto}}</td>
 							<td>Albero Sanabria</td>
 							<td>Propietario</td>
 							<td>Casa 2</td>
-							<td>2018/01/12 </td>
-							<td><span class="spanEstado light-green">Activo</span></td>
+							<td>{{$pqrs->created_at->diffForHumans()}}</td>
+							<td>
+								<span class="spanEstado {{$pqrs->estado != 'Activo'?'grey':'light-green'}}">{{$pqrs->estado}}</span>
+							</td>
 							<td><a href="{{url('Administrador/pqrs/1')}}" class="btn-floating cyan"><i class="material-icons">chat_bubble</i></a></td>
 						</tr>
+						@endforeach
 						<tr>
 							<td>2</td>
 							<td><b>Sugerencia</b></td>

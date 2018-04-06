@@ -47,6 +47,13 @@ button:focus{
 	font-weight: 300;
 }
 
+.inputMensaje{
+	margin-left: 45px;
+	color: red;
+	font-size: 0.9rem;
+	font-weight: 300;
+}
+
 .collapsible-body{
 	padding: 1rem;
 }

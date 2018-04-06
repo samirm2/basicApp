@@ -10,8 +10,8 @@
 		     	<img class="responsive-img" src="{{asset('img/background.jpeg')}}">
 		    </div>
 	      <img class="circle" src="{{asset('img/user.jpg')}}">
-	      <span class="white-text name">Samir Miranda</span>
-	      <span class="white-text email">Administrador</span>
+	      <span class="white-text name">{{auth()->user()->persona->NombreCompleto}}</span>
+	      <span class="white-text email">{{auth()->user()->rol}}</span>
 	    </a>
 		</div>
 	</li>
@@ -25,5 +25,5 @@
 	@endif
 	
 	<li class="divider"></li>
-	<li><a href="{{url('/')}}"><i class="material-icons">exit_to_app</i>Cerrar Sesión</a></li>
+	<li><a href="{{url('/logout')}}"><i class="material-icons">exit_to_app</i>Cerrar Sesión</a></li>
 </ul>

@@ -12,9 +12,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('login');
-});
+Route::get('/','Auth\LoginController@index');
+Route::post('/login','Auth\LoginController@login');
+Route::get('/logout','Auth\LoginController@logout');
 
 Route::get('/trabaja-con-nosotros', 'empleoController@trabajaIndex');
 
@@ -37,14 +37,28 @@ Route::prefix('Administrador')->group(function(){
 	Route::post('Casas/Liberar/{casaId}','casaController@liberar')->name('liberar.casa');
 
 	Route::get('pqrs', function () {
-	    $listaPqrs = \App\TipoPqrs::all()->pluck('nombre');
-	    return view('Administrador.pqrs',compact('listaPqrs'));
+	    $tipoPqrs = \App\TipoPqrs::all()->pluck('nombre');
+	    $listaPqrs = \App\Pqrs::all();
+	    return view('Administrador.pqrs',compact('tipoPqrs','listaPqrs'));
 	});
 
 	Route::post('pqrs', function () {
-	    $nombreCompleto = explode('  ', request()->destinatario);
-	    $persona =\App\Persona::where('nombres',$nombreCompleto[0])->first();
-	    return $persona;
+	    $nombreCompletoDestinatario = explode('  ', request()->destinatario);
+	    $destinatario =\App\Persona::where('nombres',$nombreCompletoDestinatario[0])->first();
+	    $pq = new \App\Pqrs();
+	    $pq->asunto = request()->asunto;
+	    $pq->tipo = request()->tipoPqrs;
+	    $pq->destinatario = $destinatario->usuario->id;
+	    $pq->remitente = auth()->user()->id;
+	    $pq->save();
+
+	    $detallePqrs = new \App\detallePqrs();
+	    $detallePqrs->pqrs_id = $pq->id;
+	    $detallePqrs->mensaje = request()->mensaje;
+	    $detallePqrs->autor = $pq->remitente;
+	    $detallePqrs->save();
+	    return $pq->mensajes;
+	    return ['peticion'=>request()->all(),'destinatario'=>$persona,'remitente'=>auth()->user()->persona];
 	})->name("pqrs.guardar");
 
 	Route::get('pqrs/{id}', function ($id) {
