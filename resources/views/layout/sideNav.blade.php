@@ -1,5 +1,5 @@
 <nav class="white">
-	<div class="brand-logo right"><a href="{{url('/Administrador')}}"><img height="60" src="{{asset('img/logo.png')}}"></a></div>
+	<div class="brand-logo right"><a href="{{url('/')}}"><img height="60" src="{{asset('img/logo.png')}}"></a></div>
 </nav>
 
 <ul class="side-nav fixed">

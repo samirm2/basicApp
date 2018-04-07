@@ -7,61 +7,38 @@
 	<div class="row">
 		<div class="col s12">
 			<div class="card-panel">
-				<div class="input-field col s3">
-					<select name="filtro">
-						<option>Tipo</option>
-						<option>Casa</option>
-						<option>Rol</option>
-						<option>Remitente</option>
-					</select>
-					<label for="filtro">Filtrar</label>
-				</div>
-				<div class="input-field col s4">
-					<input type="search" name="ca">
-				</div>
 				<table class="striped">
 					<thead>
 						<tr>
-							<th>N°</th>
+							<th>Id</th>
 							<th>Tipo</th>
 							<th>Asunto</th>
-							<th>Remitente</th>
+							<th>Destinatario</th>
 							<th>Rol</th>
 							<th>Casa</th>
-							<th>Fecha de Creacion</th>
+							<th>Fecha de Creación</th>
 							<th>Estado</th>
 							<th>Acciones</th>
 						</tr>
 					</thead>
 					<tbody>
 						@foreach($listaPqrs as $pqrs)
-						@if($pqrs->remitente == auth()->user()->id)
-						<tr>
-							<td>{{$pqrs->id}}</td>
-							<td><b>{{$pqrs->tipo}}</b></td>
-							<td>{{$pqrs->asunto}}</td>
-							<td>Albero Sanabria</td>
-							<td>Propietario</td>
-							<td>Casa 2</td>
-							<td>{{$pqrs->created_at->diffForHumans()}}</td>
-							<td>
-								<span class="spanEstado {{$pqrs->estado != 'Activo'?'grey':'light-green'}}">{{$pqrs->estado}}</span>
-							</td>
-							<td><a href="{{url('Administrador/pqrs/1')}}" class="btn-floating cyan"><i class="material-icons">chat_bubble</i></a></td>
-						</tr>
-						@endif
+							@if($pqrs->remitente == auth()->user()->id)
+								<tr>
+									<td>{{$pqrs->id}}</td>
+									<td><b>{{$pqrs->tipo}}</b></td>
+									<td>{{$pqrs->asunto}}</td>
+									<td>Albero Sanabria</td>
+									<td>Propietario</td>
+									<td>Casa 2</td>
+									<td>{{$pqrs->created_at->diffForHumans()}}</td>
+									<td>
+										<span class="spanEstado {{$pqrs->estado != 'Activo'?'grey':'light-green'}}">{{$pqrs->estado}}</span>
+									</td>
+									<td><a href="{{url('Administrador/pqrs/'.$pqrs->id)}}" class="btn-floating cyan"><i class="material-icons">chat_bubble</i></a></td>
+								</tr>
+							@endif
 						@endforeach
-						<tr>
-							<td>2</td>
-							<td><b>Sugerencia</b></td>
-							<td>Venta de sopa mañana</td>
-							<td>rosa Maria Mendoza</td>
-							<td>Arrendatario</td>
-							<td>Casa 21</td>
-							<td>2018/01/28 </td>
-							<td><span class="spanEstado grey">Cerrado</span></td>
-							<td><a href="{{url('Administrador/pqrs/2')}}" class="btn-floating cyan"><i class="material-icons">chat_bubble</i></a></td>
-						</tr>
 					</tbody>
 				</table>
 			</div>
@@ -72,9 +49,7 @@
 @include('layout._botonRojo')
 
 @include('layout._formPqrs')
-
 @endsection
-
 @section('scripts')
 <script type="text/javascript">
 	var contactos = "{";

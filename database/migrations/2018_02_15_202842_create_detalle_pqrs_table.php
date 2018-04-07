@@ -20,6 +20,7 @@ class CreateDetallePqrsTable extends Migration
             $table->timestamps();
 
             $table->foreign('pqrs_id')->references('id')->on('pqrs');
+            $table->foreign('autor')->references('id')->on('users');
         });
     }
 

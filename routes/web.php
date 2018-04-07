@@ -12,12 +12,11 @@
 |
 */
 
-Route::get('/','Auth\LoginController@index');
+Route::get('/','Auth\LoginController@index')->name('login')->middleware('guest');
 Route::post('/login','Auth\LoginController@login');
 Route::get('/logout','Auth\LoginController@logout');
 
 Route::get('/trabaja-con-nosotros', 'empleoController@trabajaIndex');
-
 Route::post('/postularme', 'empleoController@registrarPostulante');
 
 Route::get('/pdf', function () {
@@ -35,6 +34,9 @@ Route::prefix('Administrador')->group(function(){
 	Route::put('Propietarios/{id}', 'administradorController@actualizarPropietario')->name('propietario.actualizar');
 
 	Route::post('Casas/Liberar/{casaId}','casaController@liberar')->name('liberar.casa');
+
+	Route::get('Gastos', 'gastosController@index');
+	Route::post('Gastos','gastosController@registrarGasto')->name('gasto.registrar');
 
 	Route::get('pqrs', function () {
 	    $tipoPqrs = \App\TipoPqrs::all()->pluck('nombre');
@@ -60,18 +62,36 @@ Route::prefix('Administrador')->group(function(){
 	    return $pq->mensajes;
 	    return ['peticion'=>request()->all(),'destinatario'=>$persona,'remitente'=>auth()->user()->persona];
 	})->name("pqrs.guardar");
+	
+	Route::get('pqrs/salida',function(){
+		$tipoPqrs = \App\TipoPqrs::all()->pluck('nombre');
+	  $listaPqrs = \App\Pqrs::all();
+		return view('Administrador.pqrsSalida',compact('tipoPqrs','listaPqrs'));
+	});
+
+	Route::get('pqrs/entrada',function(){
+		$tipoPqrs = \App\TipoPqrs::all()->pluck('nombre');
+	  $listaPqrs = \App\Pqrs::all();
+		return view('Administrador.pqrsEntrada',compact('tipoPqrs','listaPqrs'));
+	});
 
 	Route::get('pqrs/{id}', function ($id) {
+	    $pqrs = \App\Pqrs::find($id);
 	    $datos = ['pqrs'=>$id, 'mensaje'=>'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
 						quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
 						consequat.',"asunto"=>'La señora no limpia su frente',"tipo"=>'Queja',"estado"=>"Cerrado"];
-	    return view('showPqrs')->with('datos',$datos);
+	    return view('showPqrs',compact('pqrs'));
 	});
-	
-	Route::get('Gastos', 'gastosController@index');
-	Route::post('Gastos','gastosController@registrarGasto')->name('gasto.registrar');
-	
+	Route::post('pqrs/{id}', function ($id) {
+		$s = new \App\detallePqrs();
+		$s->pqrs_id = $id;
+		$s->mensaje = request()->mensaje;
+		$s->autor = auth()->user()->id;
+		$s->save();
+		return ['bandera'=>1,'mensaje'=>'Respuesta enviada correctamente'];
+	});
+		
 	Route::get('Pagos', function () {
 	    return view('Administrador.pagos');
 	});
@@ -83,30 +103,31 @@ Route::prefix('Administrador')->group(function(){
 	Route::delete('Empleo/{id}','empleoController@eliminarEmpleo')->name('empleo.eliminar');	
 });
 
-Route::get('/Propietario', function () {
-    return view('Propietario.index');
-});
-Route::get('/Propietario/pqrs', function () {
-    $listaPqrs = \App\TipoPqrs::all()->pluck('nombre');
-    return view('Propietario.pqrs',compact('listaPqrs'));
-});
-Route::get('/Propietario/pqrs/{id}', function ($id) {
-    $datos = ['pqrs'=>$id, 'texto'=>'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-		consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-		cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-		proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'];
-	return view('showPqrs')->with('datos',$datos);
-});
-Route::get('/Propietario/casas', function () {
-    return view('Propietario.misCasas');
-});
-Route::get('/Propietario/pagos', function () {
-    return view('Propietario.misPagos');
-});
-Route::get('/Propietario/pagos/{id}', function ($id) {
-    return view('Propietario.showReciboPago')->with('pago',$id);
+Route::prefix('Propietario')->group(function(){
+	Route::get('/','propietarioController@index');
+	Route::get('/casas','propietarioController@misCasasForm');
+
+	Route::get('/pqrs', function () {
+	    $tipoPqrs = \App\TipoPqrs::all()->pluck('nombre');
+	    return view('Propietario.pqrs',compact('tipoPqrs'));
+	});
+	Route::get('/pqrs/{id}', function ($id) {
+	    $datos = ['pqrs'=>$id, 'texto'=>'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+			consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+			cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+			proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'];
+		return view('showPqrs')->with('datos',$datos);
+	});
+	
+	Route::get('/pagos', function () {
+	    return view('Propietario.misPagos');
+	});
+	Route::get('/pagos/{id}', function ($id) {
+	    return view('Propietario.showReciboPago')->with('pago',$id);
+	});
+
 });
 
 Route::get('/Arrendatario', function () {
