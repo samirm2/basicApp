@@ -1,8 +1,4 @@
-<nav class="white">
-	<div class="brand-logo right"><a href="{{url('/')}}"><img height="60" src="{{asset('img/logo.png')}}"></a></div>
-</nav>
-
-<ul class="side-nav fixed">
+<ul id="sideNav" class="side-nav fixed">
 	<li>
 		<div class="user-view">
 			<a href="#miPerfil">

@@ -2,10 +2,6 @@
 
 @section("contenido")
 
-<nav class="hide">
-  <ul><li><a class="button-collapse" data-activates="sideNav" href="#"><i class="material-icons">menu</i></a></li></ul>
-</nav>
-
 <ul id="sideNav" class="side-nav fixed valign">
  <form>
   <center><img style="margin-top: 50px" class="responsive-img" src="{{asset('img/user.jpg')}}" width="50%"></center>
@@ -84,11 +80,6 @@
 @endif
 <script type="text/javascript">
 	$(function(){
-    $(".button-collapse").sideNav({
-			menuWidth: 400,
-			edge: "right"
-		});
-
     $('.btnIngresar').click(function(){
       var usuario = obtenerCampoConDatos($('[name=username]')),
           clave = obtenerCampoConDatos($('[name=password]'));

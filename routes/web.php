@@ -25,113 +25,119 @@ Route::get('/pdf', function () {
 	// Alert::success('te has postulado exitosamente','¡Enhorabuena!');//->autoclose(false);
 	// return redirect('/');
 });
-
-Route::prefix('Administrador')->group(function(){
-	Route::get('/', 'administradorController@index');
-	
-	Route::get('Propietarios', 'administradorController@propietariosIndex');
-	Route::post('Propietarios', 'administradorController@registrarPropietario')->name('propietario.guardar');
-	Route::put('Propietarios/{id}', 'administradorController@actualizarPropietario')->name('propietario.actualizar');
-
-	Route::post('Casas/Liberar/{casaId}','casaController@liberar')->name('liberar.casa');
-
-	Route::get('Gastos', 'gastosController@index');
-	Route::post('Gastos','gastosController@registrarGasto')->name('gasto.registrar');
-
-	Route::get('pqrs', function () {
-	    $tipoPqrs = \App\TipoPqrs::all()->pluck('nombre');
-	    $listaPqrs = \App\Pqrs::all();
-	    return view('Administrador.pqrs',compact('tipoPqrs','listaPqrs'));
-	});
-
-	Route::post('pqrs', function () {
-	    $nombreCompletoDestinatario = explode('  ', request()->destinatario);
-	    $destinatario =\App\Persona::where('nombres',$nombreCompletoDestinatario[0])->first();
-	    $pq = new \App\Pqrs();
-	    $pq->asunto = request()->asunto;
-	    $pq->tipo = request()->tipoPqrs;
-	    $pq->destinatario = $destinatario->usuario->id;
-	    $pq->remitente = auth()->user()->id;
-	    $pq->save();
-
-	    $detallePqrs = new \App\detallePqrs();
-	    $detallePqrs->pqrs_id = $pq->id;
-	    $detallePqrs->mensaje = request()->mensaje;
-	    $detallePqrs->autor = $pq->remitente;
-	    $detallePqrs->save();
-	    return $pq->mensajes;
-	    return ['peticion'=>request()->all(),'destinatario'=>$persona,'remitente'=>auth()->user()->persona];
-	})->name("pqrs.guardar");
-	
-	Route::get('pqrs/salida',function(){
-		$tipoPqrs = \App\TipoPqrs::all()->pluck('nombre');
-	  $listaPqrs = \App\Pqrs::all();
-		return view('Administrador.pqrsSalida',compact('tipoPqrs','listaPqrs'));
-	});
-
-	Route::get('pqrs/entrada',function(){
-		$tipoPqrs = \App\TipoPqrs::all()->pluck('nombre');
-	  $listaPqrs = \App\Pqrs::all();
-		return view('Administrador.pqrsEntrada',compact('tipoPqrs','listaPqrs'));
-	});
-
-	Route::get('pqrs/{id}', function ($id) {
-	    $pqrs = \App\Pqrs::find($id);
-	    $datos = ['pqrs'=>$id, 'mensaje'=>'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-						quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-						consequat.',"asunto"=>'La señora no limpia su frente',"tipo"=>'Queja',"estado"=>"Cerrado"];
-	    return view('showPqrs',compact('pqrs'));
-	});
-	Route::post('pqrs/{id}', function ($id) {
-		$s = new \App\detallePqrs();
-		$s->pqrs_id = $id;
-		$s->mensaje = request()->mensaje;
-		$s->autor = auth()->user()->id;
-		$s->save();
-		return ['bandera'=>1,'mensaje'=>'Respuesta enviada correctamente'];
-	});
+//Rutas del Admin
+Route::group(['middleware'=>['auth','administrador']],function(){
+	Route::prefix('Administrador')->group(function(){
+		Route::get('/', 'administradorController@index');
 		
-	Route::get('Pagos', function () {
-	    return view('Administrador.pagos');
-	});
+		Route::get('Propietarios', 'administradorController@propietariosIndex');
+		Route::post('Propietarios', 'administradorController@registrarPropietario')->name('propietario.guardar');
+		Route::put('Propietarios/{id}', 'administradorController@actualizarPropietario')->name('propietario.actualizar');
 
-	Route::get('Empleo', 'empleoController@empleoIndex');
-	Route::post('Empleo','empleoController@registrarNuevoEmpleo')->name('empleo.guardar');
-	Route::get('Empleo/{id}', 'empleoController@verEmpleo');
-	Route::put('Empleo/{id}','empleoController@actualizarEmpleo')->name('empleo.actualizar');
-	Route::delete('Empleo/{id}','empleoController@eliminarEmpleo')->name('empleo.eliminar');	
+		Route::post('Casas/Liberar/{casaId}','casaController@liberar')->name('liberar.casa');
+
+		Route::get('Gastos', 'gastosController@index');
+		Route::post('Gastos','gastosController@registrarGasto')->name('gasto.registrar');
+
+		Route::get('pqrs', function () {
+		    $tipoPqrs = \App\TipoPqrs::all()->pluck('nombre');
+		    $listaPqrs = \App\Pqrs::all();
+		    return view('Administrador.pqrs',compact('tipoPqrs','listaPqrs'));
+		});
+
+		Route::post('pqrs', function () {
+		    $nombreCompletoDestinatario = explode('  ', request()->destinatario);
+		    $destinatario =\App\Persona::where('nombres',$nombreCompletoDestinatario[0])->first();
+		    $pq = new \App\Pqrs();
+		    $pq->asunto = request()->asunto;
+		    $pq->tipo = request()->tipoPqrs;
+		    $pq->destinatario = $destinatario->usuario->id;
+		    $pq->remitente = auth()->user()->id;
+		    $pq->save();
+
+		    $detallePqrs = new \App\detallePqrs();
+		    $detallePqrs->pqrs_id = $pq->id;
+		    $detallePqrs->mensaje = request()->mensaje;
+		    $detallePqrs->autor = $pq->remitente;
+		    $detallePqrs->save();
+		    return $pq->mensajes;
+		    return ['peticion'=>request()->all(),'destinatario'=>$persona,'remitente'=>auth()->user()->persona];
+		})->name("pqrs.guardar");
+		
+		Route::get('pqrs/salida',function(){
+			$tipoPqrs = \App\TipoPqrs::all()->pluck('nombre');
+		  $listaPqrs = \App\Pqrs::all();
+			return view('Administrador.pqrsSalida',compact('tipoPqrs','listaPqrs'));
+		});
+
+		Route::get('pqrs/entrada',function(){
+			$tipoPqrs = \App\TipoPqrs::all()->pluck('nombre');
+		  $listaPqrs = \App\Pqrs::all();
+			return view('Administrador.pqrsEntrada',compact('tipoPqrs','listaPqrs'));
+		});
+
+		Route::get('pqrs/{id}', function ($id) {
+		    $pqrs = \App\Pqrs::find($id);
+		    $datos = ['pqrs'=>$id, 'mensaje'=>'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+							tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+							quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+							consequat.',"asunto"=>'La señora no limpia su frente',"tipo"=>'Queja',"estado"=>"Cerrado"];
+		    return view('showPqrs',compact('pqrs'));
+		});
+		Route::post('pqrs/{id}', function ($id) {
+			$s = new \App\detallePqrs();
+			$s->pqrs_id = $id;
+			$s->mensaje = request()->mensaje;
+			$s->autor = auth()->user()->id;
+			$s->save();
+			return ['bandera'=>1,'mensaje'=>'Respuesta enviada correctamente'];
+		});
+			
+		Route::get('Pagos', function () {
+		    return view('Administrador.pagos');
+		});
+
+		Route::get('Empleo', 'empleoController@empleoIndex');
+		Route::post('Empleo','empleoController@registrarNuevoEmpleo')->name('empleo.guardar');
+		Route::get('Empleo/{id}', 'empleoController@verEmpleo');
+		Route::put('Empleo/{id}','empleoController@actualizarEmpleo')->name('empleo.actualizar');
+		Route::delete('Empleo/{id}','empleoController@eliminarEmpleo')->name('empleo.eliminar');	
+	});
 });
+//Rutas de Propietarios
+Route::group(['middleware'=>['auth','propietario']],function(){
+	Route::prefix('Propietario')->group(function(){
+		Route::get('/','propietarioController@index');
+		Route::get('/casas','propietarioController@misCasasForm');
 
-Route::prefix('Propietario')->group(function(){
-	Route::get('/','propietarioController@index');
-	Route::get('/casas','propietarioController@misCasasForm');
+		Route::get('/pqrs', function () {
+		    $tipoPqrs = \App\TipoPqrs::all()->pluck('nombre');
+		    return view('Propietario.pqrs',compact('tipoPqrs'));
+		});
+		Route::get('/pqrs/{id}', function ($id) {
+		    $datos = ['pqrs'=>$id, 'texto'=>'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+				consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+				cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+				proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'];
+			return view('showPqrs')->with('datos',$datos);
+		});
+		
+		Route::get('/pagos', function () {
+		    return view('Propietario.misPagos');
+		});
+		Route::get('/pagos/{id}', function ($id) {
+		    return view('Propietario.showReciboPago')->with('pago',$id);
+		});
 
-	Route::get('/pqrs', function () {
-	    $tipoPqrs = \App\TipoPqrs::all()->pluck('nombre');
-	    return view('Propietario.pqrs',compact('tipoPqrs'));
 	});
-	Route::get('/pqrs/{id}', function ($id) {
-	    $datos = ['pqrs'=>$id, 'texto'=>'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-			consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-			cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-			proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'];
-		return view('showPqrs')->with('datos',$datos);
-	});
-	
-	Route::get('/pagos', function () {
-	    return view('Propietario.misPagos');
-	});
-	Route::get('/pagos/{id}', function ($id) {
-	    return view('Propietario.showReciboPago')->with('pago',$id);
-	});
-
 });
-
-Route::get('/Arrendatario', function () {
-    return view('Arrendatario.index');
+//Rutas de Arrendatarios
+Route::group(['middleware'=>['auth','arrendatario']],function(){
+	Route::get('/Arrendatario', function () {
+	    return view('Arrendatario.index');
+	});
 });
 
 Route::get('/Celador', function () {

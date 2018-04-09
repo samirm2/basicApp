@@ -9,6 +9,8 @@
 		<div class="col s12">
 			@include('layout._mostrarMensajeFlash')
 			<div class="card-panel">
+				<h3 class="center"><i class="material-icons small">face</i> Propietarios de Altos de Ziruma I</h3>
+				<div class="divider"></div>
 				<table class="striped">
 					<thead>
 						<tr>

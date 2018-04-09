@@ -17,7 +17,7 @@
 			<div class="collapsible-body">
 				<ul>
 					<li><a href="{{url('/Administrador/pqrs/entrada')}}">Bandeja de Entrada <i class="material-icons">archive</i></a></li>
-					<li><a href="{{url('/Administrador/pqrs/salida')}}">Mensajes Enviados <i class="material-icons">unarchive</i></a></li>
+					<li><a href="{{url('/Administrador/pqrs/salida')}}">Bandeja de Salida <i class="material-icons">unarchive</i></a></li>
 				</ul>
 			</div>
 		</li>
