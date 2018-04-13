@@ -21,7 +21,7 @@
 						</thead>
 						<tbody>
 							@foreach($listaPqrs as $pqrs)
-								@if($pqrs->destinatario == auth()->user()->persona->id)
+								@if($pqrs->destinatario == auth()->user()->id)
 									<tr>
 										<td>{{$pqrs->id}}</td>
 										<td><b>{{$pqrs->tipo}}</b></td>
@@ -34,7 +34,7 @@
 											{{-- <a href="#" class="btn-floating cyan tooltipped" data-tooltip="Cerrar"><i class="material-icons">archive</i></a> --}}
 										</td>
 									</tr>
-								@elseif($pqrs->remitente == auth()->user()->persona->id)
+								@elseif($pqrs->remitente == auth()->user()->id)
 									<tr>
 										<td>{{$pqrs->id}}</td>
 										<td><b>{{$pqrs->tipo}}</b></td>

@@ -37,7 +37,7 @@
 					<tbody>
 						@foreach($listaPqrs as $pqrs)
 							@if($bandeja == 'salida')
-								@if($pqrs->remitente == auth()->user()->persona->id)
+								@if($pqrs->remitente == auth()->user()->id)
 									<tr>
 										<td>{{$pqrs->id}}</td>
 										<td><b>{{$pqrs->tipo}}</b></td>
@@ -61,7 +61,7 @@
 									</tr>
 								@endif
 							@else
-								@if($pqrs->destinatario == auth()->user()->persona->id)
+								@if($pqrs->destinatario == auth()->user()->id)
 									<tr>
 										<td>{{$pqrs->id}}</td>
 										<td><b>{{$pqrs->tipo}}</b></td>
