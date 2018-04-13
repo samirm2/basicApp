@@ -66,6 +66,9 @@
 @endsection
 @section('scripts')
 <script type="text/javascript">
+	@if(session('flash'))
+		Materialize.toast('{{session('flash')}}',3000,'red');
+	@endif
 	$(function(){
 		$('#divChat').css('height',$(window).height()-425);
 		$('#btnEnviar').click(function(){

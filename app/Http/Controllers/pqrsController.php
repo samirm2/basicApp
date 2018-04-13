@@ -36,4 +36,24 @@ class pqrsController extends Controller
     	$pqrs->save();
     	return ['bandera'=>1,'mensaje'=>'PQRS cerrada exitosamente','a'=>$pqrs];
     }
+
+    public function responderPqrs($id){
+    	$s = new \App\detallePqrs();
+			$s->pqrs_id = $id;
+			$s->mensaje = request()->mensaje;
+			$s->autor = auth()->user()->id;
+			$s->save();
+			return ['bandera'=>1,'mensaje'=>'Respuesta enviada correctamente'];
+    }
+
+    public function verMensajesPqrs($id){
+    	$pqrs = \App\Pqrs::find($id);
+  		return view('showPqrs',compact('pqrs'));
+    }
+
+    public function indexPropietarioPqrs(){
+    	$tipoPqrs = \App\TipoPqrs::all()->pluck('nombre');
+	  	$listaPqrs = \App\Pqrs::all();
+	    return view('Propietario.pqrs',compact('tipoPqrs','listaPqrs'));
+    }
 }

@@ -22,12 +22,12 @@ Route::post('/postularme', 'empleoController@registrarPostulante');
 Route::get('/pdf', function () {
     $pdf = PDF::loadHtml('<h1>Hello World</h1><img src="http://barcode.tec-it.com/barcode.ashx?data=123456&code=Code128&dpi=75">');
 	return $pdf->stream('recib.pdf');
-	// Alert::success('te has postulado exitosamente','¡Enhorabuena!');//->autoclose(false);
-	// return redirect('/');
 });
+
 //rutas para todos
 Route::post('pqrs','pqrsController@guardarPqrs')->name("pqrs.guardar")->middleware('auth');
 Route::post('pqrs/{id}','pqrsController@cerrarPqrs')->name("pqrs.cerrar")->middleware('auth');
+
 //Rutas del Admin
 Route::group(['middleware'=>['auth','administrador']],function(){
 	Route::prefix('Administrador')->group(function(){
@@ -41,13 +41,7 @@ Route::group(['middleware'=>['auth','administrador']],function(){
 
 		Route::get('Gastos', 'gastosController@index');
 		Route::post('Gastos','gastosController@registrarGasto')->name('gasto.registrar');
-
-		// Route::get('pqrs', function () {
-		//     $tipoPqrs = \App\TipoPqrs::all()->pluck('nombre');
-		//     $listaPqrs = \App\Pqrs::all();
-		//     return view('Administrador.pqrs',compact('tipoPqrs','listaPqrs'));
-		// });
-
+		
 		Route::get('pqrs/salida',function(){
 			$tipoPqrs = \App\TipoPqrs::all()->pluck('nombre');
 		  $listaPqrs = \App\Pqrs::all();
@@ -61,20 +55,8 @@ Route::group(['middleware'=>['auth','administrador']],function(){
 		  $bandeja = 'entrada';
 			return view('Administrador.pqrs',compact('tipoPqrs','listaPqrs','bandeja'));
 		});
-
-		
-		Route::get('pqrs/{id}', function ($id) {
-		    $pqrs = \App\Pqrs::find($id);
-		    return view('showPqrs',compact('pqrs'));
-		});
-		Route::post('pqrs/{id}', function ($id) {
-			$s = new \App\detallePqrs();
-			$s->pqrs_id = $id;
-			$s->mensaje = request()->mensaje;
-			$s->autor = auth()->user()->id;
-			$s->save();
-			return ['bandera'=>1,'mensaje'=>'Respuesta enviada correctamente'];
-		});
+		Route::get('pqrs/{id}', 'pqrsController@verMensajesPqrs');
+		Route::post('pqrs/{id}','pqrsController@responderPqrs');
 			
 		Route::get('Pagos', function () {
 		    return view('Administrador.pagos');
@@ -87,31 +69,18 @@ Route::group(['middleware'=>['auth','administrador']],function(){
 		Route::delete('Empleo/{id}','empleoController@eliminarEmpleo')->name('empleo.eliminar');	
 	});
 });
+
 //Rutas de Propietarios
 Route::group(['middleware'=>['auth','propietario']],function(){
 	Route::prefix('Propietario')->group(function(){
 		Route::get('/','propietarioController@index');
 		Route::get('/casas','propietarioController@misCasasForm');
 
-		Route::get('/pqrs', function () {
-		    $tipoPqrs = \App\TipoPqrs::all()->pluck('nombre');
-		  	$listaPqrs = \App\Pqrs::all();
-		    return view('Propietario.pqrs',compact('tipoPqrs','listaPqrs'));
-		});
-		Route::get('pqrs/{id}', function ($id) {
-	    $pqrs = \App\Pqrs::find($id);
-	    return view('showPqrs',compact('pqrs'));
-		});
-
-		Route::post('pqrs/{id}', function ($id) {
-			$s = new \App\detallePqrs();
-			$s->pqrs_id = $id;
-			$s->mensaje = request()->mensaje;
-			$s->autor = auth()->user()->id;
-			$s->save();
-			return ['bandera'=>1,'mensaje'=>'Respuesta enviada correctamente'];
-		});
+		Route::get('pqrs', 'pqrsController@indexPropietarioPqrs');
+		Route::get('pqrs/{id}', 'pqrsController@verMensajesPqrs')->middleware('pqrs');
+		Route::post('pqrs/{id}','pqrsController@responderPqrs');
 		
+
 		Route::get('/pagos', function () {
 		    return view('Propietario.misPagos');
 		});
@@ -121,6 +90,7 @@ Route::group(['middleware'=>['auth','propietario']],function(){
 
 	});
 });
+
 //Rutas de Arrendatarios
 Route::group(['middleware'=>['auth','arrendatario']],function(){
 	Route::get('/Arrendatario', function () {

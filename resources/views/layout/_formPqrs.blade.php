@@ -4,7 +4,7 @@
 		<div class="divider"></div>
 		<div class="row"></div>
 		<div class="row">
-			@if(request()->is('Administrador/*'))
+			@if(auth()->user()->rol == 'Administrador')
 			<div class="input-field col s12">
 				<i class="material-icons prefix">contacts</i>
 				<div id="inputDestinatario" class="chips-autocomplete"></div>
