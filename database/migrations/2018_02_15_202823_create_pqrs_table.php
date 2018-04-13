@@ -23,8 +23,8 @@ class CreatePqrsTable extends Migration
             $table->timestamps();
 
             $table->foreign('tipo')->references('nombre')->on('tipo_pqrs');
-            $table->foreign('destinatario')->references('id')->on('users');
-            $table->foreign('remitente')->references('id')->on('users');
+            $table->foreign('destinatario')->references('id')->on('personas');
+            $table->foreign('remitente')->references('id')->on('personas');
         });
     }
 

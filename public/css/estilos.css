@@ -21,13 +21,17 @@ button:focus{
 
 @media only screen and (max-width : 992px) {
 	 .caja {
-	padding-left: 0;
+		padding-left: 0;
+	}
+	.modal{
+		width: 95%;
 	}
 }
 
 .modal{
 	background: white;
 	max-height: 80%;
+	width: 40%;
 }
 .modal.modal-fixed-footer{
 	height: 80%;

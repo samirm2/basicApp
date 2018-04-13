@@ -9,7 +9,7 @@
 				<div class="col s4">
 						<div class="card">
 							<div class="card-content">
-								<span class="card-title"><i class="material-icons large left">home</i>{{$casa->nombre}}</span>
+								<span class="card-title"><i class="material-icons medium left">home</i>{{$casa->nombre}}</span>
 								<div class="row"></div>
 								<p>
 									Cedula: <br>

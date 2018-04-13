@@ -13,4 +13,12 @@ class Pqrs extends Model
     public function mensajes(){
     	return $this->hasMany('\App\DetallePqrs');
     }
+
+    public function infoRemitente(){
+    	return $this->belongsTo('\App\Persona','remitente');
+    }
+
+    public function infoDestinatario(){
+    	return $this->belongsTo('\App\Persona','destinatario');
+    }
 }

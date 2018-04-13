@@ -25,43 +25,66 @@
 							<th>N°</th>
 							<th>Tipo</th>
 							<th>Asunto</th>
-							<th>Remitente</th>
+							<th>{{$bandeja == 'entrada'?'Remitente':'Destinatario'}}</th>
 							<th>Rol</th>
 							<th>Casa</th>
 							<th>Fecha de Creacion</th>
+							<th>Ultima Actividad</th>
 							<th>Estado</th>
 							<th>Acciones</th>
 						</tr>
 					</thead>
 					<tbody>
 						@foreach($listaPqrs as $pqrs)
-						@if($pqrs->remitente == auth()->user()->id)
-						<tr>
-							<td>{{$pqrs->id}}</td>
-							<td><b>{{$pqrs->tipo}}</b></td>
-							<td>{{$pqrs->asunto}}</td>
-							<td>Albero Sanabria</td>
-							<td>Propietario</td>
-							<td>Casa 2</td>
-							<td>{{$pqrs->created_at->diffForHumans()}}</td>
-							<td>
-								<span class="spanEstado {{$pqrs->estado != 'Activo'?'grey':'light-green'}}">{{$pqrs->estado}}</span>
-							</td>
-							<td><a href="{{url('Administrador/pqrs/1')}}" class="btn-floating cyan"><i class="material-icons">chat_bubble</i></a></td>
-						</tr>
-						@endif
+							@if($bandeja == 'salida')
+								@if($pqrs->remitente == auth()->user()->persona->id)
+									<tr>
+										<td>{{$pqrs->id}}</td>
+										<td><b>{{$pqrs->tipo}}</b></td>
+										<td>{{$pqrs->asunto}}</td>
+										<td>{{$pqrs->infoDestinatario->NombreCompleto}}</td>
+										<td>{{$pqrs->infoDestinatario->usuario->rol}}</td>
+										<td>
+											@foreach ($pqrs->infoDestinatario->propietario->misCasas->pluck('nombre') as $casa)
+												{{'['.$casa.']'}}
+											@endforeach
+										</td>
+										<td>{{$pqrs->created_at->diffForHumans()}}</td>
+										<td>{{$pqrs->mensajes->last()->created_at->diffForHumans()}}</td>
+										<td>
+											<span class="spanEstado {{$pqrs->estado != 'Activo'?'grey':'light-green'}}">{{$pqrs->estado}}</span>
+										</td>
+										<td>
+											<a href="{{url('Administrador/pqrs/'.$pqrs->id)}}" class="btn-floating cyan tooltipped" data-tooltip="Responder" data-position="left"><i class="material-icons">chat_bubble</i></a>
+											<button data-href="{{url('pqrs',$pqrs->id)}}" class="btn-floating cyan tooltipped btnCerrarPqrs" data-tooltip="Cerrar" data-position="left" {{$pqrs->estado == 'Activo'?'':'disabled="true"'}}><i class="material-icons">archive</i></button>
+										</td>
+									</tr>
+								@endif
+							@else
+								@if($pqrs->destinatario == auth()->user()->persona->id)
+									<tr>
+										<td>{{$pqrs->id}}</td>
+										<td><b>{{$pqrs->tipo}}</b></td>
+										<td>{{$pqrs->asunto}}</td>
+										<td>{{$pqrs->infoRemitente->NombreCompleto}}</td>
+										<td>{{$pqrs->infoRemitente->usuario->rol}}</td>
+										<td>
+											@foreach ($pqrs->infoDestinatario->propietario->misCasas->pluck('nombre') as $casa)
+												{{'['.$casa.']'}}
+											@endforeach
+										</td>
+										<td>{{$pqrs->created_at->diffForHumans()}}</td>
+										<td>{{$pqrs->mensajes->last()->created_at->diffForHumans()}}</td>
+										<td>
+											<span class="spanEstado {{$pqrs->estado != 'Activo'?'grey':'light-green'}}">{{$pqrs->estado}}</span>
+										</td>
+										<td>
+											<a href="{{url('Administrador/pqrs/'.$pqrs->id)}}" class="btn-floating cyan"><i class="material-icons tooltipped" data-tooltip="Responder" data-position="left">chat_bubble</i></a>
+										</td>
+									</tr>
+								@endif
+							@endif
 						@endforeach
-						<tr>
-							<td>2</td>
-							<td><b>Sugerencia</b></td>
-							<td>Venta de sopa mañana</td>
-							<td>rosa Maria Mendoza</td>
-							<td>Arrendatario</td>
-							<td>Casa 21</td>
-							<td>2018/01/28 </td>
-							<td><span class="spanEstado grey">Cerrado</span></td>
-							<td><a href="{{url('Administrador/pqrs/2')}}" class="btn-floating cyan"><i class="material-icons">chat_bubble</i></a></td>
-						</tr>
 					</tbody>
 				</table>
 			</div>
@@ -117,13 +140,36 @@
 					},
 					dataType: 'json',
 					success: function(response){
-						console.log(response);
+						if (response.bandera == 1) {
+							swal('¡Enhorabuena!', 'PQRS enviada satisfactoriamente', 'success').then(value =>{
+								window.location.reload();
+							});
+						}
 					},
 					error: function(response){
 						console.log(response);
 					}
 				});
 			}	
+		});
+
+		$('.btnCerrarPqrs').click(function(){
+			$.ajax({
+				url:$(this).data('href'),
+				method:'post',
+				data:{'_token':'{{csrf_token()}}'},
+				dataType: 'json',
+				success: function(response){
+					if (response.bandera == 1) {
+						swal('¡Enhorabuena!', response.mensaje, 'success').then(value =>{
+							window.location.reload();
+						});
+						}
+				},
+				error: function(response){
+					console.log(response);
+				}
+			});
 		});
 	});
 

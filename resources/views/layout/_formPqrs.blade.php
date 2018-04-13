@@ -1,4 +1,4 @@
-<div id="modal" class="modal modal-fixed-footer" style="width: 40%">
+<div id="modal" class="modal modal-fixed-footer">
 	<div class="modal-content">
 		<h4>Crear PQRS</h4>
 		<div class="divider"></div>

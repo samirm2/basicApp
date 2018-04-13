@@ -15,12 +15,12 @@ class CreateDetallePqrsTable extends Migration
     {
         Schema::create('detalle_pqrs', function (Blueprint $table) {
             $table->integer('pqrs_id')->unsigned();
-            $table->string('mensaje');
+            $table->string('mensaje',500);
             $table->unsignedInteger('autor');
             $table->timestamps();
 
             $table->foreign('pqrs_id')->references('id')->on('pqrs');
-            $table->foreign('autor')->references('id')->on('users');
+            $table->foreign('autor')->references('id')->on('personas');
         });
     }
 

@@ -9,39 +9,39 @@
 		<div class="row">
 			<div class="col s12">
 				<div class="card-panel">
-					<a href="{{(request()->is('Administrador/*'))?url('Administrador/pqrs'):url('Propietario/pqrs')}}" class="btn-floating cyan"><i class="material-icons">arrow_back</i></a>
-					<div class="row"></div>				
+					<a href="{{auth()->user()->rol == 'Propietario'?url('Propietario/pqrs'):url()->previous()}}" class="btn-floating cyan"><i class="material-icons">arrow_back</i></a>
+					<div class="row"></div>
 					<div class="row">
 						<span class="spanEstado blue">{{$pqrs->tipo}}</span>
 						<b>Asunto: {{$pqrs->asunto}}</b>
 						<span class="spanEstado right {{($pqrs->estado == 'Activo') ? 'light-green' : 'red'}}">{{$pqrs->estado}}</span>
 					</div>
 
-					<div class="row" style="height: 250px; overflow-y: auto;">
+					<div id="divChat" class="row grey lighten-4" style="height: 250px; overflow-y: auto;">
 						{{-- tarjeta para chat --}}
 						@foreach($pqrs->mensajes as $conversacion)
 						@if($conversacion->autor != auth()->user()->id)
 						<div class="col s10">
-							<div class="card-panel blue-grey lighten-5">
+							<div class="card-panel light-green lighten-4" style="padding: 0px">
 								<div class="row valign-wrapper" style="margin-bottom: 0px">
 									<div class="col s2">
-										<img class="circle" src="{{asset('img/user.jpg')}}" height="70">	
+										<img class="circle" src="{{asset('img/user.jpg')}}" height="50">	
 									</div>
 									<div class="col s10">
-										<span>{{$conversacion->mensaje}}</span>	
+										<p>{{$conversacion->mensaje}}</p>	
 									</div>
 								</div>
 							</div>
 						</div>
 						@else
 						<div class="col s10 offset-s2">
-							<div class="card-panel cyan lighten-5">
+							<div class="card-panel cyan lighten-5" style="padding: 0px">
 								<div class="row valign-wrapper" style="margin-bottom: 0px">
 									<div class="col s10">
-										<span>{{$conversacion->mensaje}}</span>	
+										<p>{{$conversacion->mensaje}}</p>	
 									</div>
 									<div class="col s2">
-										<img class="circle" src="{{asset('img/user.jpg')}}" height="70">	
+										<img class="circle" src="{{asset('img/user.jpg')}}" height="50">	
 									</div>
 								</div>
 							</div>
@@ -67,6 +67,7 @@
 @section('scripts')
 <script type="text/javascript">
 	$(function(){
+		$('#divChat').css('height',$(window).height()-425);
 		$('#btnEnviar').click(function(){
 			if ($('[name=mensaje]').val() == '') {
 				$('#spnMensajeValidate').text('El campo mensaje es obligatorio');
