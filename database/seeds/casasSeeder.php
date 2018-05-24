@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class casasSeeder extends Seeder
 {
@@ -12,9 +13,9 @@ class casasSeeder extends Seeder
     public function run()
     {
         for ($i = 1; $i <= 60; $i++){
-        	$ob = new \App\Casa();
-        	$ob->nombre = 'Casa '."$i";
-        	$ob->save();
+        	DB::table('casas')->insert([
+                "nombre" => 'Casa '."$i"
+            ]);
         }
     }
 }

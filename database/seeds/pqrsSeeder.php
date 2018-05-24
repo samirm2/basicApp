@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class pqrsSeeder extends Seeder
 {
@@ -15,9 +16,9 @@ class pqrsSeeder extends Seeder
     public function run()
     {
         for ($i = 0; $i < count($this->pqrs); $i++ ){
-        	$ob = new \App\TipoPqrs();
-        	$ob->nombre = $this->pqrs[$i];
-        	$ob->save();
+        	DB::table('tipo_pqrs')->insert([
+                "nombre" => $this->pqrs[$i]
+            ]);
         }
     }
 }

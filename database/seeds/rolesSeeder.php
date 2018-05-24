@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class rolesSeeder extends Seeder
 {
@@ -15,9 +16,9 @@ class rolesSeeder extends Seeder
     public function run()
     {
         for ($i = 0; $i < count($this->roles); $i++ ){
-        	$ob = new \App\Rol();
-        	$ob->nombre = $this->roles[$i];
-        	$ob->save();
+        	DB::table('roles')->insert([
+                "nombre" => $this->roles[$i]
+            ]);
         }
     }
 }
