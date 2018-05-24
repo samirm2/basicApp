@@ -8,7 +8,7 @@ use App\Persona;
 use App\propietario;
 use App\User;
 use Alert;
-
+use PDF;
 class administradorController extends Controller
 {
   public function index(){
@@ -18,6 +18,13 @@ class administradorController extends Controller
   public function propietariosIndex(){
   	$casas = Casa::paginate(10);
   	return view('Administrador.propietarios')->with('listadoCasas',$casas);
+  }
+
+  public function reportePropietarios(){
+    $casas = \App\Casa::all();
+    $pdf = PDF::loadView('reportes.listadoPropietarios',['casas'=>$casas])->setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif','isRemoteEnabled'=>true]);
+    return $pdf->stream('recib.pdf');
+    //return view('reportes.listadoPropietarios',compact('casas'));
   }
 
   public function registrarPropietario(){

@@ -18,20 +18,39 @@ class ExampleTest extends TestCase
         $this->assertTrue(true);
     }
 
+    public function testRegistrarAdministrador()
+    {
+        $persona = new \App\Persona();
+        $persona->cedula = '1234567890';
+        $persona->nombres = 'Admin';
+        $persona->apellidos = 'Admin';
+        $persona->sexo = 'Masculino';
+        //$persona->fecha_nacimiento = '1994/08/18';
+        $persona->telefono = '0000000000';
+        $persona->email = 'admin@admin.co';
+        $this->assertTrue($persona->save());
+        $usuario = new \App\User();
+        $usuario->name = 'admin';
+        $usuario->password = Hash::make('admin');
+        $usuario->rol = 'Administrador';
+        $usuario->persona_id = $persona->id;
+        $this->assertTrue($usuario->save());
+    }
+    
     public function testRegistrarPropietarioUnico(){
     	#dueño de la casa 8;
     	$persona = new \App\Persona();
-    	$persona->cedula = '1234567890';
-    	$persona->nombres = 'Alvaro jose';
-    	$persona->apellidos = 'Mendoza Lopez';
+    	$persona->cedula = '77281392';
+    	$persona->nombres = 'pedro';
+    	$persona->apellidos = 'lopez';
     	$persona->sexo = 'Masculino';
-    	$persona->fecha_nacimiento = '1994/08/18';
-    	$persona->telefono = '3005333455';
-    	$persona->email = 'ajmendoza@unicesar.edu.co';
+    	//$persona->fecha_nacimiento = '1994/08/18';
+    	$persona->telefono = '3001213929';
+    	$persona->email = 'pedrolz@hotmail.com';
     	$this->assertTrue($persona->save());
     	$usuario = new \App\User();
-    	$usuario->name = 'ajmendoza';
-    	$usuario->password = Hash::make('secret');
+    	$usuario->name = 'plopez';
+    	$usuario->password = Hash::make('ziruma1');
     	$usuario->rol = 'Propietario';
     	$usuario->persona_id = $persona->id;
     	$this->assertTrue($usuario->save());
@@ -52,11 +71,11 @@ class ExampleTest extends TestCase
     	$persona->sexo = 'Femenino';
     	$persona->fecha_nacimiento = '1985/02/21';
     	$persona->telefono = '3106543149';
-    	$persona->email = 'vmpolo@unicesar.edu.co';
+    	$persona->email = 'vmpolo@gmail.com';
     	$this->assertTrue($persona->save());
     	$usuario = new \App\User();
     	$usuario->name = 'vmpolo';
-    	$usuario->password = Hash::make('secret');
+    	$usuario->password = Hash::make('ziruma1');
     	$usuario->rol = 'Propietario';
     	$usuario->persona_id = $persona->id;
     	$this->assertTrue($usuario->save());

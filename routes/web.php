@@ -13,14 +13,18 @@
 */
 
 Route::get('/','Auth\LoginController@index')->name('login')->middleware('guest');
-Route::post('/login','Auth\LoginController@login');
-Route::get('/logout','Auth\LoginController@logout');
+Route::post('/login','Auth\LoginController@login')->name('login.enter');
+Route::get('/logout','Auth\LoginController@logout')->name('logout');
 
 Route::get('/trabaja-con-nosotros', 'empleoController@trabajaIndex');
 Route::post('/postularme', 'empleoController@registrarPostulante');
 
 Route::get('/pdf', function () {
-    $pdf = PDF::loadHtml('<h1>Hello World</h1><img src="http://barcode.tec-it.com/barcode.ashx?data=123456&code=Code128&dpi=75">');
+    
+    //$pdf = PDF::loadHtml('<h1>Hello World</h1><img src="http://barcode.tec-it.com/barcode.ashx?data=123456&code=Code128&dpi=75"><table style="width:100%;border-collapse: collapse;"><thead><tr style="height:30px;text-align:center"><th style="border: 1px solid">Casa</th><th style="border: 1px solid">Propietario</th></tr></thead><tbody><tr><td  style="border: 1px solid">Casa 1</td><td  style="border: 1px solid">Samir antonio miranda mendoza</td></tr></tbody></table>');
+    $casas = \App\Casa::all();
+	$pdf = PDF::loadView('reportes.listadoPropietarios',['casas'=>$casas])->setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
+	//return view('reportes.listadoPropietarios',compact('casas'));
 	return $pdf->stream('recib.pdf');
 });
 
@@ -34,6 +38,7 @@ Route::group(['middleware'=>['auth','administrador']],function(){
 		Route::get('/', 'administradorController@index');
 		
 		Route::get('Propietarios', 'administradorController@propietariosIndex');
+		Route::get('listaPropietarios', 'administradorController@reportePropietarios')->name('reportesProp');
 		Route::post('Propietarios', 'administradorController@registrarPropietario')->name('propietario.guardar');
 		Route::put('Propietarios/{id}', 'administradorController@actualizarPropietario')->name('propietario.actualizar');
 

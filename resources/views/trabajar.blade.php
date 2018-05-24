@@ -1,12 +1,12 @@
 @extends('layout.app')
 @section('contenido')
-	<div class="navbar-fixed">
+	{{-- <div class="navbar-fixed">
 		<nav class="white">		
 			<span class="brand-logo">
 				<a href="http://altosdeziruma.000webhostapp.com"><img src="{{asset('img/logo.png')}}" height="60"></a>
 			</span>
 		</nav>
-	</div>
+	</div> --}}
 
 	@include('layout._mostrarMensajeFlash')
 

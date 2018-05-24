@@ -2,42 +2,47 @@
 	<form method="post" action="{{route('propietario.guardar')}}">
 	{{csrf_field()}}
 	{{-- {{method_field('PUT')}} --}}
-	<div class="modal-content">
-		<h4>Registro de {{(request()->is('Administrador/*')) ? "Propietarios": "Arrendatarios" }}</h4>
+	<div class="modal-content" style="padding-bottom: 0px">
+		<h4>Registro de {{auth()->user()->rol == 'Administrador' ? "Propietarios": "Arrendatarios" }}</h4>
 		<div class="divider"></div>
 		<ul class="collapsible" data-collapsible="accordion">
 			<li>
 				<div class="collapsible-header active"><i class="material-icons">face</i> <b>Datos Personales</b></div>
 				<div class="collapsible-body">
 					<div class="row valign-wrapper">
-						<div class="input-field col s5">
+						<div class="input-field col {{auth()->user()->rol=='Administrador'?'s5':'s12'}}">
 							<i class="material-icons prefix">face</i>
-							<input type="number" name="cedula" data-length='11'>
-							<label for="cedula">Cedula</label>
+							<input type="number" name="cedula" data-length='11' style="margin-bottom: 0px">
+							<label for="cedula">Cedula*</label>
+							<span id="spnMensajeCedula" class="inputMensaje"> </span>
 						</div>
-						<button type="button" id="btnBuscar" class="btn-floating blue waves-effect waves-light"><i class="material-icons">search</i></button>
-						<input type="hidden" name="rol" value="{{(request()->is('Administrador/*')) ? "Propietario": "Arrendatario" }}">
+						<button type="button" id="btnBuscar" class="btn-floating blue waves-effect waves-light {{auth()->user()->rol!='Administrador'?'hide':''}}"><i class="material-icons">search</i></button>
+						
+						<input type="hidden" name="rol" value="{{auth()->user()->rol == 'Administrador'?'Propietario':'Arrendatario'}}">					
 						<input type="hidden" name="casas">
 						<input type="hidden" name="persona_id">
 
-						@if(request()->is('Administrador/*'))
-						<div class="input-field col s6">
-							<i class="material-icons prefix">home</i>
-							<div type="text" name="casa" class="chips chips-autocomplete"></div>
-							<label for="casa">Casa(s)</label>
-						</div>
+						@if(auth()->user()->rol == 'Administrador')
+							<div class="input-field col s6">
+								<i class="material-icons prefix">home</i>
+								<div type="text" name="casa" class="chips chips-autocomplete" style="margin-bottom: 0px"></div>
+								<label for="casa">Casa(s)*</label>
+								<span id="spnMensajeCasa" class="inputMensaje"> </span>
+							</div>
 						@endif
 					</div>
 					<div class="row">
 						<div class="input-field col s6">
 							<i class="material-icons prefix">label_outline</i>
-							<input type="text" name="nombres">
-							<label for="nombres">Nombres</label>
+							<input type="text" name="nombres" style="margin-bottom: 0px">
+							<label for="nombres">Nombres*</label>
+							<span id="spnMensajeNombres" class="inputMensaje"> </span>
 						</div>
 						<div class="input-field col s6">
 							<i class="material-icons prefix">label</i>
-							<input type="text" name="apellidos">
-							<label for="apellidos">Apellidos</label>
+							<input type="text" name="apellidos" style="margin-bottom: 0px">
+							<label for="apellidos">Apellidos*</label>
+							<span id="spnMensajeApellidos" class="inputMensaje"> </span>
 						</div>
 						<div class="input-field col s6">
 							<i class="material-icons prefix">group_work</i>
@@ -54,13 +59,15 @@
 						</div>
 						<div class="input-field col s6">
 							<i class="material-icons prefix">phone</i>
-							<input type="number" name="telefono" data-length='10'>
-							<label for="telefono">Telefono</label>
+							<input type="number" name="telefono" data-length='10' style="margin-bottom: 0px">
+							<label for="telefono">Telefono*</label>
+							<span id="spnMensajeTelefono" class="inputMensaje"> </span>
 						</div>
 						<div class="input-field col s6">
 							<i class="material-icons prefix">mail</i>
-							<input type="email" name="email">
-							<label for="email">Correo Electronico</label>
+							<input type="email" name="email" style="margin-bottom: 0px">
+							<label for="email">Correo Electronico*</label>
+							<span id="spnMensajeEmail" class="inputMensaje"> </span>
 						</div>
 					</div>
 				</div>
@@ -72,24 +79,27 @@
 						<div class="input-field col s6">
 							<i class="material-icons prefix">account_circle</i>
 							<input type="text" name="usuario">
-							<label for="usuario">Usuario</label>
+							<label for="usuario">Usuario*</label>
+							<span id="spnMensajeUsuario" class="inputMensaje"></span>
 						</div>
 					</div>
 					<div class="row">
 						<div class="input-field col s6">
 							<i class="material-icons prefix">lock</i>
 							<input type="password" name="password" value="ziruma1">
-							<label for="password">Contraseña</label>
+							<label for="password">Contraseña*</label>
+							<span id="spnMensajePassword" class="inputMensaje"></span>
 						</div>
 						<div class="input-field col s6">
 							<i class="material-icons prefix">lock_outline</i>
 							<input type="password" name="repeat-password" value="ziruma1">
-							<label for="repeat-password">Repetir Contraseña</label>
+							<label for="repeat-password">Repetir Contraseña*</label>
 						</div>
 					</div>	
 				</div>
 			</li>
 		</ul>
+		<span class="inputMensaje" style="margin-left: 0px">los campos con "*" son obligatorios</span>
 	</div>
 	<div class="modal-footer">
 		<a class="modal-action modal-close btn-flat waves-effect waves-light">Cancelar<i class="material-icons prefix right red-text">cancel</i></a>

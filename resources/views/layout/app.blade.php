@@ -2,11 +2,12 @@
 <html lang="es">
 <head>
 	<meta charset="utf-8">
-	<title>{{env('app_name')}}</title>
+	<title>Altos de Ziruma I</title>
 	<link rel="stylesheet" type="text/css" href="{{asset('css/materialize.min.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{asset('css/dropify.min.css')}}">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{{asset('css/estilos.css')}}">
+	<link rel="icon" type="image/png" href="{{asset('img/favicon.png')}}">
 </head>
 <body bgcolor="#fafafa">
 	<nav class="white {{request()->is('/')?'hide':''}}">

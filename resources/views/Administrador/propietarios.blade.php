@@ -9,7 +9,8 @@
 		<div class="col s12">
 			@include('layout._mostrarMensajeFlash')
 			<div class="card-panel">
-				<h3 class="center"><i class="material-icons small">face</i> Propietarios de Altos de Ziruma I</h3>
+				<a target="_blank" href="{{route('reportesProp')}}" class="btn-floating right tooltipped blue" data-tooltip='imprimir' data-position='left' data-delay='20'><i class="material-icons">print</i></a>
+				<h3 class="center"><i class="material-icons small">face</i> Propietarios Altos de Ziruma I</h3>
 				<div class="divider"></div>
 				<table class="striped">
 					<thead>
@@ -45,12 +46,12 @@
 									<td>{{$casa->miPropietario->persona->telefono}}</td>
 									<td>{{$casa->miPropietario->persona->email}}</td>
 									<td>
-										<a href="#modal" class="btnEditar modal-trigger btn-floating cyan" data-casa="{{$casa->nombre}}" data-cedula="{{$casa->miPropietario->persona->cedula}}" data-nombres="{{$casa->miPropietario->persona->nombres}}" data-apellidos="{{$casa->miPropietario->persona->apellidos}}" data-telefono="{{$casa->miPropietario->persona->telefono}}" data-email="{{$casa->miPropietario->persona->email}}" data-sexo="{{$casa->miPropietario->persona->sexo}}" data-nacimiento="{{$casa->miPropietario->persona->fecha_nacimiento}}" data-propietario_id="{{$casa->miPropietario->persona->id}}" data-usuario="{{$casa->miPropietario->persona->usuario->name}}"><i class="material-icons">edit</i></a>
+										<a href="#modal" class="btnEditar modal-trigger btn-floating cyan tooltipped" data-tooltip='Editar' data-position='left' data-delay='50'  data-casa="{{$casa->nombre}}" data-cedula="{{$casa->miPropietario->persona->cedula}}" data-nombres="{{$casa->miPropietario->persona->nombres}}" data-apellidos="{{$casa->miPropietario->persona->apellidos}}" data-telefono="{{$casa->miPropietario->persona->telefono}}" data-email="{{$casa->miPropietario->persona->email}}" data-sexo="{{$casa->miPropietario->persona->sexo}}" data-nacimiento="{{$casa->miPropietario->persona->fecha_nacimiento}}" data-propietario_id="{{$casa->miPropietario->persona->id}}" data-usuario="{{$casa->miPropietario->persona->usuario->name}}"><i class="material-icons">edit</i></a>
 									</td>
 									<td>
 										<form method="post" action="{{route('liberar.casa',$casa->id)}}">
 											{{csrf_field()}}
-										<button type="button" data-url="{{route('liberar.casa',$casa->id)}}" class="btnLiberar btn-floating lime"><i class="material-icons">compare_arrows</i></button>
+										<button type="button" data-url="{{route('liberar.casa',$casa->id)}}" class="btnLiberar btn-floating lime tooltipped" data-tooltip='Liberar' data-position='left' data-delay='50'><i class="material-icons">compare_arrows</i></button>
 										</form>
 									</td>
 								@endif
@@ -195,6 +196,7 @@
 					casasSubmit.push($('[name=casa]').material_chip('data')[casa].tag);
 				}
 				$("[name=casas]").val(casasSubmit);
+				limpiarSpanMensajes();
 				//se envia una peticion ajax
 				$.ajax({
 					method:'post',
@@ -245,12 +247,10 @@
 					},
 					error:function(rta){
 						if (rta.status == 422) {
-							var errores = rta.responseJSON.errors;
-							// console.log(rta.responseJSON.errors);
-							for (ob in errores){
-								console.log(errores[ob][0]);
-								Materialize.toast(errores[ob][0],3000);	
-							}
+							//console.log(rta.responseJSON.errors);
+							escribirMensajesSpan(rta.responseJSON.errors);
+								//console.log(errores[ob][0]);
+								//Materialize.toast(errores[ob][0],3000);	
 						}
 					}
 				});
@@ -260,7 +260,8 @@
 					casasSubmit.push($('[name=casa]').material_chip('data')[casa].tag);
 				}
 				$("[name=casas]").val(casasSubmit);
-				Materialize.toast('Actulizando Propietario',3000);
+				Materialize.toast('Actualizando Propietario',3000);
+				limpiarSpanMensajes();
 				$.ajax({
 					method:'post',
 					url:'Propietarios/'+$('[name=persona_id]').val(),
@@ -281,18 +282,17 @@
 					},
 					dataType:'json',
 					success:function(rta){
-						console.log(rta);
+						if (rta.bandera == 0) {
+							swal('¡Enhorabuena!',rta.mensaje,'success').then(value =>{
+								window.location.reload();
+							});
+						}
 					},
 					error:function(rta){
-						console.log(rta);
-						// if (rta.status == 422) {
-						// 	var errores = rta.responseJSON.errors;
-						// 	console.log(rta.responseJSON.errors);
-						// 	for (ob in errores){
-						// 		console.log(errores[ob][0]);
-						// 		Materialize.toast(errores[ob][0],3000);	
-						// 	}
-						// }
+						//console.log(rta);
+						if (rta.status == 422) {
+							escribirMensajesSpan(rta.responseJSON.errors);
+						}
 					}
 				});
 				// $('form').attr('action','Propietarios/'+$('[name=persona_id]').val());
@@ -351,6 +351,57 @@
 			});
 		}
 	});
+
+function validarFormRegistro(){
+	var persona ={
+		cedula:$('[name=cedula]').val(),
+		casas:$('[name=casa]').val(),
+		nombres:$('[name=nombres]').val(),
+		apellidos:$('[name=apellidos]').val(),
+		telefono:$('[name=telefono]').val(),
+		email:$('[name=email]').val(),
+		usuario:$('[name=usuario]').val(),
+		clave:$('[name=password]').val(),
+		clave_comfirm:$('[name=password_confirmation]').val()
+	};
+
+	return persona;
+}
+
+function setInputMessages(span,mensaje){
+  span.text(mensaje);
+}
+function escribirMensajesSpan(errores){
+	for (ob in errores){
+		if (ob == 'cedula') {
+			setInputMessages($('#spnMensajeCedula'),errores[ob][0]);
+		}
+		if (ob == 'nombres') {
+			setInputMessages($('#spnMensajeNombres'),errores[ob][0]);
+		}
+		if (ob == 'apellidos') {
+			setInputMessages($('#spnMensajeApellidos'),errores[ob][0]);
+		}
+		if (ob == 'telefono') {
+			setInputMessages($('#spnMensajeTelefono'),errores[ob][0]);
+		}
+		if (ob == 'email') {
+			setInputMessages($('#spnMensajeEmail'),errores[ob][0]);
+		}
+		if (ob == 'usuario') {
+			setInputMessages($('#spnMensajeUsuario'),errores[ob][0]);
+		}
+		if (ob == 'password') {
+			setInputMessages($('#spnMensajePassword'),errores[ob][0]);
+		}
+	}
+}
+function limpiarSpanMensajes(){
+	var inputs = ['Cedula','Nombres','Apellidos','Telefono','Email','Usuario','Password'];
+	for (ob in inputs){
+		setInputMessages($('#spnMensaje'+inputs[ob]),' ');
+	}
+}
 </script>
 @include('sweet::alert')
 @endsection

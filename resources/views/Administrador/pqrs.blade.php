@@ -69,7 +69,7 @@
 										<td>{{$pqrs->infoRemitente->NombreCompleto}}</td>
 										<td>{{$pqrs->infoRemitente->usuario->rol}}</td>
 										<td>
-											@foreach ($pqrs->infoDestinatario->propietario->misCasas->pluck('nombre') as $casa)
+											@foreach ($pqrs->infoRemitente->propietario->misCasas->pluck('nombre') as $casa)
 												{{'['.$casa.']'}}
 											@endforeach
 										</td>

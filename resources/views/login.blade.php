@@ -85,7 +85,7 @@
           clave = obtenerCampoConDatos($('[name=password]'));
       if (validarFormularioLogin(usuario,clave)) {
         $.ajax({
-          url: '/login',
+          url: '{{route('login.enter')}}',
           method: 'post',
           data: {
             '_token':'{{csrf_token()}}',
@@ -100,7 +100,7 @@
             });
           },
           success: function(response){
-            console.log(response);
+            //console.log(response);
             if (response.ban == 0) {
               setInputMessages($('.spnMensajeUsuario'),response.mensaje);
               $('[name=password]').val('');
@@ -109,6 +109,9 @@
               Materialize.toast('¡Bienvenido! '+response.mensaje,1000,'green');
               window.location.href = response.url;
             }
+          },
+          error: function(error){
+            console.log(error);
           },
           complete: function(){
             $('.imgLoading').each(function(){

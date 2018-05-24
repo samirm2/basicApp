@@ -4,6 +4,9 @@
 			<a class="collapsible-header" href="{{url('/Administrador/Propietarios')}}"><i class="material-icons">home</i>Propietarios</a>
 		</li>
 		<li>
+			<a class="collapsible-header" href="{{url('/Administrador/Residentes')}}"><i class="material-icons">account_balance</i>Residentes</a>
+		</li>
+		<li>
 			<a class="collapsible-header" href="{{url('/Administrador/Pagos')}}"><i class="material-icons">receipt</i>Pagos</a>
 		</li>
 		<li>
