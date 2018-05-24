@@ -17,25 +17,6 @@ class ExampleTest extends TestCase
     {
         $this->assertTrue(true);
     }
-
-    public function testRegistrarAdministrador()
-    {
-        $persona = new \App\Persona();
-        $persona->cedula = '1234567890';
-        $persona->nombres = 'Admin';
-        $persona->apellidos = 'Admin';
-        $persona->sexo = 'Masculino';
-        //$persona->fecha_nacimiento = '1994/08/18';
-        $persona->telefono = '0000000000';
-        $persona->email = 'admin@admin.co';
-        $this->assertTrue($persona->save());
-        $usuario = new \App\User();
-        $usuario->name = 'admin';
-        $usuario->password = Hash::make('admin');
-        $usuario->rol = 'Administrador';
-        $usuario->persona_id = $persona->id;
-        $this->assertTrue($usuario->save());
-    }
     
     public function testRegistrarPropietarioUnico(){
     	#dueño de la casa 8;
