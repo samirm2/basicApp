@@ -93,31 +93,47 @@
         }
       }
     });
-    var graficass = new Chart(ctxx,{
-      type: 'pie',
-      data: {
-        labels: ["Casas al Dia", "Casas Deudoras"],
-        datasets: [{
-          data: [54, 38],
-          backgroundColor: [
-            'rgba(241, 196, 15,1)',
-            'rgba(0, 209, 55,1)'
-          ],
-          borderColor: [
-            'rgba(241, 196, 15,1)',
-            'rgba(76, 209, 55,1.0)'
-          ],
-          borderWidth: 1
-        }]
-      },
-      options: {
-          title: {
-            display: true,
-            fontSize: 18,
-            text: 'Balance de Pagos mes Enero 2018'
-          }
-      }   
+    
+    $.ajax({
+      url:'{{Route("api.chart.pie")}}',
+      type:'get',
+      dataType:'json',
+      success: function(rta){
+        console.log(rta);
+        graficarBalancePagos(rta);
+      }
     });
+
+    function graficarBalancePagos(arrayDatos){
+      var graficass = new Chart(ctxx,{
+        type: 'pie',
+        data: {
+          labels: ["Casas al Dia", "Casas Deudoras"],
+          datasets: [{
+            //data: [54, 38],
+            data: [arrayDatos.casasAlDia, arrayDatos.casasMorosas],
+            backgroundColor: [
+              'rgba(76, 209, 55,1.0)',
+              'rgba(72, 126, 176,1.0)'
+            ],
+            borderColor: [
+              'rgba(76, 209, 55,1.0)',
+              'rgba(72, 126, 176,1.0)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+            title: {
+              display: true,
+              fontSize: 18,
+              text: 'Balance de Pagos mes '+arrayDatos.mes +" "+arrayDatos.año
+            }
+        }   
+      });
+    }
+
+
   });
 </script>
 @endsection

@@ -65,3 +65,19 @@ Route::get('/pagos/{id}', function($id) {
 	}	
 })->name('pagos.buscar');
 
+
+Route::get('charts/pie', function() {
+	$hoy = Carbon\Carbon::now();
+	$mesActual = $hoy->month;
+	$anoActual = $hoy->year;
+	$nombreMes = App\Mes::find($mesActual)->nombre;
+	$pagosPendientes = App\Pago::where('mes_id',$mesActual)->where('estado','Pendiente')->get()->count();
+	$pagosPagados = App\Pago::where('mes_id',$mesActual)->where('estado','Pagado')->get()->count();
+	return [
+		'año'=>$anoActual,
+		'mes'=> $nombreMes,
+		'casasAlDia'=> $pagosPagados, 
+		'casasMorosas'=> $pagosPendientes
+	];
+})->name('api.chart.pie');
+
