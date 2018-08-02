@@ -64,8 +64,14 @@ Route::group(['middleware'=>['auth','administrador']],function(){
 		Route::post('pqrs/{id}','pqrsController@responderPqrs');
 			
 		Route::get('Pagos', function () {
-		    return view('Administrador.pagos');
+			$pagos = \App\Pago::orderBy('id','desc')->paginate(10);
+			$meses = \App\Mes::all();
+			$mesActual = Carbon\Carbon::now()->month;
+		    return view('Administrador.pagos',compact('pagos','meses','mesActual'));
 		});
+		Route::get('Pagos/{facturaId}', 'pagosController@showPago')->name('pagos.examinar');
+		Route::get('Pagos/generar/{mes}', 'pagosController@generarRecibos')->name('pagos.generar');
+		Route::post('Pagos', 'pagosController@realizarPago')->name('pagos.pagar');
 
 		Route::get('Empleo', 'empleoController@empleoIndex');
 		Route::post('Empleo','empleoController@registrarNuevoEmpleo')->name('empleo.guardar');

@@ -9,4 +9,8 @@ class Casa extends Model
     public function miPropietario(){
     	return $this->belongsTo('\App\Propietario','propietario_id');
     }
+
+    public function pagos(){
+        return $this->hasMany('\App\Pago');
+    }
 }

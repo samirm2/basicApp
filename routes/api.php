@@ -53,3 +53,15 @@ Route::get('/personas/{cedula}',function($cedula){
 		];
 	}
 });
+
+
+Route::get('/pagos/{id}', function($id) {
+	$pago = App\Pago::find($id);
+	if(is_null($pago)){
+		return ['pago'=>null];
+	}else{
+		$casaNombre = $pago->casa;
+		return ['pago' => $pago, 'casa' => $casaNombre];
+	}	
+})->name('pagos.buscar');
+
