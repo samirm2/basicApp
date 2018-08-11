@@ -12,6 +12,17 @@ class pagosController extends Controller
 {
     public function generarRecibos($mes){
         //$mesLiquidar = Carbon::now()->month;
+        if( Pago::all()->count() == 0 ){
+            $mesLiquidar = $mes;
+            $valorAPagar = 50000;
+            $casas = Casa::all();
+            foreach ($casas as $casa) {
+                Pago::create(["casa_id"=>$casa->id,"mes_id"=>$mesLiquidar,"valor"=>50000]);
+            }
+            Alert::success('Recibos de pago generados correctamente!','¡Enhorabuena!');
+            return redirect()->back();
+        }
+        
         if(Pago::all()->last()->mes_id == $mes){
             Alert::error('Los recibos de pago ya fueron generados','¡Error al generar recibos!');
             return redirect()->back();
