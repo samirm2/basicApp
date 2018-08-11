@@ -10,6 +10,8 @@
 	<link rel="icon" type="image/png" href="{{asset('img/favicon.png')}}">
 </head>
 <body bgcolor="#fafafa">
+
+	@if(!request()->is('Administrador/Pagos/*') && !request()->is('Propietario/Pagos/*') )
 	<nav class="white {{request()->is('/')?'hide':''}}">
 		<div class="brand-logo right"><a href="{{url('/')}}"><img height="60" src="{{asset('img/logo.png')}}"></a>
 		</div>
@@ -17,6 +19,7 @@
 			<li><a class="button-collapse" data-activates='sideNav' href="#"><i class="material-icons indigo-text">menu</i></a></li>
 		</ul>
 	</nav>
+	@endif
 	@yield('sidenav')
 	@yield('contenido')
 {{-- Scripts --}}

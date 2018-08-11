@@ -66,6 +66,15 @@ Route::get('/pagos/{id}', function($id) {
 })->name('pagos.buscar');
 
 
+Route::get('casa/pagos', function() {
+	$pagos = \App\Casa::find(request()->casa)->pagos;
+	foreach($pagos as $pago){
+		$pago['mes']=$pago->mesPago->nombre;
+	}
+	return $pagos;
+})->name('api.pagos.casas');
+
+
 Route::get('charts/pie', function() {
 	$hoy = Carbon\Carbon::now();
 	$mesActual = $hoy->month;

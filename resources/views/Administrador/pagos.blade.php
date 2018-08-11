@@ -14,8 +14,8 @@
 						</select>
 						<label for="filtro">Mostar</label>
 					</div>
-					<!-- <a href='{{Route("pagos.generar",['mes'=>1])}}' class="btn light-green right">Generar Recibos <i class="material-icons left">note_add</i></a> -->
 					<button class="btn dropdown-button light-green right" data-activates='listaMeses'><i class="material-icons left">note_add</i> Generar Recibos <i class="material-icons right">arrow_drop_down</i></button>
+					<a href='#modalCasas' class="btn light-green right modal-trigger">Pagos Casas <i class="material-icons left">home</i></a>
 					<ul id="listaMeses" class="dropdown-content">
 						@foreach($meses  as $mes)
 							@if($mes->id == $mesActual)
@@ -56,22 +56,12 @@
 								
 								<td>{{$pago->fecha_pago}}</td>
 								<td>
-									<a class="btn-floating"><i class="material-icons cyan">receipt</i></a>
-									<a class="btn-floating"><i class="material-icons cyan">visibility</i></a>
+									{{--  <a class="btn-floating"><i class="material-icons cyan">receipt</i></a>  --}}
+									<a class="btn-floating verFactura" href="{{Route('pagos.examinar',['id'=>$pago->id])}}"><i class="material-icons cyan">visibility</i></a>
 								</td>
 							</tr>
 						@endforeach
-							{{--  <td><b>23143</b></td>
-								<td>Casa 1</td>
-								<td>Enero</td>
-								<td>01/01/2018 - 31/01/2018</td>
-								<td>55.000</td>
-								<td><span class="spanEstado yellow darken-2">Pendiente</span></td>
-								<td>05/02/2018</td>
-								<td>
-									<a class="btn-floating"><i class="material-icons cyan">receipt</i></a>
-									<a class="btn-floating"><i class="material-icons cyan">visibility</i></a>
-								</td>  --}}
+							
 						</tbody>
 					</table>
 					{{$pagos->links()}}
@@ -146,11 +136,123 @@
 			<a class="btn-flat waves-effect" id="btnRegistrarPago">Registrar <i class="material-icons right light-green-text">check_circle</i></a>
 		</div>
 	</div>
+
+	<div class="modal modal-fixed-footer" id="modalCasas">
+		<div class="modal-content">
+			<h3>Pagos de Casa </h3>
+			<div class="divider"></div>
+			<div class="valign-wrapper">
+					<div class="input-field col s12">
+						<i class="material-icons prefix">home</i>
+						<input type="number" id="inputBuscarCasa" min="1" max="60" style="width: 100px">
+						<label for="inputBuscarCasa">Casa</label>
+					</div>
+					<button class="btn-floating cyan" id="btnBuscarPagosCasa"><i class="material-icons">search</i></button>
+			</div>
+			<table class="highlight bordered">
+				<thead>
+					<tr>
+						<th>Factura N°</th>
+						<th>Mes</th>
+						<th>Valor a Pagar</th>
+						<th>Estado</th>
+						<th>Fecha de Pago</th>
+						<th colspan="2">Acciones</th>
+					</tr>
+				</thead>
+				<tbody id="tableCasaPago"></tbody>
+			</table>
+		</div>
+		<div class="modal-footer">
+			<button class="btn-flat modal-action modal-close">Cerrar <i class="material-icons left">close</i></button>
+		</div>
+	</div>
 @endsection
 @section('scripts')
 <script type="text/javascript">
 	$(function(){
+		$('#btnBuscarPagosCasa').click(function(){
+			if($('#inputBuscarCasa').val() == ''){
+				Materialize.toast('No hay nada que buscar',1500,'red');
+			}else{
+				if($('#inputBuscarCasa').val() > 60 || $('#inputBuscarCasa').val() <= 0){
+					Materialize.toast('Numero de casa invalido','1500','red');
+				}else{
+					$.ajax({
+						url:'{{route("api.pagos.casas")}}',
+						method:'get',
+						data:{'casa': $('#inputBuscarCasa').val()},
+						dataType:'json',
+						success: function(rta){
+							$('#tableCasaPago').html('');
+							
+							for (casa in rta){
+								var color = 'green';
+								var disable = 'disabled';
+								if(rta[casa].fecha_pago == null){
+									rta[casa].fecha_pago = '';
+								}
+								if(rta[casa].estado == 'Pendiente'){
+									color = 'yellow darken-1';
+									disable = '';
+								}
+
+								$('#tableCasaPago').append(
+									'<tr><td>'+rta[casa].id+'</td>'+
+										'<td>'+rta[casa].mes_pago.nombre+'</td>'+
+										'<td>'+rta[casa].valor+'</td>'+
+										'<td><span class="spanEstado '+color+'">'+rta[casa].estado+'</span></td>'+
+										'<td>'+rta[casa].fecha_pago +'</td>'+
+										'<td><a href="./Pagos/'+rta[casa].id+'" class="btn-floating cyan verFactura"><i class="material-icons">visibility</i></a></td>'+
+										'<td><button class="btn-floating cyan btnPagarCasa '+disable+'" data-casaId="'+rta[casa].id+'"><i class="material-icons">monetization_on</i></button></td></tr>'
+								);
+							}
+						}
+					});
+				}
+			}
+		});
+		
+		$('body').on('click','.btnPagarCasa' ,function(){
+			$.ajax({
+					url: '{{Route("pagos.pagar")}}',
+					type: 'post',
+					data: {'facturaId' : $(this).data('casaid'),'_token':'{{csrf_token()}}'},
+					dataType: 'json',
+					success: function(rta){
+						if(rta.bandera == 1){
+							swal({
+								icon: 'success',
+								title: 'Pago registrado correctamente'
+							}).then(value => {
+								window.location.reload();
+							});
+						}
+					}
+				});
+		});
+
 		$('.dropdown-button').dropdown();
+		
+		$('body').on('click','.verFactura' ,function(){
+			window.open($(this).attr('href'),'pago','height=500,width=750');
+			return false;
+		});
+
+		$('#botonRojo').click(function(){
+			$('#btnRegistrarPago').addClass('disabled');
+			$('[name=factura]').val(null);
+			$('[name=casa]').val(null);
+			$('[name=casa]').attr('disabled',false);
+			$('[name=mes]').val(null);
+			$('[name=mes]').attr('disabled',false);
+			$('[name=valorPagar]').val(null);
+			$('[name=valorPagar]').attr('disabled',false);
+			$('[name=mes]').material_select('update');
+			Materialize.updateTextFields();
+			$('#spanEstado').text('');
+			$('#spanEstado').removeClass('yellow darken-2 green');
+		});
 		$('#btnBuscarFactura').click(function(){
 			if($('[name=factura]').val() == ''){
 				Materialize.toast('Error, el campo esta vacio',2000,'red');
@@ -202,10 +304,14 @@
 						$('#btnRegistrarPago').addClass('disabled');
 					},
 					success: function(rta){
-						console.log(rta);
-					},
-					complete: function(){
-						$('#btnRegistrarPago').removeClass('disabled');
+						if(rta.bandera == 1){
+							swal({
+								icon: 'success',
+								title: 'Pago registrado correctamente'
+							}).then(value => {
+								window.location.reload();
+							});
+						}
 					}
 				});
 			}

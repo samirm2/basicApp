@@ -37,10 +37,11 @@ button:focus{
 	height: 80%;
 }
 .modal-content::-webkit-scrollbar {
-	width: 8px;			
+	width: 6px;
+	height: 6px;
 }
 .modal-content::-webkit-scrollbar-thumb {
-	background: black;
+	background: #8395a7;
 	border-radius: 5px;
 }
 .spanEstado{

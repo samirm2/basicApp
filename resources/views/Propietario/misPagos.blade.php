@@ -22,7 +22,6 @@
 								<th>Consecutivo</th>
 								<th>Casa N°</th>
 								<th>Mes</th>
-								<th>Periodo</th>
 								<th>Valor a Pagar</th>
 								<th>Estado</th>
 								<th>Fecha de Pago</th>
@@ -30,30 +29,23 @@
 							</tr>
 						</thead>
 						<tbody>
+							@foreach($pagos as $pago)
 							<tr>
-								<td>89712</td>
-								<td>Casa 12</td>
-								<td>Enero</td>
-								<td>01/01/2018 - 31/01/2018</td>
-								<td>55.000</td>
-								<td><span class="light-green spanEstado">Pagado</span></td>
-								<td>02/02/2018</td>
+								<td>{{$pago->id}}</td>
+								<td><b>{{$pago->casa->nombre}}</b></td>
+								<td>{{$pago->mesPago->nombre}}</td>
+								<td>{{$pago->valor}}</td>
+								@if($pago->estado == 'Pendiente')
+									<td><span class="spanEstado yellow darken-2">{{$pago->estado}}</span></td>
+								@else
+									<td><span class="spanEstado green darken-1">{{$pago->estado}}</span></td>
+								@endif
+								<td>{{$pago->fecha_pago}}</td>
 								<td>
-									<a href="{{url('Propietario/pagos/89712')}}" target="_blank" class="btn-floating cyan verRecibo"><i class="material-icons">visibility</i></a>
+									<a href="{{url('Propietario/Pagos',['id'=>$pago->id])}}" target="_blank" class="btn-floating cyan verRecibo"><i class="material-icons">visibility</i></a>
 								</td>
 							</tr>
-							<tr>
-								<td>14523</td>
-								<td>Casa 2</td>
-								<td>Enero</td>
-								<td>01/01/2018 - 31/01/2018</td>
-								<td>55.000</td>
-								<td><span class="red spanEstado">Pendiente</span></td>
-								<td></td>
-								<td>
-									<a href="{{url('Propietario/pagos/14523')}}" target="_blank" class="btn-floating cyan verRecibo"><i class="material-icons">visibility</i></a>
-								</td>
-							</tr>
+							@endforeach
 						</tbody>
 					</table>
 				</div>

@@ -33,6 +33,11 @@ class pagosController extends Controller
         $factura->estado = 'Pagado';
         $factura->fecha_pago = Carbon::now();
         $factura->save();
-        return ['Pago listo'];
+        return ['bandera' => 1];
+    }
+
+    public function showPago($id){
+        $pago = Pago::find($id);
+        return view('showReciboPago',compact('pago'));
     }
 }
