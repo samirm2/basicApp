@@ -32,10 +32,9 @@
 					
 					<span><b>Propietario: </b> {{$pago->casa->miPropietario->persona->nombreCompleto}}</span>
 					<span class="right"><b>Estado:</b> {{$pago->estado}}</span> <br>
-					
 				</div>
 				<div class="row" style="margin-bottom: 0">
-					<center><img src="http://barcode.tec-it.com/barcode.ashx?data={{$pago->id}}&code=Code128&dpi=75">	</center>
+					<center><img src="http://barcode.tec-it.com/barcode.ashx?data={{$pago->created_at->year . $pago->created_at->month . $pago->created_at->day . $pago->casa->id .$pago->id}}&code=Code128&dpi=75">	</center>
 				</div>
 			</div>
 		</div>

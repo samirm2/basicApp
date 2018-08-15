@@ -8,14 +8,17 @@
 		<div class="row">
 			<div class="col s12">
 				<div class="card-panel">
+					@if($casas->count() > 1)
 					<div class="input-field col s3">
-						<select name="Miscasas">
-							<option>Todo</option>
-							<option>Casa 2</option>
-							<option>Casa 12</option>
+						<select name="misCasas">
+							<option value="null">Todo</option>
+							@foreach($casas as $casa)
+							<option value="{{$casa->id}}" >{{$casa->nombre}}</option>
+							@endforeach
 						</select>
 						<label for="Miscasas">Mostrar</label>
 					</div>
+					@endif
 					<table class="striped">
 						<thead>
 							<tr>
@@ -56,6 +59,10 @@
 @section('scripts')
 <script type="text/javascript">
 	$(function(){
+		$('[name=misCasas]').change(function(){
+			alert($(this).val());
+		});
+		
 		$('.verRecibo').click(function(){
 			window.open($(this).attr('href'),'pago','height=500,width=750');
 			return false;

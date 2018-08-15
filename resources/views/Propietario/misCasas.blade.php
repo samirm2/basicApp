@@ -6,7 +6,7 @@
 	<div class="caja">
 		<div class="row">
 			@foreach($listaCasas as $casa)
-				<div class="col l5 m6 s10 offset-s1">
+				<div class="col l4 m6 s10 offset-s1">
 						<div class="card">
 							<div class="card-content">
 								<span class="card-title"><i class="material-icons medium left">home</i>{{$casa->nombre}}</span>

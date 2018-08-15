@@ -96,10 +96,11 @@ Route::group(['middleware'=>['auth','propietario']],function(){
 			$pagos = [];
 			$meses = \App\Mes::all();
 			foreach ($casas as $casa) {
-				$pagos = $casa->pagos;
+				foreach ($casa->pagos as $pago) {
+					$pagos[] = $pago;
+				}
 			}
-											
-		    return view('Propietario.misPagos',compact('pagos','meses'));
+		    return view('Propietario.misPagos',compact('pagos','meses','casas'));
 		});
 
 		Route::get('/Pagos/{id}', function ($id) {
