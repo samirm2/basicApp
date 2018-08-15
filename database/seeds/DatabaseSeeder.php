@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(pqrsSeeder::class);
         $this->call(mesesSeeder::class);
         $this->call(AdministradorSeeder::class);
+        $this->call(propietariosSeeder::class);
     }
 }
