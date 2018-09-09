@@ -72,6 +72,11 @@ Route::group(['middleware'=>['auth','administrador']],function(){
 		Route::get('Pagos/generar/{mes}', 'pagosController@generarRecibos')->name('pagos.generar');
 		Route::post('Pagos', 'pagosController@realizarPago')->name('pagos.pagar');
 
+		Route::get('Cartera', function () {
+			$casas = \App\Casa::paginate(10);
+		    return view('Administrador.cartera',compact('casas'));
+		});
+
 		Route::get('Empleo', 'empleoController@empleoIndex');
 		Route::post('Empleo','empleoController@registrarNuevoEmpleo')->name('empleo.guardar');
 		Route::get('Empleo/{id}', 'empleoController@verEmpleo');

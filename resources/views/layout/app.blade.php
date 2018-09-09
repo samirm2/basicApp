@@ -4,8 +4,8 @@
 	<meta charset="utf-8">
 	<title>Altos de Ziruma I</title>
 	<link rel="stylesheet" type="text/css" href="{{asset('css/materialize.min.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{asset('css/material-icons.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{asset('css/dropify.min.css')}}">
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{{asset('css/estilos.css')}}">
 	<link rel="icon" type="image/png" href="{{asset('img/favicon.png')}}">
 </head>

@@ -80,8 +80,9 @@ Route::get('charts/pie', function() {
 	$mesActual = $hoy->month;
 	$anoActual = $hoy->year;
 	$nombreMes = App\Mes::find($mesActual)->nombre;
-	$pagosPendientes = App\Pago::where('mes_id',$mesActual)->where('estado','Pendiente')->get()->count();
-	$pagosPagados = App\Pago::where('mes_id',$mesActual)->where('estado','Pagado')->get()->count();
+	$pagosActual = App\Pago::where('mes_id',$mesActual)->get();
+	$pagosPendientes = $pagosActual->where('estado','Pendiente')->count();
+	$pagosPagados = $pagosActual->where('estado','Pagado')->count();
 	return [
 		'año'=>$anoActual,
 		'mes'=> $nombreMes,
