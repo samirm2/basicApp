@@ -101,6 +101,18 @@ Route::group(['middleware'=>['auth','administrador']],function(){
 			}
 			// return view('reportes.paz_y_salvo', compact('casa','hoy','mes'));
 		})->name('reportes.pazysalvo');
+
+		Route::get('reportes/cartera', function(){
+			$casas = \App\Casa::all();
+			$hoy = Carbon\Carbon::now();
+			$nombreArchivo = 'Cartera'.$hoy->year.'.pdf';
+			$pdf = PDF::loadView('reportes.imprimirCartera',compact('casas'));
+			$pdf->setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif','isRemoteEnabled'=>false]);
+			return $pdf->stream($nombreArchivo);
+		
+			// return view('reportes.paz_y_salvo', compact('casa','hoy','mes'));
+		})->name('reportes.imprimirCartera');
+
 	});
 });
 

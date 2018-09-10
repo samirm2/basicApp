@@ -7,6 +7,7 @@
 		<div class="row">
 			<div class="col s12">
 				<div class="card-panel">
+                <a href="{{route('reportes.imprimirCartera')}}" target="_blank" class="btn-floating cyan tooltipped right" data-tooltip="Imprimir Cartera" data-delay="50" data-position="left"><i class="material-icons">print</i></a>
                     <h4><i class="material-icons">assessment</i> Cartera <small class="right">Total Cartera: $ {{number_format($totalCartera)}}</small></h4>
                     <div class="divider"></div>
                     <table class="striped">
