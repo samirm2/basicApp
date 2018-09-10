@@ -70,6 +70,7 @@ Route::get('casa/pagos', function() {
 	$pagos = \App\Casa::find(request()->casa)->pagos;
 	foreach($pagos as $pago){
 		$pago['mes']=$pago->mesPago->nombre;
+		$pago->valor = number_format($pago->valor);
 	}
 	return $pagos;
 })->name('api.pagos.casas');

@@ -46,7 +46,7 @@
 								<td>{{$pago->casa->nombre}}</td>
 								<td>{{$pago->mesPago->nombre}}</td>
 								{{--  <td>01/01/2018 - 31/01/2018</td>  --}}
-								<td>{{$pago->valor}}</td>
+								<td>$ {{number_format($pago->valor)}}</td>
 								<td>{{$pago->created_at->diffForHumans()}}</td>
 								@if($pago->estado == 'Pendiente')
 									<td><span class="spanEstado yellow darken-2">{{$pago->estado}}</span></td>
@@ -200,7 +200,7 @@
 								$('#tableCasaPago').append(
 									'<tr><td>'+rta[casa].id+'</td>'+
 										'<td>'+rta[casa].mes_pago.nombre+'</td>'+
-										'<td>'+rta[casa].valor+'</td>'+
+										'<td> $ '+rta[casa].valor+'</td>'+
 										'<td><span class="spanEstado '+color+'">'+rta[casa].estado+'</span></td>'+
 										'<td>'+rta[casa].fecha_pago +'</td>'+
 										'<td><a href="./Pagos/'+rta[casa].id+'" class="btn-floating cyan verFactura"><i class="material-icons">visibility</i></a></td>'+

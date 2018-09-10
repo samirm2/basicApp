@@ -73,15 +73,34 @@ Route::group(['middleware'=>['auth','administrador']],function(){
 		Route::post('Pagos', 'pagosController@realizarPago')->name('pagos.pagar');
 
 		Route::get('Cartera', function () {
-			$casas = \App\Casa::paginate(10);
-		    return view('Administrador.cartera',compact('casas'));
+			$casasPaginate = \App\Casa::paginate(10);
+			$casas = \App\Casa::all();
+			$totalCartera = 0;
+			foreach($casas as $casa){
+				$totalCartera += $casa->valorCuantia;
+			}			
+		    return view('Administrador.cartera',compact('casasPaginate','totalCartera'));
 		});
 
 		Route::get('Empleo', 'empleoController@empleoIndex');
 		Route::post('Empleo','empleoController@registrarNuevoEmpleo')->name('empleo.guardar');
 		Route::get('Empleo/{id}', 'empleoController@verEmpleo');
 		Route::put('Empleo/{id}','empleoController@actualizarEmpleo')->name('empleo.actualizar');
-		Route::delete('Empleo/{id}','empleoController@eliminarEmpleo')->name('empleo.eliminar');	
+		Route::delete('Empleo/{id}','empleoController@eliminarEmpleo')->name('empleo.eliminar');
+		
+		Route::get('reportes/pazysalvo/{casaId}', function($casaId){
+			$casa = \App\Casa::find($casaId);
+			$hoy = Carbon\Carbon::now();
+			$mes = \App\Mes::find($hoy->month)->nombre;
+			if($casa->estadoCartera){
+				return 'Error! Esta Casa No Esta Al Dia';
+			}else{
+				$pdf = PDF::loadView('reportes.paz_y_salvo',compact('casa','hoy','mes'));
+				$pdf->setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif','isRemoteEnabled'=>true]);
+				return $pdf->stream('paz_y_salvo.pdf');
+			}
+			// return view('reportes.paz_y_salvo', compact('casa','hoy','mes'));
+		})->name('reportes.pazysalvo');
 	});
 });
 

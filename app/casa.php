@@ -13,4 +13,19 @@ class Casa extends Model
     public function pagos(){
         return $this->hasMany('\App\Pago');
     }
+
+    public function getEstadoCarteraAttribute()
+    {
+        $pagos_pendientes  = $this->pagos->where('estado','Pendiente')->sum('valor');
+        if($pagos_pendientes <= 0){
+            return false; //Al dia
+        }else{
+            return true; //Moroso
+        }
+    }
+
+    public function getValorCuantiaAttribute()
+    {
+        return $this->pagos->where('estado','Pendiente')->sum('valor');
+    }
 }
