@@ -24,7 +24,11 @@
                             @foreach($casasPaginate as $casa)
                             <tr>
                                 <td>{{$casa->nombre}}</td>
+                                @if(is_null($casa->miPropietario->persona))
+                                <td></td>
+                                @else
                                 <td>{{$casa->miPropietario->persona->nombreCompleto}}</td>
+                                @endif
                                 @if(!$casa->estadoCartera)
                                     <td><span class="spanEstado light-green">Al Dia</span></td>
                                 @else
