@@ -24,7 +24,7 @@
                             @foreach($casasPaginate as $casa)
                             <tr>
                                 <td>{{$casa->nombre}}</td>
-                                @if(is_null($casa->miPropietario->persona))
+                                @if(is_null($casa->miPropietario))
                                 <td></td>
                                 @else
                                 <td>{{$casa->miPropietario->persona->nombreCompleto}}</td>
