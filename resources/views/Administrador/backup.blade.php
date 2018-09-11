@@ -7,8 +7,6 @@
 		<div class="row">
 			<div class="col s12">
 				<div class="card-panel">
-					<!-- <a href="{{url('Administrador/Backup/create')}}" class="btn-floating light-blue tooltipped" data-tooltip="Crear copia" data-position="botton" data-delay="50"><i class="material-icons">class</i></a> -->
-
 					<table class="striped centered">
 						<thead>
 							<tr>
@@ -30,7 +28,7 @@
 									<a href="{{ url('Administrador/Backup/download/'.$arrayBackups[$i]['file_name']) }}" class="btn-floating light-blue tooltipped" data-tooltip="Descargar" data-position="botton" data-delay="50"><i class="material-icons">file_download</i></a>
 								</td>
 								<td>
-									<a href="{{ url('Administrador/Backup/delete/'.$arrayBackups[$i]['file_name']) }}" class="btn-floating light-blue tooltipped" data-tooltip="Eliminar" data-position="botton" data-delay="50"><i class="material-icons">delete</i></a>
+									<a href="#{{ $arrayBackups[$i]['file_name'] }}" class="btn-floating light-blue tooltipped DeleteBtn" data-tooltip="Eliminar" data-position="botton" data-delay="50"><i class="material-icons">delete</i></a>
 								</td>
 							</tr>
 							@endfor
@@ -53,9 +51,28 @@
 	</div>
 </div>
 
+<div class="modal" id="modal_delete" style="width: 40%">
+	<div class="modal-content" style="padding-bottom: 0px">
+		<h5 id="msgDelete"></h5>
+	</div>
+	<div class="modal-footer">
+		<a class="btn-flat modal-action modal-close">No <i class="material-icons red-text right">cancel</i></a>
+		<a id="dataDelete" href="#" class="btn-flat modal-action">Continuar <i class="material-icons light-green-text right">check_circle</i></a>
+	</div>
+</div>
+
 @endsection
 
 @section('scripts')
-
+	<script>
+		$(function() {
+			$('.DeleteBtn').click(function(e) {
+				var file = e.currentTarget.href.split('Backup#')[1];
+				$('#msgDelete').html('¿Está seguro(a) de eliminar esta copia de seguridad '+file+'?');
+				$('#modal_delete').modal('open');
+				$('#dataDelete').prop('href',"{{url('Administrador/Backup/delete/')}}"+"/"+file);
+			});
+		});
+	</script>
 @include('sweet::alert')
 @endsection
