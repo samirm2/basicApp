@@ -24,5 +24,8 @@
 				</ul>
 			</div>
 		</li>
+		<li>
+			<a class="collapsible-header" href="{{url('/Administrador/Backup')}}"><i class="material-icons">backup</i>Copias de seguridad</a>
+		</li>
 	</ul>
 </li>
