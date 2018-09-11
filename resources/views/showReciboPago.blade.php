@@ -27,7 +27,7 @@
 					<span class="right"><b>Mes Facturado:</b> {{$pago->mesPago->nombre}}</span> <br>
 					
 					<span><b>Casa:</b> {{$pago->casa->nombre}}</span> 
-					<span class="right"><b>Valor a Pagar: </b> ${{$pago->valor}}</span> <br>
+					<span class="right"><b>Valor a Pagar: </b> $ {{number_format($pago->valor)}}</span> <br>
 					
 					
 					<span><b>Propietario: </b> {{$pago->casa->miPropietario->persona->nombreCompleto}}</span>

@@ -4,10 +4,10 @@
 			<a class="collapsible-header" href="{{url('/Administrador/Propietarios')}}"><i class="material-icons">home</i>Propietarios</a>
 		</li>
 		<li>
-			<a class="collapsible-header" href="{{url('/Administrador/Residentes')}}"><i class="material-icons">account_balance</i>Residentes</a>
+			<a class="collapsible-header" href="{{url('/Administrador/Pagos')}}"><i class="material-icons">receipt</i>Pagos</a>
 		</li>
 		<li>
-			<a class="collapsible-header" href="{{url('/Administrador/Pagos')}}"><i class="material-icons">receipt</i>Pagos</a>
+			<a class="collapsible-header" href="{{url('/Administrador/Cartera')}}"><i class="material-icons">assessment</i>Cartera</a>
 		</li>
 		<li>
 			<a class="collapsible-header" href="{{url('/Administrador/Gastos')}}"><i class="material-icons">account_balance_wallet</i>Gastos</a>

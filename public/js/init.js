@@ -1,6 +1,5 @@
 $(function(){
-    $('#modal').modal();
-    $('#modalCasas').modal();
+    $('.modal').modal();
 	$('select').material_select();
 	$('.datepicker').pickadate({
         format: 'yyyy/mm/dd',

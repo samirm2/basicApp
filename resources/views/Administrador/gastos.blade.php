@@ -24,7 +24,7 @@
 						<tr>
 							<td>{{$gasto->id}}</td>
 							<td><b>{{$gasto->concepto}}</b></td>
-							<td>{{$gasto->valor}}</td>
+							<td>$ {{number_format($gasto->valor)}}</td>
 							<td>{{$gasto->created_at->diffForHumans()}}</td>
 							<td><img class="materialboxed" src="{{Storage::url($gasto->evidencia)}}" height="100"></td>
 							<td><a href="#modal" class="btnExaminar btn-floating cyan modal-trigger" data-concepto="{{$gasto->concepto}}" data-valor="{{$gasto->valor}}" data-observacion="{{$gasto->observaciones}}" data-evidencia="{{$gasto->evidencia}}"><i class="material-icons">description</i></a></td>

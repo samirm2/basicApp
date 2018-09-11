@@ -20,7 +20,13 @@
 	<table>
 		<tr>
 			<th rowspan="2" style="text-align: center;"><img src="{{asset('img/logo.png')}}" height="100"></th>
-			<th style="text-align: center"><h3>CONJUNTO CERRADO ALTOS DE ZIRUMA I <br><small>Transversal 27 N° 52 - 30</small></h3></th>				
+			<th style="text-align: center">
+                <h3>
+                    CONJUNTO CERRADO ALTOS DE ZIRUMA I <br>
+                    <small>Transversal 27 N° 52 - 30</small> <br>
+                    <small>Valledupar - Cesar</small>
+                </h3>
+            </th>
 		</tr>
 		<tr>
 			<th style="text-align: center;"><h3>Listado de Propietarios</h3></th>

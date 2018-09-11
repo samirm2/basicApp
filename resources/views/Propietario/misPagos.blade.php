@@ -37,7 +37,7 @@
 								<td>{{$pago->id}}</td>
 								<td><b>{{$pago->casa->nombre}}</b></td>
 								<td>{{$pago->mesPago->nombre}}</td>
-								<td>{{$pago->valor}}</td>
+								<td> $ {{ number_format($pago->valor)}}</td>
 								@if($pago->estado == 'Pendiente')
 									<td><span class="spanEstado yellow darken-2">{{$pago->estado}}</span></td>
 								@else
