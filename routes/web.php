@@ -105,7 +105,7 @@ Route::group(['middleware'=>['auth','administrador']],function(){
 		Route::get('reportes/cartera', function(){
 			$casas = \App\Casa::all();
 			$hoy = Carbon\Carbon::now();
-			$nombreArchivo = 'Cartera'.$hoy->year.'.pdf';
+			$nombreArchivo = 'Cartera'.$hoy->year.'-'.$hoy->month.'-'.$hoy->day.'.pdf';
 			$pdf = PDF::loadView('reportes.imprimirCartera',compact('casas'));
 			$pdf->setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif','isRemoteEnabled'=>false]);
 			return $pdf->stream($nombreArchivo);

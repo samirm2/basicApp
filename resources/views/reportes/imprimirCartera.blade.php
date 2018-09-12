@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Listado de Propietarios</title>
+	<title>Cartera</title>
 	<style type="text/css">
 		table{
 			width: 100%;
