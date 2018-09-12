@@ -86,8 +86,13 @@ Route::group(['middleware'=>['auth','administrador']],function(){
 		Route::post('Empleo','empleoController@registrarNuevoEmpleo')->name('empleo.guardar');
 		Route::get('Empleo/{id}', 'empleoController@verEmpleo');
 		Route::put('Empleo/{id}','empleoController@actualizarEmpleo')->name('empleo.actualizar');
+
 		Route::delete('Empleo/{id}','empleoController@eliminarEmpleo')->name('empleo.eliminar');
 		
+		Route::resource('Backup','backupContoller');
+		Route::get('Backup/download/{file_name}', 'backupContoller@download');
+        Route::get('Backup/delete/{file_name}', 'backupContoller@delete');
+				
 		Route::get('reportes/pazysalvo/{casaId}', function($casaId){
 			$casa = \App\Casa::find($casaId);
 			$hoy = Carbon\Carbon::now();
@@ -112,7 +117,6 @@ Route::group(['middleware'=>['auth','administrador']],function(){
 		
 			// return view('reportes.paz_y_salvo', compact('casa','hoy','mes'));
 		})->name('reportes.imprimirCartera');
-
 	});
 });
 
