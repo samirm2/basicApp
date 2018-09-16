@@ -62,11 +62,11 @@
 						<td></td>
 					@else
                     <td>{{$casa->miPropietario->persona->nombreCompleto}}</td>
+                    @endif
                     @if($casa->pagos->where('mes_id',$mes)->first()->estado == 'Pendiente')
                         <td style="text-align:center;background: red">{{$casa->pagos->where('mes_id',$mes)->first()->estado}}</td>
                     @else
                     <td style="text-align:center;background: lightgreen">{{$casa->pagos->where('mes_id',$mes)->first()->estado}}</td>
-                    @endif
                     @endif
                 </tr>
                 @endforeach
