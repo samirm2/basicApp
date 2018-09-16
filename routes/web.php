@@ -91,7 +91,34 @@ Route::group(['middleware'=>['auth','administrador']],function(){
 		
 		Route::resource('Backup','backupContoller');
 		Route::get('Backup/download/{file_name}', 'backupContoller@download');
-        Route::get('Backup/delete/{file_name}', 'backupContoller@delete');
+		Route::get('Backup/delete/{file_name}', 'backupContoller@delete');
+		
+		Route::get('Reportes', function(){
+			$meses = \App\Mes::all();
+			return view('Administrador.Reportes',compact('meses'));
+		});
+
+		Route::get('Reportes/balance-casas/{mes}', function($mes){
+			if($mes == 'null'){
+				$mes = Carbon\Carbon::now()->month;
+			}
+			
+			$nombreMes  = \App\Mes::find($mes)->nombre;
+			$pagosMes = App\Pago::where('mes_id',$mes)->get();
+			$casaAlDia = $pagosMes->where('estado','Pagado')->count();
+			$casaPendiente = $pagosMes->where('estado','Pendiente')->count();
+			$casas = \App\Casa::all();
+			if($pagosMes->count() == 0){
+				return 'No Existen Datos Para Realizar este Reporte';
+			}else{
+				$pdf = PDF::loadView('reportes.balanceCasas',compact('mes','nombreMes','casas','casaAlDia','casaPendiente'));
+				$pdf->setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif','isRemoteEnabled'=>true]);
+				return $pdf->stream('Balance Mes.pdf');
+			}
+			
+			
+			//	return view('reportes.balanceCasas',compact('nombreMes','casas','casaAlDia','casaPendiente'));
+		})->name('reportes.balanceMes');
 				
 		Route::get('reportes/pazysalvo/{casaId}', function($casaId){
 			$casa = \App\Casa::find($casaId);

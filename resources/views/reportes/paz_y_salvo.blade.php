@@ -39,12 +39,12 @@
     <br><br><br><br><br><br><br>
     
     <p>
-        el conjunto cerrado altos de ziruma 1 se permite certificar que el señor(a) <b> {{$casa->miPropietario->persona->nombreCompleto}} </b>
+        El conjunto cerrado altos de ziruma 1 se permite certificar que el señor(a) <b> {{$casa->miPropietario->persona->nombreCompleto}} </b>
         propietario de la <b>Casa {{$casa->id}}</b>, se encuentra a Paz y Salvo en el pago de la cuota de administracion hasta la fecha.
     </p>
     <br>
     <p>
-        el presente certificado se expide a solicitud del interesado a los {{$hoy->day}} dias del mes
+        El presente certificado se expide a solicitud del interesado a los {{$hoy->day}} dias del mes
         de {{$mes}} del presente año.
     </p>
     <br><br><br>

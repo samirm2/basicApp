@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Altos de Ziruma I</title>
 	<link rel="stylesheet" type="text/css" href="{{asset('css/materialize.min.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{asset('css/material-icons.css')}}">

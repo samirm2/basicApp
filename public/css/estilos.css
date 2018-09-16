@@ -52,6 +52,16 @@ button:focus{
 	font-weight: 300;
 }
 
+.tabs .indicator {
+	background-color: #1976d2;
+}
+.tabs .tab a{
+	color: black;
+}
+.tabs .tab a.active{
+	color: #1976d2;
+}
+
 .inputMensaje{
 	margin-left: 45px;
 	color: red;

@@ -16,7 +16,7 @@
 			<a class="collapsible-header" href="{{url('/Administrador/Empleo')}}"><i class="material-icons">work</i>Ofertas de Empleo</a>
 		</li>
 		<li>
-			<a class="collapsible-header" href="#"><i class="material-icons">pie_chart</i>Reportes</a>
+			<a class="collapsible-header" href="{{url('/Administrador/Reportes')}}"><i class="material-icons">pie_chart</i>Reportes</a>
 		</li>		
 		<li>
 			<a class="collapsible-header"><i class="material-icons">live_help</i>PQRS</a>

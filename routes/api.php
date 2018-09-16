@@ -92,3 +92,19 @@ Route::get('charts/pie', function() {
 	];
 })->name('api.chart.pie');
 
+Route::get('charts/pies', function() {
+	
+	$mesId = request()->mes;
+	$ano = request()->ano;
+	$nombreMes = App\Mes::find($mesId)->nombre;
+	$pagosConsulta = App\Pago::where('mes_id',$mesId)->get();
+	$pagosPendientes = $pagosConsulta->where('estado','Pendiente')->count();
+	$pagosPagados = $pagosConsulta->where('estado','Pagado')->count();
+	return [
+		'año'=>$ano,
+		'mes'=> $nombreMes,
+		'casasAlDia'=> $pagosPagados, 
+		'casasMorosas'=> $pagosPendientes
+	];
+})->name('api.chart.pie.consulta');
+
