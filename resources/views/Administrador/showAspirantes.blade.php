@@ -16,6 +16,7 @@
 					<table class="striped centered">
 						<thead>
 							<tr>
+								<th>Cédula</th>
 								<th>Nombres</th>
 								<th>Apellidos</th>
 								<th>Correo Electrónico</th>
@@ -26,12 +27,15 @@
 						<tbody>
 							@foreach($empleo->aspirantes as $aspirante)
 								<tr>
+									<td>{{$aspirante->cc}}</td>
 									<td>{{$aspirante->nombres}}</td>
 									<td>{{$aspirante->apellidos}}</td>
 									<td>{{$aspirante->email}}</td>
-									<td><a href="{{Storage::url($aspirante->hoja_vida)}}">Ver</a></td>
 									<td>
-										<a class="btn-floating light-blue tooltipped" data-tooltip="contratar" data-position="bottom" data-delay="50"><i class="material-icons">assignment_turned_in</i></a>
+										<a href="/Administrador/Empleo/Download/{{explode('/',$aspirante->hoja_vida)[2]}}" target="_blank">Descargar</a>
+									</td>
+									<td>
+										<a href="/Administrador/Empleo/Contratar/{{$aspirante->id}}" class="btn-floating light-blue tooltipped" data-tooltip="contratar" data-position="bottom" data-delay="50"><i class="material-icons">assignment_turned_in</i></a>
 									</td>
 								</tr>
 							@endforeach
@@ -41,4 +45,8 @@
 			</div>
 		</div>
 	</div>
+@endsection
+
+@section('scripts')
+@include('sweet::alert')
 @endsection

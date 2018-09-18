@@ -85,6 +85,8 @@ Route::group(['middleware'=>['auth','administrador']],function(){
 		Route::get('Empleo', 'empleoController@empleoIndex');
 		Route::post('Empleo','empleoController@registrarNuevoEmpleo')->name('empleo.guardar');
 		Route::get('Empleo/{id}', 'empleoController@verEmpleo');
+		Route::get('Empleo/Download/{file_name}', 'empleoController@download');
+		Route::get('Empleo/Contratar/{id_aspirante}', 'empleoController@contratar');
 		Route::put('Empleo/{id}','empleoController@actualizarEmpleo')->name('empleo.actualizar');
 
 		Route::delete('Empleo/{id}','empleoController@eliminarEmpleo')->name('empleo.eliminar');

@@ -106,10 +106,10 @@
 				</div>
 				<div class="input-field col s6">
 					<select name="tipo_duracion">
-						<option>Dias</option>
-						<option>Semanas</option>
-						<option>Meses</option>
-						<option>Anos</option>
+						<option>Dia(s)</option>
+						<option>Semana(s)</option>
+						<option>Mes(es)</option>
+						<option>Año(s)</option>
 					</select>
 					<label for="tipo_duracion">tipo</label>
 				</div>

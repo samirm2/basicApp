@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Empleo;
 use App\EmpleoAspirante;
+use App\Contratados;
 use Alert;
+use Exception;
+use Storage;
 
 class empleoController extends Controller
 {
@@ -73,20 +76,73 @@ class empleoController extends Controller
     }
 
     public function registrarPostulante(){
-    	$aspirante = new EmpleoAspirante();
-    	$aspirante->nombres = request()->nombres;
-    	$aspirante->apellidos = request()->apellidos;
-    	$aspirante->email = request()->email;
-    	$nombreArchivo = request()->nombres."_".$aspirante->apellidos.".".request()->archivo->extension();
-    	$aspirante->hoja_vida = request()->archivo->storeAs('public/hojas_de_vida',$nombreArchivo);
-    	$aspirante->empleo_id = request()->empleo;
-    	
-    	if($aspirante->save()){
-    		Alert::success("Te has postulado correctamente ,¡Suerte!","¡Felicidades!");
-        return back();
-    	}else{
-    		Alert::error('Ocurrió un error al realizar la postulación','Opps!');
-        return back();
-    	}
+        try {
+            $aspirante = new EmpleoAspirante();
+            $aspirante->cc = request()->cc;
+            $aspirante->nombres = request()->nombres;
+            $aspirante->apellidos = request()->apellidos;
+            $aspirante->email = request()->email;
+            $nombreArchivo = request()->cc."_".request()->nombres."_".$aspirante->apellidos.".".request()->archivo->extension();
+            $aspirante->hoja_vida = request()->archivo->storeAs('public/hojas_de_vida',$nombreArchivo);
+            $aspirante->empleo_id = request()->empleo;
+            
+            if($aspirante->save()){
+                Alert::success("Te has postulado correctamente ,¡Suerte!","¡Felicidades!");
+            return back();
+            }else{
+                Alert::error('Ocurrió un error al realizar la postulación','Opps!');
+            return back();
+            }
+        } catch (Exception $e) {
+            if ($e->getCode() == 23000) {
+                Alert::error('Ya está registrada la cédula en los registros','Opps!')->autoclose(3000);
+                return back();
+            }
+        }
+    }
+
+    public function download($file_name){
+        $file = 'public/hojas_de_vida/'.$file_name;
+        $disk = Storage::disk('local');
+        if ($disk->exists($file)) {
+            $fs = Storage::disk('local')->getDriver();
+            $stream = $fs->readStream($file);
+            return \Response::stream(function () use ($stream) {
+                fpassthru($stream);
+            }, 200, [
+                "Content-Type" => $fs->getMimetype($file),
+                "Content-Length" => $fs->getSize($file),
+                "Content-disposition" => "attachment; filename=\"" . basename($file) . "\"",
+            ]);
+        } else {
+            abort(404, "The backup file doesn't exist.");
+        }
+    }
+
+    public function contratar($id_aspirante){
+        date_default_timezone_set('America/Bogota');
+        
+        $aspirante = new EmpleoAspirante();
+        $contratado = new Contratados();
+
+        $aspirante_ = $aspirante->find($id_aspirante)->first();
+
+        $contratado->cc = $aspirante_['cc'];
+        $contratado->nombres = $aspirante_['nombres'];
+        $contratado->apellidos = $aspirante_['cc'];
+        $contratado->email = $aspirante_['email'];
+        $contratado->hoja_vida = $aspirante_['hoja_vida'];
+        $contratado->empleo_id = $aspirante_['empleo_id'];
+        $contratado->fecha_inicio = date('Y-m-d');
+
+        $aspirante_->delete();
+
+        if ($contratado->save()) {
+            Alert::success("Registrado correctamente","¡Felicidades!");
+            return back();
+        } else {
+            Alert::error('Ocurrió un error al realizar el registro','Opps!');
+            return back();
+        }
     }
 }

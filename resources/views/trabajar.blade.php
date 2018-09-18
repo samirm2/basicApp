@@ -19,8 +19,9 @@
 						@if($empleo->estado == 'Activo')
 							<div class="card-panel">
 								<h5>{{$empleo->cargo}}</h5>
-								<p>{{$empleo->descripcion}}. <b>Salario: </b>{{$empleo->salario}} pesos {{$empleo->tipo_salario}}
-								<b>Tiempo del contrato: </b>{{$empleo->duracion ." ". $empleo->tipo_duracion}}.</p>
+								<p><b>Descripcion de la vacante:</b> {{$empleo->descripcion}}.</p>
+								<p><b>Salario: </b>${{number_format($empleo->salario)}} pesos {{$empleo->tipo_salario}}</p>
+								<p><b>Tiempo del contrato: </b>{{$empleo->duracion ." ". $empleo->tipo_duracion}}.</p>
 								<button class="btn-flat right btnPostularme" data-empleoid='{{$empleo->id}}'><i class="material-icons left">spellcheck</i>Postularme</button>
 								<br>
 							</div>
@@ -40,6 +41,11 @@
 			<form method="post" action="{{url('/postularme')}}" enctype="multipart/form-data">
 				{{csrf_field()}}
 				<input type="hidden" name="empleo">
+				<div class="input-field col s6">
+					<i class="material-icons prefix red-text">label_outline</i>
+					<input type="text" name="cc">
+					<label for="cc">Cédula</label>
+				</div>
 				<div class="input-field col s6">
 					<i class="material-icons prefix red-text">label_outline</i>
 					<input type="text" name="nombres">
@@ -80,7 +86,7 @@
 		});
 
 		$('#btnEnviar').click(function(){
-			if( $('[name=nombres]').val() == '' || $('[name=apellidos]').val() == '' || $('[name=email]').val() == '' || $('[name=archivo]').val() == '' ){
+			if( $('[name=cc]').val() == '' || $('[name=nombres]').val() == '' || $('[name=apellidos]').val() == '' || $('[name=email]').val() == '' || $('[name=archivo]').val() == '' ){
 				Materialize.toast('Error, Faltan campos por llenar',3000);
 			}else{
 				$('form').submit();
