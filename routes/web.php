@@ -82,6 +82,10 @@ Route::group(['middleware'=>['auth','administrador']],function(){
 		    return view('Administrador.cartera',compact('casasPaginate','totalCartera'));
 		});
 
+		Route::get('Contratos/Activos', 'contratoController@activos');
+		Route::get('Contratos/Historial', 'contratoController@historial');
+		Route::get('Contratos/Finalizar/{id}', 'contratoController@finalizarContrato');		
+
 		Route::get('Empleo', 'empleoController@empleoIndex');
 		Route::post('Empleo','empleoController@registrarNuevoEmpleo')->name('empleo.guardar');
 		Route::get('Empleo/{id}', 'empleoController@verEmpleo');

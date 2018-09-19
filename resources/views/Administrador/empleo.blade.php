@@ -191,7 +191,7 @@
 			$('[name=salario]').val('');
 			$('[name=tipo_salario]').val('Diario');
 			$('[name=duracion]').val('1');
-			$('[name=tipo_duracion]').val('Dias');
+			$('[name=tipo_duracion]').val('Dia(s)');
 			$('select').material_select('update');
 		}
 	});

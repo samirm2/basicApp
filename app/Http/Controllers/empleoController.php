@@ -129,7 +129,7 @@ class empleoController extends Controller
 
         $contratado->cc = $aspirante_['cc'];
         $contratado->nombres = $aspirante_['nombres'];
-        $contratado->apellidos = $aspirante_['cc'];
+        $contratado->apellidos = $aspirante_['apellidos'];
         $contratado->email = $aspirante_['email'];
         $contratado->hoja_vida = $aspirante_['hoja_vida'];
         $contratado->empleo_id = $aspirante_['empleo_id'];

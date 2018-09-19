@@ -11,6 +11,6 @@ class Empleo extends Model
     }
 
     public function contratados(){
-    	return $this->hasMany('\App\Contrataods');
+    	return $this->hasMany('\App\Contratados');
     }
 }
