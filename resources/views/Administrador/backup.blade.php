@@ -14,7 +14,7 @@
 								<th>Nombre</th>
 								<th>Tamaño</th>
 								<th>Fecha de creación</th>
-								<th colspan="2">Opciones</th>
+								<th colspan="3">Opciones</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -24,6 +24,9 @@
 								<td>{{$arrayBackups[$i]['file_name']}}</td>
 								<td>{{number_format($arrayBackups[$i]['file_size'])}}KB</td>
 								<td>{{date('d/m/Y - H:i:s',$arrayBackups[$i]['last_modified'])}}</td>
+								<td>
+									<a href="#{{ $arrayBackups[$i]['file_name'] }}" class="btn-floating light-blue tooltipped RestoreBtn" data-tooltip="Restaurar" data-position="botton" data-delay="50"><i class="material-icons">refresh</i></a>
+								</td>
 								<td>
 									<a href="{{ url('Administrador/Backup/download/'.$arrayBackups[$i]['file_name']) }}" class="btn-floating light-blue tooltipped" data-tooltip="Descargar" data-position="botton" data-delay="50"><i class="material-icons">file_download</i></a>
 								</td>
@@ -61,16 +64,46 @@
 	</div>
 </div>
 
+<div class="modal" id="modal_restore" style="width: 40%">
+	<div class="modal-content" style="padding-bottom: 0px">
+		<h5 id="msgRestore"></h5>
+	</div>
+	<div class="modal-footer">
+		<a class="btn-flat modal-action modal-close">No <i class="material-icons red-text right">cancel</i></a>
+		<a id="dataRestore" href="#" class="btn-flat modal-action">Continuar <i class="material-icons light-green-text right">check_circle</i></a>
+	</div>
+</div>
+
+<div class="modal" id="modal_wait" style="width: 40%">
+	<div class="modal-content" style="padding-bottom: 0px">
+		<h5>Restaurando</h5>
+		<p>Por favor, espere...</p>
+	</div>
+</div>
+
 @endsection
 
 @section('scripts')
 	<script>
 		$(function() {
 			$('.DeleteBtn').click(function(e) {
-				var file = e.currentTarget.href.split('Backup#')[1];
+				var file = e.currentTarget.href.split('#')[1];
 				$('#msgDelete').html('¿Está seguro(a) de eliminar esta copia de seguridad '+file+'?');
 				$('#modal_delete').modal('open');
 				$('#dataDelete').prop('href',"{{url('Administrador/Backup/delete/')}}"+"/"+file);
+			});
+
+			$('.RestoreBtn').click(function(e) {
+				var file = e.currentTarget.href.split('#')[1];
+				$('#msgRestore').html('¿Está seguro(a) de restaurar esta copia de seguridad: '+file+'?');
+				$('#modal_restore').modal('open');
+				$('#dataRestore').prop('href',"{{url('Administrador/Backup/restore/')}}"+"/"+file);
+			});
+
+			$('#dataRestore').click(function() {
+				$('#modal_restore').modal('close');
+				$('#modal_wait').modal({dismissible:false});
+				$('#modal_wait').modal('open');
 			});
 		});
 	</script>

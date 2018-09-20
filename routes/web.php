@@ -98,6 +98,7 @@ Route::group(['middleware'=>['auth','administrador']],function(){
 		Route::resource('Backup','backupContoller');
 		Route::get('Backup/download/{file_name}', 'backupContoller@download');
 		Route::get('Backup/delete/{file_name}', 'backupContoller@delete');
+		Route::get('Backup/restore/{file_name}', 'backupContoller@restore');
 		
 		Route::get('Reportes', function(){
 			$meses = \App\Mes::all();

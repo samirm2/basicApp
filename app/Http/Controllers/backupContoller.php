@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Alert;
 use Storage;
+use Exception;
 
 class backupContoller extends Controller
 {
@@ -96,6 +98,32 @@ class backupContoller extends Controller
             abort(404, "The backup file doesn't exist.");
         }
     }
+
+    public function restore($file_name){
+        try {
+            ini_set('max_execution_time', 180);
+            $db_host = env('DB_HOST');
+            $db_name = env('DB_DATABASE');
+            $db_user = env('DB_USERNAME');
+            $db_pass = env('DB_PASSWORD');
+
+            if (env('DB_CONNECTION') == 'pgsql') {
+                $dump = 'PGPASSWORD="'.$db_pass.'" psql -h '.$db_host.' -U '.$db_user.' -d '.$db_name.' -a -f ../storage/app/Backups/'.$file_name;
+            } else {
+                $dump = "mysql --user=".$db_user." --password=".$db_pass." --host=".$db_host." ".$db_name." < ../storage/app/Backups/$file_name";
+            }
+
+            Artisan::call('migrate:fresh');
+
+            exec($dump, $outpt, $return_var);
+
+            Alert::success('Copia de seguridad restaurada correctamente','¡Enhorabuena!')->autoclose(3000);
+            return back();
+        } catch (Exception $e) {
+            abort(503, "Internal error");
+        }
+    }
+
     /**
      * Deletes a backup file.
      */
