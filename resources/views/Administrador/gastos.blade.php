@@ -26,7 +26,12 @@
 							<td><b>{{$gasto->concepto}}</b></td>
 							<td>$ {{number_format($gasto->valor)}}</td>
 							<td>{{$gasto->created_at->diffForHumans()}}</td>
-							<td><img class="materialboxed" src="{{Storage::url($gasto->evidencia)}}" height="100"></td>
+							@if( explode('.', $gasto->evidencia)[1] == 'pdf' )
+								<td><a href="/uploads/{{$gasto->evidencia}}">Ver</a><td>
+							@else
+								<td><img class="materialboxed" src="/uploads/{{$gasto->evidencia}}" height="100"></td>
+							@endif
+							
 							<td><a href="#modal" class="btnExaminar btn-floating cyan modal-trigger" data-concepto="{{$gasto->concepto}}" data-valor="{{$gasto->valor}}" data-observacion="{{$gasto->observaciones}}" data-evidencia="{{$gasto->evidencia}}"><i class="material-icons">description</i></a></td>
 						</tr>
 						@endforeach
@@ -47,6 +52,19 @@
 		<div class="divider"></div>
 			<div class="row">
 				<div class="input-field col s6">
+					<i class="material-icons prefix">label</i>
+					<select name="tipo_gasto">
+						<option value="Cotidiano">Cotidiano</option>
+						<option value="Prestación de servicio">Prestación de servicio</option>
+					</select>
+					<label for="tipo_gasto">Tipo de Gasto</label>
+				</div>
+				<div class="col s6" id="filebox" style="display: none;margin-top: 15px;">
+					<button type="button" id="btnGenerar" class="btn-flat waves-effect waves-light">Generar Recibo <i class="material-icons light-green-text right">check_circle</i></button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field col s6">
 					<i class="material-icons prefix">book</i>
 					<input type="text" name="concepto">
 					<label for="concepto">Concepto</label>
@@ -58,6 +76,13 @@
 				</div>
 			</div>
 			<div class="row">
+				<div class="input-field col s12">
+					<i class="material-icons prefix">insert_comment</i>
+					<textarea name="observaciones" class="materialize-textarea"></textarea>
+					<label for="observaciones">Observaciones</label>
+				</div>
+			</div>
+			<div class="row">
 				<div id="fileEvidencia" class="input-field col s6">
 					<input type="file" class="dropify" name="imagen" data-allowed-file-extensions="jpg png gif jpeg">
 					<label for="imagen">Evidencia</label>
@@ -65,13 +90,10 @@
 				<div id="imgMostrarEvidencia" class="col s6 hide">
 					<img class="responsive-img" src="{{asset('img/imgDefault.png')}}">
 				</div>
-				<div class="input-field col s6">
-					<i class="material-icons prefix">insert_comment</i>
-					<textarea name="observaciones" class="materialize-textarea"></textarea>
-					<label for="observaciones">Observaciones</label>
+				<div class="col s6">
+					<span class="nota"><b>Para tener en cuenta:</b> Una vez se registre el gasto en el sistema, no podra modificar su informacion. Solo son permitidos archivos tipo imagen para las evidencias.</span>
 				</div>
 			</div>
-			<span class="nota"><b>Para tener en cuenta:</b> Una vez se registre el gasto en el sistema, no podra modificar su informacion. Solo son permitidos archivos tipo imagen para las evidencias.</span>
 	</div>
 	<div class="modal-footer">
 		<a class="modal-action modal-close btn-flat">Cerrar <i class="material-icons red-text right">cancel</i></a>
@@ -105,8 +127,22 @@
 		});
 
 		$('#btnRegistrar').click(function(){
-			if (validarCampos() == 0) {
+			if (validarCampos('reg') == 0) {
 				$('form').submit();
+			}
+		});
+
+		$('#btnGenerar').click(function(){
+			if (validarCampos('gen') == 0) {
+				window.open('Gastos/Recibo?'+$('form').serialize(),'recibo','height=550,width=750');
+			}
+		});
+
+		$('[name=tipo_gasto]').change(function(e) {
+			if( $('[name=tipo_gasto]').val() == 'Cotidiano' ){
+				$('#filebox').hide();
+			}else{
+				$('#filebox').show();
 			}
 		});
 
@@ -140,7 +176,7 @@
 		}
 	}
 
-	function validarCampos(){
+	function validarCampos(ban){
 		var bandera = 0;
 		if ($('[name=concepto]').val() == '') {
 			Materialize.toast('El campo Concepto esta vacio, verifique',3000,'red');
@@ -154,7 +190,7 @@
 			Materialize.toast('El campo Observaciones esta vacio, verifique',3000,'red');
 			bandera++;
 		}
-		if ($('[name=imagen]').val() == '') {
+		if ($('[name=imagen]').val() == '' && ban == 'reg') {
 			Materialize.toast('No hay ninguna evidencia adjuntada',3000,'red');
 			bandera++;
 		}

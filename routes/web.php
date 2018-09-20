@@ -44,6 +44,7 @@ Route::group(['middleware'=>['auth','administrador']],function(){
 		Route::post('Casas/Liberar/{casaId}','casaController@liberar')->name('liberar.casa');
 
 		Route::get('Gastos', 'gastosController@index');
+		Route::get('Gastos/Recibo', 'gastosController@generarRecibo');
 		Route::post('Gastos','gastosController@registrarGasto')->name('gasto.registrar');
 		
 		Route::get('pqrs/salida',function(){

@@ -15,27 +15,31 @@
 					</div>
 				</div>
 				<div class="row flow-text">
-					<span class="right">Factura N°: <b>{{$pago->id}}</b></span> <br>
+					<span class="right">Factura N°: {{$id}}<b></b></span> <br>
 					<div class="divider"></div>
 					<center>
 						<h4 style="margin-bottom: 0px">Recibo de Pago</h4>
-						<h5 style="margin-top: 0px">Cuota de Administración</h5>
+						<h5 style="margin-top: 0px">Prestación de Servicios</h5>
 					</center>
 					<div class="divider"></div>
-					
-					<span><b>Generado el:</b> {{explode(' ',$pago->created_at)[0]}}</span> 
-					<span class="right"><b>Mes Facturado:</b> {{$pago->mesPago->nombre}}</span> <br>
-					
-					<span><b>Casa:</b> {{$pago->casa->nombre}}</span> 
-					<span class="right"><b>Valor a Pagar: </b> $ {{number_format($pago->valor)}}</span> <br>
-					
-					
-					<span><b>Propietario: </b> {{$pago->casa->miPropietario->persona->nombreCompleto}}</span>
-					<span class="right"><b>Estado:</b> {{$pago->estado}}</span> <br>
+					<div class="row">
+						<span><b>Generado el:</b> {{date('Y-m-d')}}</span> 
+					</div>
+					<div class="row">
+						<span><b>Concepto:</b> {{$concepto}}</span> 
+					</div>
+					<div class="row">
+						<span><b>Observaciones: </b> {{$observaciones}}</span>
+					</div>
+					<div class="row">
+						<span class="right"><b>Valor: </b> $ {{number_format($valor)}}</span>
+					</div>
+
+					<div class="row" style="margin-bottom: 0">
+						<center><img src="http://barcode.tec-it.com/barcode.ashx?data={{date('Ymd')}}-{{$id}}&code=Code128&dpi=75">	</center>
+					</div>
 				</div>
-				<div class="row" style="margin-bottom: 0">
-					<center><img src="http://barcode.tec-it.com/barcode.ashx?data={{$pago->created_at->year . $pago->created_at->month . $pago->created_at->day . $pago->casa->id .$pago->id}}&code=Code128&dpi=75">	</center>
-				</div>
+				
 			</div>
 		</div>
 	</div>
