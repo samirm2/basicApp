@@ -31,15 +31,11 @@ class gastosController extends Controller
 
     public function generarRecibo(){
         date_default_timezone_set('America/Bogota');
-        
-        $statement = DB::select("SHOW TABLE STATUS LIKE 'gastos'");
-        $nextId = $statement[0]->Auto_increment;
-        
+                
         return view('reciboPrestacionServicio')->with([
             'concepto'=>request()->concepto, 
             'valor'=>request()->valor,
-            'observaciones'=>request()->observaciones,
-            'id'=>$nextId
+            'observaciones'=>request()->observaciones
         ]);
     }
 }

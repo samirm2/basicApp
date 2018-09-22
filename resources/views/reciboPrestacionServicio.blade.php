@@ -15,7 +15,7 @@
 					</div>
 				</div>
 				<div class="row flow-text">
-					<span class="right">Factura N°: {{$id}}<b></b></span> <br>
+					<span class="right">Factura N°: {{date('YmdHis')}}<b></b></span> <br>
 					<div class="divider"></div>
 					<center>
 						<h4 style="margin-bottom: 0px">Recibo de Pago</h4>
@@ -36,7 +36,7 @@
 					</div>
 
 					<div class="row" style="margin-bottom: 0">
-						<center><img src="http://barcode.tec-it.com/barcode.ashx?data={{date('Ymd')}}-{{$id}}&code=Code128&dpi=75">	</center>
+						<center><img src="http://barcode.tec-it.com/barcode.ashx?data={{date('Ymd')}}-{{date('His')}}&code=Code128&dpi=75">	</center>
 					</div>
 				</div>
 				
