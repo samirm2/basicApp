@@ -7,6 +7,8 @@ use \App\Gasto;
 use Alert;
 use Storage;
 use DB;
+use App;
+use PDF;
 
 class gastosController extends Controller
 {
@@ -52,5 +54,13 @@ class gastosController extends Controller
             'valor'=>request()->valor,
             'observaciones'=>request()->observaciones
         ]);
+    }
+
+    public function imprimirRecibo($file){
+        $im = file_get_contents('../public/uploads/gastos/'.$file);
+        $imdata = base64_encode($im);
+        $pdf = App::make('dompdf.wrapper');
+        $pdf = PDF::loadHTML('<img src="data:image/png;base64,'.$imdata.'" width="730"/>');
+        return $pdf->stream('recib.pdf'); 
     }
 }
