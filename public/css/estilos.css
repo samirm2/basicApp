@@ -1,9 +1,9 @@
 body::-webkit-scrollbar {
-	width: 10px;			
+	width: 7px;			
 }
 body::-webkit-scrollbar-thumb {
-	background: #1976d2;
-	border-radius: 3px;
+	background: #1585f5;
+	border-radius: 2px;
 }
 
 button:focus{
@@ -77,4 +77,12 @@ button:focus{
 }
 .switch label input[type=checkbox]:checked+.lever {
 	   background-color: #b3e5fc;
+}
+
+#sideNav::-webkit-scrollbar {
+	width: 7px;			
+}
+#sideNav::-webkit-scrollbar-thumb {
+	background: gray;
+	border-radius: 2px;
 }

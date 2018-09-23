@@ -27,6 +27,7 @@
 <script src="{{asset('js/jquery.min.js')}}"></script>
 <script src="{{asset('js/materialize.min.js')}}"></script>
 <script src="{{asset('js/init.js')}}"></script>
+<script src="{{asset('js/aplication.js')}}"></script>
 <script src="{{asset('js/dropify.min.js')}}"></script>
 <script src="{{asset('js/sweetAlert.min.js')}}"></script>
 <script type="text/javascript">
