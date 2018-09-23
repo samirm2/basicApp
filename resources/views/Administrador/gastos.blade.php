@@ -4,6 +4,7 @@
 @endsection
 
 @section('contenido')
+<script src="http://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 <div class="caja">
 	<div class="row">
 		<div class="col s12">
@@ -40,6 +41,8 @@
 			</div>
 		</div>
 	</div>
+
+	<div id="result" style="width: 850px;height: 610px;"></div>
 </div>
 
 @include('layout._botonRojo')
@@ -59,9 +62,9 @@
 					</select>
 					<label for="tipo_gasto">Tipo de Gasto</label>
 				</div>
-				<div class="col s6" id="filebox" style="display: none;margin-top: 15px;">
+				<!-- <div class="col s6" id="filebox" style="display: none;margin-top: 15px;">
 					<button type="button" id="btnGenerar" class="btn-flat waves-effect waves-light">Generar Recibo <i class="material-icons light-green-text right">check_circle</i></button>
-				</div>
+				</div> -->
 			</div>
 			<div class="row">
 				<div class="input-field col s6">
@@ -82,7 +85,7 @@
 					<label for="observaciones">Observaciones</label>
 				</div>
 			</div>
-			<div class="row">
+			<div class="row" id="uploadbox">
 				<div id="fileEvidencia" class="input-field col s6">
 					<input type="file" class="dropify" name="imagen" data-allowed-file-extensions="jpg png gif jpeg">
 					<label for="imagen">Evidencia</label>
@@ -94,8 +97,10 @@
 					<span class="nota"><b>Para tener en cuenta:</b> Una vez se registre el gasto en el sistema, no podra modificar su informacion. Solo son permitidos archivos tipo imagen para las evidencias.</span>
 				</div>
 			</div>
+
+			<input type="text" id="paraEnviar" name="imagen_generada" value="" style="display: none;">
 	</div>
-	<div class="modal-footer">
+	<div class="modal-footer" id="optModal">
 		<a class="modal-action modal-close btn-flat">Cerrar <i class="material-icons red-text right">cancel</i></a>
 		<button type="button" id="btnRegistrar" class="btn-flat waves-effect waves-light">Registrar <i class="material-icons light-green-text right">check_circle</i></button>
 	</div>
@@ -106,6 +111,9 @@
 @section('scripts')
 <script type="text/javascript">
 	$(function(){
+		$('#modal').modal({
+			 dismissible: false
+		});
 		$('#botonRojo').click(function(){
 			limpiarCampos();
 			inputsDisabled(false);
@@ -127,22 +135,44 @@
 		});
 
 		$('#btnRegistrar').click(function(){
+			if ($('[name=tipo_gasto]').val() == 'Cotidiano') {
+				$("#optModal").css({"display":'none'});
+				enviar();
+			}else{
+				if (validarCampos('reg') == 0) {
+					$("#optModal").css({"display":'none'});
+					$.ajax({
+						url:'Gastos/Recibo?'+$('form').serialize(),
+						type:'get',
+						success:function(argument) {
+							$('#result').html(argument);
+							captura();
+						}
+					});
+				}
+			}
+			
+		});
+
+
+		function enviar() {
 			if (validarCampos('reg') == 0) {
 				$('form').submit();
 			}
-		});
+		}
 
-		$('#btnGenerar').click(function(){
-			if (validarCampos('gen') == 0) {
-				window.open('Gastos/Recibo?'+$('form').serialize(),'recibo','height=550,width=750');
-			}
-		});
+		function captura() {
+			html2canvas($("#result")[0]).then(function(canvas) {
+			    $('[name=imagen_generada]').val(canvas.toDataURL());
+			    $('form').submit();
+			});
+		}
 
 		$('[name=tipo_gasto]').change(function(e) {
 			if( $('[name=tipo_gasto]').val() == 'Cotidiano' ){
-				$('#filebox').hide();
+				$('#uploadbox').show();
 			}else{
-				$('#filebox').show();
+				$('#uploadbox').hide();
 			}
 		});
 
@@ -190,7 +220,7 @@
 			Materialize.toast('El campo Observaciones esta vacio, verifique',3000,'red');
 			bandera++;
 		}
-		if ($('[name=imagen]').val() == '' && ban == 'reg') {
+		if ($('[name=imagen]').val() == '' && ban == 'reg'  && $('[name=tipo_gasto]').val() == 'Cotidiano') {
 			Materialize.toast('No hay ninguna evidencia adjuntada',3000,'red');
 			bandera++;
 		}

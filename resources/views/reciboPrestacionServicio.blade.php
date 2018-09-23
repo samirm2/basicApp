@@ -1,9 +1,23 @@
-@extends('layout.app')
-@section('contenido')
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Altos de Ziruma I</title>
+	<link rel="stylesheet" type="text/css" href="{{asset('css/materialize.min.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{asset('css/material-icons.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{asset('css/dropify.min.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{asset('css/estilos.css')}}">
+	<link rel="icon" type="image/png" href="{{asset('img/favicon.png')}}">
+	<script src="{{asset('js/jquery.min.js')}}"></script>
+<script src="{{asset('js/materialize.min.js')}}"></script>
+<script src="{{asset('js/init.js')}}"></script>
+<script src="{{asset('js/dropify.min.js')}}"></script>
+<script src="{{asset('js/sweetAlert.min.js')}}"></script>
+</head>
 	<div class="row">
 		<div class="col s12">
 			<div class="card-panel" style="padding-bottom: 0">
-				<button id="btnImprimir" class="btn-floating cyan waves-effect right"><i class="material-icons">print</i></button>
 				<div class="row valign-wrapper">
 					<div class="col s3">
 						<img class="responsive-img" src="{{asset('img/logo.png')}}">
@@ -36,20 +50,10 @@
 					</div>
 
 					<div class="row" style="margin-bottom: 0">
-						<center><img src="http://barcode.tec-it.com/barcode.ashx?data={{date('Ymd')}}-{{date('His')}}&code=Code128&dpi=75">	</center>
+						<center><img src="/uploads/gastos/code.png"></center>
 					</div>
 				</div>
 				
 			</div>
 		</div>
 	</div>
-@endsection
-@section('scripts')
-<script type="text/javascript">
-	$(function(){
-		$('#btnImprimir').click(function(){
-			window.print();
-		});
-	});
-</script>
-@endsection

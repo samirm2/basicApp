@@ -20,7 +20,19 @@ class gastosController extends Controller
     	$gasto->concepto = request()->concepto;
     	$gasto->valor = request()->valor;
     	$gasto->observaciones = request()->observaciones;
-        $gasto->evidencia = Storage::disk('public')->put('gastos', request()->file('imagen'));
+        
+        if (request()->tipo_gasto == 'Cotidiano') {
+            $gasto->evidencia = Storage::disk('public')->put('gastos', request()->file('imagen'));
+        } else {
+            $img = str_replace('data:image/png;base64,', '', request()->imagen_generada);
+            $img = str_replace(' ', '+', $img);
+            $data = base64_decode($img);
+            $file = '../public/uploads/gastos/'. uniqid() . '.png';
+            file_put_contents($file, $data);
+
+            $gasto->evidencia = explode('uploads/', $file)[1];
+        }
+
     	if($gasto->save()){
           Alert::success('Gasto registrado correctamente','¡Enhorabuena!');
         }else{
@@ -31,6 +43,9 @@ class gastosController extends Controller
 
     public function generarRecibo(){
         date_default_timezone_set('America/Bogota');
+
+        $image = file_get_contents("http://barcode.tec-it.com/barcode.ashx?data=".date('Ymd')."-".date('His')."&code=Code128&dpi=75");
+        file_put_contents('../public/uploads/gastos/code.png', $image);
                 
         return view('reciboPrestacionServicio')->with([
             'concepto'=>request()->concepto, 
