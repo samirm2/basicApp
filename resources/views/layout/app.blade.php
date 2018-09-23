@@ -12,7 +12,7 @@
 </head>
 <body bgcolor="#fafafa">
 
-	@if(!request()->is('Administrador/Pagos/*') && !request()->is('Propietario/Pagos/*') )
+	@if(!request()->is('Administrador/Pagos/*') && !request()->is('Propietario/Pagos/*') && !request()->is('Administrador/Gastos/*') )
 	<nav class="white {{request()->is('/')?'hide':''}}">
 		<div class="brand-logo right"><a href="{{url('/')}}"><img height="60" src="{{asset('img/logo.png')}}"></a>
 		</div>

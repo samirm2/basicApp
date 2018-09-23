@@ -19,7 +19,7 @@
 <body>
 	<table>
 		<tr>
-			<th rowspan="2" style="text-align: center;"><img src="{{asset('img/logo.png')}}" height="100"></th>
+			<th rowspan="2" style="text-align: center;"><img src="img/logo.png" height="100"></th>
 			<th style="text-align: center">
                 <h3>
                     CONJUNTO CERRADO ALTOS DE ZIRUMA I <br>
@@ -35,7 +35,7 @@
 	<br><br>
 	<table>
 		<thead>
-			<tr style="height: 30px; background-color: #fafafa">
+			<tr style="height: 30px; background-color: #fafafa; text-align:center">
 				<th>Casa</th>
 				<th>Cedula</th>
 				<th>Nombres</th>

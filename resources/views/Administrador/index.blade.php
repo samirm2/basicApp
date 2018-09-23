@@ -8,7 +8,7 @@
     <div class="row valign-wrapper">
       <div class="input-field">
         <i class="material-icons prefix">payment</i>
-        <input type="number" name="cuota" value="55000" readonly="true">
+        <input type="number" name="cuota" value="50000" readonly="true">
         <label for="couta">Valor Administración</label>
       </div>
       <button id="btnCuota" class="btn-floating blue"><i class="material-icons">edit</i></button>

@@ -32,7 +32,7 @@
 <body>
 	<table>
 		<tr>
-			<th rowspan="2" style="text-align: center;"><img src="{{asset('img/logo.png')}}" height="100"></th>
+			<th rowspan="2" style="text-align: center;"><img src="img/logo.png" height="100"></th>
             <th style="text-align: center">
                 <h3>
                     CONJUNTO CERRADO ALTOS DE ZIRUMA I <br>
@@ -42,13 +42,13 @@
             </th>
 		</tr>
 		<tr>
-			<th style="text-align: center;"><h3>Listado de Propietarios</h3></th>
+			<th style="text-align: center;"><h2>Cartera</h2></th>
 		</tr>
 	</table>
 	<br><br>
 	<table>
 		<thead>
-			<tr style="height: 30px; background-color: #fafafa">
+			<tr style="height: 30px; background-color: #fafafa; text-align: center">
 				<th>Casa</th>
 				<th>Propietario</th>
 				<th>Estado</th>
@@ -61,20 +61,25 @@
                     <td>{{$casa->nombre}}</td>
                     @if(is_null($casa->miPropietario))
 						<td></td>
-						<td></td>
-						<td></td>
 					@else
-                    <td>{{$casa->miPropietario->persona->nombreCompleto}}</td>
-                    @if(!$casa->estadoCartera)
-                        <td style='text-align:center'><span class="spanEstado light-green">Al Dia</span></td>
-                    @else
-                    <td style='text-align:center'><span class="spanEstado red">Moroso</span></td>
-                    @endif
-                    <td style="text-align:right">$ {{number_format($casa->valorCuantia)}}</td>
-                    @endif
+                    	<td>{{$casa->miPropietario->persona->nombreCompleto}}</td>
+					@endif
+					
+					@if(!$casa->estadoCartera)
+						<td style='text-align:center' class="light-green">Al Dia</td>
+					@else
+						<td style='text-align:center' class="red">Moroso</td>
+					@endif
+					<td style="text-align:right">$ {{number_format($casa->valorCuantia)}}</td>
                 </tr>
                 @endforeach
 		</tbody>
+		<tfoot>
+			<tr>
+				<th colspan="3">Valor Total de la Cartera</th>
+				<th style="text-align:right">$ {{number_format($totalCartera)}}</th>
+			</tr>
+		</tfoot>
 	</table>
 </body>
 </html>

@@ -7,8 +7,10 @@
 		<div class="row">
 			<div class="col s12">
 				<div class="card-panel">
+					<h5>Contratos Activos <i class="material-icons left">assignment_turned_in</i></h5>
+					<div class="divider"></div>
 					@if(count($arrayEmpleos) > 0)
-						<ul class="collapsible" data-collapsible="accordion">
+						<ul class="collapsible popout" data-collapsible="accordion">
 							@foreach($arrayEmpleos as $empleo)
 								<li>
 							      <div class="collapsible-header">

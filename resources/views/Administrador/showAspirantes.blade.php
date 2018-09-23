@@ -10,8 +10,8 @@
 				<div class="card-panel">
 					<a href="{{url('Administrador/Empleo')}}" class="btn-floating light-blue"><i class="material-icons">arrow_back</i></a>
 					<div class="row"></div>
-					<h4>{{$empleo->cargo}}</h4>
 					<span class="spanEstado {{($empleo->estado == 'Activo') ? 'light-green' : 'grey'}}">{{$empleo->estado}}</span>
+					<h4>{{strtoupper($empleo->cargo)}}</h4>
 
 					<table class="striped centered">
 						<thead>

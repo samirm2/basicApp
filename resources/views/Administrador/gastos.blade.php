@@ -8,6 +8,8 @@
 	<div class="row">
 		<div class="col s12">
 			<div class="card-panel">
+			<h5>Gastos<i class="material-icons left">account_balance_wallet</i></h5>
+			<div class="divider"></div>
 				<table class="striped">
 					<thead>
 						<tr>
@@ -20,6 +22,12 @@
 						</tr>
 					</thead>
 					<tbody>
+						@if($gastos->count() == 0)
+						<tr>
+							<td colspan="6" style="text-align:center"><h4 class="grey-text"> <i>No Existen Registros en el Sistema</i> </h4></td>
+						</tr>
+						@endif
+
 						@foreach($gastos as $gasto)
 						<tr>
 							<td>{{$gasto->id}}</td>
@@ -151,7 +159,7 @@
 	function renderizarImagen(url){
 		var img = url;
 		img = img.split('/');
-		img[0] = '/storage';
+		img[0] = '/uploads/gastos';
 		img = img.join('/');
 		return img;
 	}
