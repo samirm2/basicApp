@@ -199,11 +199,11 @@ function graficarIngresosGastos(arrayDatos){
           }]
         },
         tooltips: {
-            mode: "index",
+            mode: "single",
             label: "myLabel",
             callbacks: {
                 label: function(tooltipItem, data) {
-                    return data.datasets[tooltipItem.datasetIndex].label + ": "+ tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                    return data.datasets[tooltipItem.datasetIndex].label + ": $ "+ tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
                 }
             }
         }

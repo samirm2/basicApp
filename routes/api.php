@@ -113,15 +113,8 @@ Route::get('charts/barras', function() {
 	$mes = \App\Mes::find($hoy->month);
 	$gastos = \App\Gasto::whereMonth('created_at',$hoy->month)->whereYear('created_at',$hoy->year)->get();
 	$pagos  = \App\Pago::where('estado','Pagado')->whereMonth('created_at',$hoy->month)->whereYear('created_at',$hoy->year)->get();
-	$totalGastos = 0;
-	$totalIngresos = 0;
-	
-	foreach($gastos as $gasto){
-		$totalGastos += $gasto->valor;
-	}
-	foreach($pagos as $pago){
-		$totalIngresos += $pago->valor;
-	}
+	$totalGastos = $gastos->sum('valor');
+	$totalIngresos = $pagos->sum('valor');
 
 	return [
 		'mes' => [$mes->nombre],
@@ -138,15 +131,8 @@ Route::get('charts/consulta/barras', function() {
 	$nombreMes = App\Mes::find($mesId)->nombre;
 	$gastos = \App\Gasto::whereMonth('created_at',$mesId)->whereYear('created_at',$ano)->get();
 	$pagos  = \App\Pago::where('estado','Pagado')->whereMonth('created_at',$mesId)->whereYear('created_at',$ano)->get();
-	$totalGastos = 0;
-	$totalIngresos = 0;
-	
-	foreach($gastos as $gasto){
-		$totalGastos += $gasto->valor;
-	}
-	foreach($pagos as $pago){
-		$totalIngresos += $pago->valor;
-	}
+	$totalGastos = $gastos->sum('valor');
+	$totalIngresos = $pagos->sum('valor');
 
 	return [
 		'mes' => [$nombreMes],
@@ -155,3 +141,31 @@ Route::get('charts/consulta/barras', function() {
 		'totalIngresos' => [$totalIngresos]
 	];
 })->name('api.chart.barras.consulta');
+
+Route::get('charts/trmiensual/barras', function() {
+	$hoy = Carbon\Carbon::now();
+	$mesAnt= Carbon\Carbon::now()->subMonth();
+	$mesDobleAnt = Carbon\Carbon::now()->subMonths(2);
+	$nombreMeses = [];
+	$gastosMeses = [];
+	$ingresosMeses = [];
+
+	$nombreMeses[0] = \App\Mes::find($mesDobleAnt->month)->nombre;
+	$nombreMeses[1] = \App\Mes::find($mesAnt->month)->nombre;
+	$nombreMeses[2] = \App\Mes::find($hoy->month)->nombre;
+	
+	$gastosMeses[0] = \App\Gasto::whereMonth('created_at',$mesDobleAnt->month)->whereYear('created_at',$mesDobleAnt->year)->get()->sum('valor');
+	$gastosMeses[1] = \App\Gasto::whereMonth('created_at',$mesAnt->month)->whereYear('created_at',$mesAnt->year)->get()->sum('valor');
+	$gastosMeses[2] = \App\Gasto::whereMonth('created_at',$hoy->month)->whereYear('created_at',$hoy->year)->get()->sum('valor');
+
+	$ingresosMeses[0] = \App\Pago::where('estado','Pagado')->whereMonth('created_at',$mesDobleAnt->month)->whereYear('created_at',$mesDobleAnt->year)->get()->sum('valor');
+	$ingresosMeses[1] = \App\Pago::where('estado','Pagado')->whereMonth('created_at',$mesAnt->month)->whereYear('created_at',$mesAnt->year)->get()->sum('valor');
+	$ingresosMeses[2] = \App\Pago::where('estado','Pagado')->whereMonth('created_at',$hoy->month)->whereYear('created_at',$hoy->year)->get()->sum('valor');
+
+	return [
+		'mes' => $nombreMeses,
+		'totalGastos' => $gastosMeses,
+		'totalIngresos' => $ingresosMeses
+	];
+
+})->name('api.chart.barras.trimensual');

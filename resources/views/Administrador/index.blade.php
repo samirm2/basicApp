@@ -15,10 +15,15 @@
     </div>
 		<div class="row">
 			<div class="col s12 m6">
-				<canvas id="graficoBarras"></canvas>		
+        <div class="card-panel" style="padding:10px">
+            <canvas id="graficoBarras"></canvas>		
+        </div>
+				
 			</div>
 			<div class="col s12 m6">
-				<canvas id="graficoPie"></canvas>
+        <div class="card-panel" style="padding:10px">
+          <canvas id="graficoPie"></canvas>
+        </div>
 			</div>
 		</div>
 	</div>
@@ -39,16 +44,34 @@
         $("[name=cuota]").attr('readonly','true');
       }
     });
+    
+    $.ajax({
+      url:'{{Route("api.chart.barras.trimensual")}}',
+      type:'get',
+      dataType:'json',
+      success: function(rta){
+        graficarBalanceTrimensual(rta);
+      }
+    });
 
-    var ctx =$('#graficoBarras');
-    var ctxx =$('#graficoPie');
-    var graficas = new Chart(ctx,{
+    $.ajax({
+      url:'{{Route("api.chart.pie")}}',
+      type:'get',
+      dataType:'json',
+      success: function(rta){        
+        graficarBalancePagos(rta);
+      }
+    });
+  });
+
+  function graficarBalanceTrimensual(arrayDatos){
+    var grafica = new Chart($('#graficoBarras'),{
       type: 'bar',
       data: {
-        labels: ["Noviembre", "Diciembre", "Enero"],
+        labels: arrayDatos.mes,
         datasets: [{
           label: 'Ingresos',
-          data: [1200000, 1600000, 2000000],
+          data: arrayDatos.totalIngresos,
           backgroundColor: [
             'rgba(76, 209, 55,0.2)',
             'rgba(76, 209, 55,0.2)',
@@ -63,7 +86,7 @@
         },
         {
           label: 'Gastos',
-          data: [700000, 1000000, 1800000],
+          data: arrayDatos.totalGastos,
           backgroundColor: [
             'rgba(231, 76, 60,0.4)',
             'rgba(231, 76, 60,0.4)',
@@ -82,58 +105,59 @@
         title: {
           display: true,
           fontSize: 18,
-          text: 'Balance Mensual de Ingresos y Gastos'
+          text: 'Balance Trimensual de Ingresos y Gastos'
         },
         scales: {
           yAxes: [{
             ticks: {
-              beginAtZero:true
+              beginAtZero:true,
+              callback: function(value, index, values) { 
+                return '$ ' + number_format(value); 
+              }
             }
           }]
+        },
+        tooltips: {
+          enabled: true,
+          mode: 'single',
+          callbacks: {
+            label: function(tooltipItems, data) {
+              return data.datasets[tooltipItems.datasetIndex].label + ": $ "+ tooltipItems.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            },
+          }
         }
       }
     });
-    
-    $.ajax({
-      url:'{{Route("api.chart.pie")}}',
-      type:'get',
-      dataType:'json',
-      success: function(rta){
-        console.log(rta);
-        graficarBalancePagos(rta);
-      }
+  }
+
+  function graficarBalancePagos(arrayDatos){
+    var grafica = new Chart($('#graficoPie'),{
+      type: 'pie',
+      data: {
+        labels: ["Casas al Dia", "Casas Deudoras"],
+        datasets: [{
+          //data: [54, 38],
+          data: [arrayDatos.casasAlDia, arrayDatos.casasMorosas],
+          backgroundColor: [
+            'rgba(76, 209, 55,1.0)',
+            'rgba(72, 126, 176,1.0)'
+          ],
+          borderColor: [
+            'rgba(76, 209, 55,1.0)',
+            'rgba(72, 126, 176,1.0)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+          title: {
+            display: true,
+            fontSize: 18,
+            text: 'Balance de Pagos mes '+arrayDatos.mes +" "+arrayDatos.año
+          }
+      }   
     });
+  }
 
-    function graficarBalancePagos(arrayDatos){
-      var graficass = new Chart(ctxx,{
-        type: 'pie',
-        data: {
-          labels: ["Casas al Dia", "Casas Deudoras"],
-          datasets: [{
-            //data: [54, 38],
-            data: [arrayDatos.casasAlDia, arrayDatos.casasMorosas],
-            backgroundColor: [
-              'rgba(76, 209, 55,1.0)',
-              'rgba(72, 126, 176,1.0)'
-            ],
-            borderColor: [
-              'rgba(76, 209, 55,1.0)',
-              'rgba(72, 126, 176,1.0)'
-            ],
-            borderWidth: 1
-          }]
-        },
-        options: {
-            title: {
-              display: true,
-              fontSize: 18,
-              text: 'Balance de Pagos mes '+arrayDatos.mes +" "+arrayDatos.año
-            }
-        }   
-      });
-    }
-
-
-  });
 </script>
 @endsection
