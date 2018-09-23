@@ -32,7 +32,7 @@
 <body>
 	<table>
 		<tr>
-			<th rowspan="2" style="text-align: center;"><img src="{{asset('img/logo.png')}}" height="100"></th>
+			<th rowspan="2" style="text-align: center;"><img src="img/logo.png" height="100"></th>
             <th style="text-align: center">
                 <h3>
                     CONJUNTO CERRADO ALTOS DE ZIRUMA I <br>

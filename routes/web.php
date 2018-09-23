@@ -146,8 +146,12 @@ Route::group(['middleware'=>['auth','administrador']],function(){
 			$casas = \App\Casa::all();
 			$hoy = Carbon\Carbon::now();
 			$nombreArchivo = 'Cartera'.$hoy->year.'-'.$hoy->month.'-'.$hoy->day.'.pdf';
-			$pdf = PDF::loadView('reportes.imprimirCartera',compact('casas'));
-			$pdf->setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif','isRemoteEnabled'=>false]);
+			$totalCartera = 0;
+			foreach($casas as $casa){
+				$totalCartera += $casa->valorCuantia;
+			}	
+			$pdf = PDF::loadView('reportes.imprimirCartera',compact('casas','totalCartera'));
+			$pdf->setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif','isRemoteEnabled'=>true]);
 			return $pdf->stream($nombreArchivo);
 		
 			// return view('reportes.paz_y_salvo', compact('casa','hoy','mes'));

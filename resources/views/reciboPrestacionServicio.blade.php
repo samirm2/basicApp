@@ -37,16 +37,14 @@
 					</center>
 					<div class="divider"></div>
 					<div class="row">
-						<span><b>Generado el:</b> {{date('Y-m-d')}}</span> 
+						<span><b>Generado el:</b> {{date('Y-m-d H:i:s')}}</span>
+						<span class="right"><b>Valor: </b> $ {{number_format($valor)}}</span>
 					</div>
 					<div class="row">
 						<span><b>Concepto:</b> {{$concepto}}</span> 
 					</div>
 					<div class="row">
 						<span><b>Observaciones: </b> {{$observaciones}}</span>
-					</div>
-					<div class="row">
-						<span class="right"><b>Valor: </b> $ {{number_format($valor)}}</span>
 					</div>
 
 					<div class="row" style="margin-bottom: 0">

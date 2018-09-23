@@ -95,7 +95,7 @@ class empleoController extends Controller
             }
         } catch (Exception $e) {
             if ($e->getCode() == 23000) {
-                Alert::error('Ya está registrada la cédula en los registros','Opps!')->autoclose(3000);
+                Alert::error('Esta cedula ya se encuentra almacenada en nuestros registros','Opps!')->autoclose(3000);
                 return back();
             }
         }

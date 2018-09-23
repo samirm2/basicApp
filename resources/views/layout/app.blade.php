@@ -12,7 +12,7 @@
 </head>
 <body bgcolor="#fafafa">
 
-	@if(!request()->is('Administrador/Pagos/*') && !request()->is('Propietario/Pagos/*') )
+	@if(!request()->is('Administrador/Pagos/*') && !request()->is('Propietario/Pagos/*') && !request()->is('Administrador/Gastos/*') )
 	<nav class="white {{request()->is('/')?'hide':''}}">
 		<div class="brand-logo right"><a href="{{url('/')}}"><img height="60" src="{{asset('img/logo.png')}}"></a>
 		</div>
@@ -27,6 +27,7 @@
 <script src="{{asset('js/jquery.min.js')}}"></script>
 <script src="{{asset('js/materialize.min.js')}}"></script>
 <script src="{{asset('js/init.js')}}"></script>
+<script src="{{asset('js/aplication.js')}}"></script>
 <script src="{{asset('js/dropify.min.js')}}"></script>
 <script src="{{asset('js/sweetAlert.min.js')}}"></script>
 <script type="text/javascript">

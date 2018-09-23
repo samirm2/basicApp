@@ -8,16 +8,16 @@
     <div class="row valign-wrapper">
       <div class="input-field">
         <i class="material-icons prefix">payment</i>
-        <input type="number" name="cuota" value="55000" readonly="true">
+        <input type="number" name="cuota" value="50000" readonly="true">
         <label for="couta">Valor Administración</label>
       </div>
       <button id="btnCuota" class="btn-floating blue"><i class="material-icons">edit</i></button>
     </div>
 		<div class="row">
-			<div class="col s6">
+			<div class="col s12 m6">
 				<canvas id="graficoBarras"></canvas>		
 			</div>
-			<div class="col s6">
+			<div class="col s12 m6">
 				<canvas id="graficoPie"></canvas>
 			</div>
 		</div>

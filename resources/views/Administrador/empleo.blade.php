@@ -7,6 +7,8 @@
 		<div class="row">
 			<div class="col s12">
 				<div class="card-panel">
+				<h5>Ofertas de Empleo<i class="material-icons left">work</i></h5>
+				<div class="divider"></div>
 					<table class="striped centered">
 						<thead>
 							<tr>
@@ -21,6 +23,11 @@
 							</tr>
 						</thead>
 						<tbody>
+							@if($arrayEmpleos->count() == 0)
+							<tr>
+								<td colspan="8" style="text-align:center"><h4 class="grey-text"> <i>No Existen Registros en el Sistema</i> </h4></td>
+							</tr>
+							@endif
 							@foreach($arrayEmpleos as $empleo)
 							<tr>
 								<td>{{$empleo->id}}</td>

@@ -18,7 +18,7 @@
 					@foreach($arrayEmpleos as $empleo)
 						@if($empleo->estado == 'Activo')
 							<div class="card-panel">
-								<h5>{{$empleo->cargo}}</h5>
+								<h5>{{strtoupper($empleo->cargo)}}</h5>
 								<p><b>Descripcion de la vacante:</b> {{$empleo->descripcion}}.</p>
 								<p><b>Salario: </b>${{number_format($empleo->salario)}} pesos {{$empleo->tipo_salario}}</p>
 								<p><b>Tiempo del contrato: </b>{{$empleo->duracion ." ". $empleo->tipo_duracion}}.</p>
@@ -42,31 +42,31 @@
 				{{csrf_field()}}
 				<input type="hidden" name="empleo">
 				<div class="input-field col s6">
-					<i class="material-icons prefix red-text">label_outline</i>
+					<i class="material-icons prefix">perm_identity</i>
 					<input type="text" name="cc">
-					<label for="cc">Cédula</label>
+					<label for="cc">Cédula*</label>
 				</div>
 				<div class="input-field col s6">
-					<i class="material-icons prefix red-text">label_outline</i>
+					<i class="material-icons prefix">label</i>
 					<input type="text" name="nombres">
-					<label for="nombres">Nombres</label>
+					<label for="nombres">Nombres*</label>
 				</div>
 				<div class="input-field col s6">
-					<i class="material-icons prefix red-text">label</i>
+					<i class="material-icons prefix">label_important</i>
 					<input type="text" name="apellidos">
-					<label for="apellidos">Apellidos</label>
+					<label for="apellidos">Apellidos*</label>
 				</div>
 				<div class="input-field col s6">
-					<i class="material-icons prefix red-text">mail</i>
+					<i class="material-icons prefix">mail</i>
 					<input type="text" name="email">
-					<label for="email">Correo Electronico</label>
+					<label for="email">Correo Electronico*</label>
 				</div>
 				<div class="input-field col s6">
 					<input type="file" name="archivo" class="dropify" data-allowed-file-extensions="pdf docx">
-					<label for="Hoja de vida">Hoja de Vida</label>
+					<label for="Hoja de vida">Hoja de Vida*</label>
 				</div>
 				
-				<span class="red-text nota"><b>Recuerde: </b>Los Campos que tienen el icono en color rojo, son campos obligatorios. Debe adjuntar su hoja de vida en el campo indicado. el tipo de archivo aceptado será .pdf o .docx.</span>
+				<span class="red-text nota"><b>Recuerde: </b> Todos los campos son obligatorios. Debe adjuntar su hoja de vida en el campo indicado. el tipo de archivo aceptado será .pdf o .docx.</span>
 				
 			</div>
 		</div>

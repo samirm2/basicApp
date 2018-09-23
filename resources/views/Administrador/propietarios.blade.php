@@ -10,7 +10,7 @@
 			@include('layout._mostrarMensajeFlash')
 			<div class="card-panel">
 				<a target="_blank" href="{{route('reportesProp')}}" class="btn-floating right tooltipped blue" data-tooltip='imprimir' data-position='left' data-delay='20'><i class="material-icons">print</i></a>
-				<h3 class="center"><i class="material-icons small">face</i> Propietarios Altos de Ziruma I</h3>
+				<h3 class="center">Propietarios Altos de Ziruma I</h3>
 				<div class="divider"></div>
 				<table class="striped">
 					<thead>

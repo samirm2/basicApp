@@ -81,7 +81,7 @@ Route::get('charts/pie', function() {
 	$mesActual = $hoy->month;
 	$anoActual = $hoy->year;
 	$nombreMes = App\Mes::find($mesActual)->nombre;
-	$pagosActual = App\Pago::where('mes_id',$mesActual)->get();
+	$pagosActual = App\Pago::where('mes_id',$mesActual)->whereYear('created_at',$anoActual)->get();
 	$pagosPendientes = $pagosActual->where('estado','Pendiente')->count();
 	$pagosPagados = $pagosActual->where('estado','Pagado')->count();
 	return [
@@ -92,12 +92,12 @@ Route::get('charts/pie', function() {
 	];
 })->name('api.chart.pie');
 
-Route::get('charts/pies', function() {
+Route::get('charts/consulta/pies', function() {
 	
 	$mesId = request()->mes;
 	$ano = request()->ano;
 	$nombreMes = App\Mes::find($mesId)->nombre;
-	$pagosConsulta = App\Pago::where('mes_id',$mesId)->get();
+	$pagosConsulta = App\Pago::where('mes_id',$mesId)->whereYear('created_at',$ano)->get();
 	$pagosPendientes = $pagosConsulta->where('estado','Pendiente')->count();
 	$pagosPagados = $pagosConsulta->where('estado','Pagado')->count();
 	return [
@@ -108,3 +108,50 @@ Route::get('charts/pies', function() {
 	];
 })->name('api.chart.pie.consulta');
 
+Route::get('charts/barras', function() {
+	$hoy = Carbon\Carbon::now();
+	$mes = \App\Mes::find($hoy->month);
+	$gastos = \App\Gasto::whereMonth('created_at',$hoy->month)->whereYear('created_at',$hoy->year)->get();
+	$pagos  = \App\Pago::where('estado','Pagado')->whereMonth('created_at',$hoy->month)->whereYear('created_at',$hoy->year)->get();
+	$totalGastos = 0;
+	$totalIngresos = 0;
+	
+	foreach($gastos as $gasto){
+		$totalGastos += $gasto->valor;
+	}
+	foreach($pagos as $pago){
+		$totalIngresos += $pago->valor;
+	}
+
+	return [
+		'mes' => [$mes->nombre],
+		'año' => $hoy->year,
+		'totalGastos' => [$totalGastos],
+		'totalIngresos' => [$totalIngresos]
+	];
+
+})->name('api.chart.barras');
+
+Route::get('charts/consulta/barras', function() {
+	$mesId = request()->mes;
+	$ano = request()->ano;
+	$nombreMes = App\Mes::find($mesId)->nombre;
+	$gastos = \App\Gasto::whereMonth('created_at',$mesId)->whereYear('created_at',$ano)->get();
+	$pagos  = \App\Pago::where('estado','Pagado')->whereMonth('created_at',$mesId)->whereYear('created_at',$ano)->get();
+	$totalGastos = 0;
+	$totalIngresos = 0;
+	
+	foreach($gastos as $gasto){
+		$totalGastos += $gasto->valor;
+	}
+	foreach($pagos as $pago){
+		$totalIngresos += $pago->valor;
+	}
+
+	return [
+		'mes' => [$nombreMes],
+		'año' => $ano,
+		'totalGastos' => [$totalGastos],
+		'totalIngresos' => [$totalIngresos]
+	];
+})->name('api.chart.barras.consulta');
