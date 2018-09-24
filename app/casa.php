@@ -16,7 +16,7 @@ class Casa extends Model
 
     public function getEstadoCarteraAttribute()
     {
-        $pagos_pendientes  = $this->pagos->where('estado','Pendiente')->sum('valor');
+        $pagos_pendientes  = $this->pagos->where('estado','Pendiente')->sum('saldo');
         if($pagos_pendientes <= 0){
             return false; //Al dia
         }else{
@@ -26,6 +26,6 @@ class Casa extends Model
 
     public function getValorCuantiaAttribute()
     {
-        return $this->pagos->where('estado','Pendiente')->sum('valor');
+        return $this->pagos->where('estado','Pendiente')->sum('saldo');
     }
 }

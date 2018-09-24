@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pago extends Model
 {
-    protected $fillable = ['casa_id','mes_id','valor',];
+    protected $fillable = ['casa_id','mes_id','valor','saldo'];
 
     public function casa(){
         return $this->belongsTo('\App\Casa');

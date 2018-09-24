@@ -24,7 +24,6 @@
 						@endforeach
 					</ul>
 
-
 					<table class="striped">
 						<thead>
 							<tr>
@@ -33,6 +32,8 @@
 								<th>Mes</th>
 								{{--  <th>Periodo</th>  --}}
 								<th>Valor a Pagar</th>
+								<th>Valor Pagado</th>
+								<th>Saldo</th>
 								<th>Se Generó</th>
 								<th>Estado</th>
 								<th>Fecha de Pago</th>
@@ -47,6 +48,8 @@
 								<td>{{$pago->mesPago->nombre}}</td>
 								{{--  <td>01/01/2018 - 31/01/2018</td>  --}}
 								<td>$ {{number_format($pago->valor)}}</td>
+								<td>$ {{number_format($pago->valorPagado)}}</td>
+								<td>$ {{number_format($pago->saldo)}}</td>
 								<td>{{$pago->created_at->diffForHumans()}}</td>
 								@if($pago->estado == 'Pendiente')
 									<td><span class="spanEstado yellow darken-2">{{$pago->estado}}</span></td>
@@ -85,8 +88,8 @@
 					<label for="factura">N° Factura</label>
 				</div>
 				<button id="btnBuscarFactura" class="btn-flat waves-effect" style="padding: 0px 5px"><i class="material-icons">search</i></button>
-				</div>
-				<div class="row">
+			</div>
+			<div class="row">
 				<div class="input-field col s6">
 					<i class="material-icons prefix">home</i>
 					<input type="text" name="casa">
@@ -107,29 +110,8 @@
 					<input type="text" name="valorPagar">
 					<label for="valorPagar">Valor a Pagar</label>
 				</div>
-				<div class="row"></div>
-					<div class="switch col s6">
-						<span>Abonar</span><br>
-				    <label>
-				      No
-				      <input name="abonar" type="checkbox">
-				      <span class="lever"></span>
-				      Si
-				    </label>
-				  </div>
-				  <div id="abonar" class="hide">
-				  <div class="input-field col s6">
-				  	<i class="material-icons prefix">multiline_chart</i>
-						<input type="text" name="casa">
-						<label for="casa">Valor del Abono</label>
-				  </div>
-				  <div class="input-field col s6">
-				  	<i class="material-icons prefix">monetization_on</i>
-						<input type="text" name="casa">
-						<label for="casa">Saldo Pendiente</label>
-				  </div>
-				  </div>
 			</div>
+			
 		</div>
 		<div class="modal-footer">
 			<a class="btn-flat modal-action modal-close">Cancelar <i class="material-icons right red-text">cancel</i></a>
@@ -137,7 +119,7 @@
 		</div>
 	</div>
 
-	<div class="modal modal-fixed-footer" id="modalCasas">
+	<div class="modal modal-fixed-footer" id="modalCasas" style="width: 70%">
 		<div class="modal-content">
 			<h3>Pagos de Casa </h3>
 			<div class="divider"></div>
@@ -155,6 +137,8 @@
 						<th>Factura N°</th>
 						<th>Mes</th>
 						<th>Valor a Pagar</th>
+						<th>Valor Abonado</th>
+						<th>Saldo Pendiente</th>
 						<th>Estado</th>
 						<th>Fecha de Pago</th>
 						<th colspan="2">Acciones</th>
@@ -200,7 +184,9 @@
 								$('#tableCasaPago').append(
 									'<tr><td>'+rta[casa].id+'</td>'+
 										'<td>'+rta[casa].mes_pago.nombre+'</td>'+
-										'<td> $ '+rta[casa].valor+'</td>'+
+										'<td> $'+rta[casa].valor+'</td>'+
+										'<td> $'+rta[casa].valorPagado+'</td>'+
+										'<td> $'+rta[casa].saldo+'</td>'+
 										'<td><span class="spanEstado '+color+'">'+rta[casa].estado+'</span></td>'+
 										'<td>'+rta[casa].fecha_pago +'</td>'+
 										'<td><a href="./Pagos/'+rta[casa].id+'" class="btn-floating cyan verFactura"><i class="material-icons">visibility</i></a></td>'+
@@ -314,14 +300,6 @@
 						}
 					}
 				});
-			}
-		});
-
-		$('[name=abonar]').change(function(){
-			if($(this).is(':checked')){
-				$('#abonar').removeClass('hide');
-			}else{
-				$('#abonar').addClass('hide');
 			}
 		});
 	});

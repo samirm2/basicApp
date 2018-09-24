@@ -51,16 +51,31 @@
         </div>
     </div>
 
-    <div class="modal modal-fixed-footer" id="modalPagos" style="width:60%">
+    <div class="modal modal-fixed-footer" id="modalPagos" style="width:75%">
         <div class="modal-content">
-            <h4><i class="material-icons">account_balance</i> Pagos de la Casa <span id="spanNCasa"></span> </h4>
+            <h5>
+                <i class="material-icons">how_to_vote</i> Pagos de la <b>Casa <span id="spanNCasa"></span></b>
+                <div class="switch right">
+                    <small>Abonar</small><br>
+                    <label>
+                    No
+                    <input name="abonar" type="checkbox">
+                    <span class="lever"></span>
+                    Si
+                    </label>
+                </div>
+            </h5>
+            
             <div class="divider"></div>
             <table class="highlight bordered">
                 <thead>
-                    <tr>
-                        <th>Factura N°</th>
+                    <tr style="text-align:center">
+                        <th></th>
+                        <th>N° Factura</th>
                         <th>Mes</th>
                         <th>Valor a Pagar</th>
+                        <th>Valor Pagado</th>
+                        <th>Saldo</th>
                         <th>Estado</th>
                         <th>Fecha de Pago</th>
                         <th colspan="2">Acciones</th>
@@ -68,6 +83,32 @@
                 </thead>
                 <tbody id="tableCasaPago"></tbody>
             </table>
+            <div class="row"></div>
+            
+            <div id="abonar" class="hide">
+                <div class="row">
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">multiline_chart</i>
+                        <input type="number" name="valorAbono">
+                        <label for="valorAbono">Valor del Abono</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">monetization_on</i>
+                        <input type="number" name="saldoTotal" readonly="true" value="0">
+                        <label for="saldoTotal">Saldo Total</label>
+                        </div>
+                </div>
+                <div class="row valign-wrapper">
+                    <div class="input-field">
+                        <i class="material-icons prefix">money_off</i>
+                        <input type="number" name="saldoPendiente" readonly="true" value="0">
+                        <label for="saldoPendiente">Saldo Pendiente</label>
+                    </div>
+                    
+                    <button class="btn cyan right" id="btnAbonar">Abonar <i class="material-icons right">done</i></button>
+                </div>
+            </div>
+			
         </div>
         <div class="modal-footer">
             <button class="btn-flat modal-action modal-close">Cerrar <i class="material-icons right">close</i></button>
@@ -79,6 +120,77 @@
 @section('scripts')
 <script>
     $(function(){
+        var valorAcumulado =0;
+        $('#btnAbonar').click(function(){
+            if($('[name=valorAbono]').val() == 0){
+                Materialize.toast('Error, No hay abono registrado',1500,'red darken-2');
+            }else{
+                if($('[name=saldoTotal]').val() == 0){
+                    Materialize.toast('Error, No hay pagos seleccionados',1500,'red darken-2');
+                }else{
+                    if($('[name=valorAbono]').val() > $('[name=saldoTotal]').val()){
+                    Materialize.toast('Advertencia, El abono es mayor que los pagos',1500,'amber'); 
+                    }else{
+                        var listaPagos = [];
+                        $("[name=selectCasa]").each(function(){
+                            listaPagos.push($(this).data('nfactura'));
+                        });
+
+                        $.ajax({
+                            url:'{{route("pagos.abonar")}}',
+                            method:'post',
+                            data:{
+                                '_token': "{{csrf_token()}}",
+                                'facturasId': listaPagos,
+                                'abono': $('[name=valorAbono]').val()
+                                },
+                            dataType:'json',
+                            success: function(rta){
+                                if(rta.bandera == 1){
+                                    swal({
+                                        icon: 'success',
+                                        title: 'Abono Realizado Satisfactoriamente'
+                                    }).then(value => {
+                                        window.location.reload();
+                                    });
+                                }
+                            }
+                        });
+                    }
+                }
+                
+            }
+            
+		});
+
+        $('[name=valorAbono]').change(function(){
+            $('[name=saldoPendiente]').val(0);
+            if($('[name=saldoTotal]').val() != 0 && $(this).val() < $('[name=saldoTotal]').val()){
+                valorAcumulado = valorAcumulado - $(this).val();
+                $('[name=saldoPendiente]').val(valorAcumulado);
+            } 
+		});
+
+        $('#tableCasaPago').on('change','[name=selectCasa]',function(){
+                if($(this).is(':checked')){
+                    valorAcumulado += parseFloat($(this).data('valor'))*1000;
+                }else{
+                    valorAcumulado -= parseFloat($(this).data('valor'))*1000;
+                    if(valorAcumulado < 0){
+                        valorAcumulado = 0;
+                    }
+                }
+                $('[name=saldoTotal]').val(valorAcumulado);
+        });
+
+        $('[name=abonar]').change(function(){
+			if($(this).is(':checked')){
+				$('#abonar').removeClass('hide');
+			}else{
+				$('#abonar').addClass('hide');
+			}
+		});
+
         $('.generarPazySalvo').click(function(){
 			window.open($(this).attr('href'),'pago','height=600,width=750');
 			return false;
@@ -88,6 +200,7 @@
 			return false;
 		});
         $('.buscarPagos').click(function(){
+            valorAcumulado = 0;
             $('#spanNCasa').text($(this).data('casa'));
             $.ajax({
                 url:'{{route("api.pagos.casas")}}',
@@ -109,9 +222,12 @@
                         }
 
                         $('#tableCasaPago').append(
-                            '<tr><td>'+rta[casa].id+'</td>'+
+                            '<tr><td> <input class="filled-in" type="checkbox" name="selectCasa" id="'+rta[casa].id+'" data-nFactura="'+rta[casa].id+'" data-valor="'+rta[casa].saldo+'"><label for="'+rta[casa].id+'"> </label></td>'+
+                                '<td>'+rta[casa].id+'</td>'+
                                 '<td>'+rta[casa].mes_pago.nombre+'</td>'+
-                                '<td> $ '+rta[casa].valor+'</td>'+
+                                '<td> $'+rta[casa].valor+'</td>'+
+                                '<td> $'+rta[casa].valorPagado+'</td>'+
+                                '<td> $'+rta[casa].saldo+'</td>'+
                                 '<td><span class="spanEstado '+color+'">'+rta[casa].estado+'</span></td>'+
                                 '<td>'+rta[casa].fecha_pago +'</td>'+
                                 '<td><a href="./Pagos/'+rta[casa].id+'" class="btn-floating cyan verFactura"><i class="material-icons">visibility</i></a></td>'         

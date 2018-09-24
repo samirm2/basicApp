@@ -71,6 +71,8 @@ Route::get('casa/pagos', function() {
 	foreach($pagos as $pago){
 		$pago['mes']=$pago->mesPago->nombre;
 		$pago->valor = number_format($pago->valor);
+		$pago->valorPagado = number_format($pago->valorPagado);
+		$pago->saldo = number_format($pago->saldo);
 	}
 	return $pagos;
 })->name('api.pagos.casas');
@@ -112,9 +114,10 @@ Route::get('charts/barras', function() {
 	$hoy = Carbon\Carbon::now();
 	$mes = \App\Mes::find($hoy->month);
 	$gastos = \App\Gasto::whereMonth('created_at',$hoy->month)->whereYear('created_at',$hoy->year)->get();
-	$pagos  = \App\Pago::where('estado','Pagado')->whereMonth('created_at',$hoy->month)->whereYear('created_at',$hoy->year)->get();
+	//$pagos  = \App\Pago::where('estado','Pagado')->whereMonth('created_at',$hoy->month)->whereYear('created_at',$hoy->year)->get();
+	$pagos  = \App\Pago::whereMonth('created_at',$hoy->month)->whereYear('created_at',$hoy->year)->get();
 	$totalGastos = $gastos->sum('valor');
-	$totalIngresos = $pagos->sum('valor');
+	$totalIngresos = $pagos->sum('valorPagado');
 
 	return [
 		'mes' => [$mes->nombre],
@@ -130,9 +133,10 @@ Route::get('charts/consulta/barras', function() {
 	$ano = request()->ano;
 	$nombreMes = App\Mes::find($mesId)->nombre;
 	$gastos = \App\Gasto::whereMonth('created_at',$mesId)->whereYear('created_at',$ano)->get();
-	$pagos  = \App\Pago::where('estado','Pagado')->whereMonth('created_at',$mesId)->whereYear('created_at',$ano)->get();
+	// $pagos  = \App\Pago::where('estado','Pagado')->whereMonth('created_at',$mesId)->whereYear('created_at',$ano)->get();
+	$pagos  = \App\Pago::whereMonth('created_at',$hoy->month)->whereYear('created_at',$hoy->year)->get();
 	$totalGastos = $gastos->sum('valor');
-	$totalIngresos = $pagos->sum('valor');
+	$totalIngresos = $pagos->sum('valorPagado');
 
 	return [
 		'mes' => [$nombreMes],
@@ -158,9 +162,12 @@ Route::get('charts/trmiensual/barras', function() {
 	$gastosMeses[1] = \App\Gasto::whereMonth('created_at',$mesAnt->month)->whereYear('created_at',$mesAnt->year)->get()->sum('valor');
 	$gastosMeses[2] = \App\Gasto::whereMonth('created_at',$hoy->month)->whereYear('created_at',$hoy->year)->get()->sum('valor');
 
-	$ingresosMeses[0] = \App\Pago::where('estado','Pagado')->whereMonth('created_at',$mesDobleAnt->month)->whereYear('created_at',$mesDobleAnt->year)->get()->sum('valor');
-	$ingresosMeses[1] = \App\Pago::where('estado','Pagado')->whereMonth('created_at',$mesAnt->month)->whereYear('created_at',$mesAnt->year)->get()->sum('valor');
-	$ingresosMeses[2] = \App\Pago::where('estado','Pagado')->whereMonth('created_at',$hoy->month)->whereYear('created_at',$hoy->year)->get()->sum('valor');
+	// $ingresosMeses[0] = \App\Pago::where('estado','Pagado')->whereMonth('created_at',$mesDobleAnt->month)->whereYear('created_at',$mesDobleAnt->year)->get()->sum('valorPagado');
+	// $ingresosMeses[1] = \App\Pago::where('estado','Pagado')->whereMonth('created_at',$mesAnt->month)->whereYear('created_at',$mesAnt->year)->get()->sum('valorPagado');
+	// $ingresosMeses[2] = \App\Pago::where('estado','Pagado')->whereMonth('created_at',$hoy->month)->whereYear('created_at',$hoy->year)->get()->sum('valorPagado');
+	$ingresosMeses[0] = \App\Pago::whereMonth('created_at',$mesDobleAnt->month)->whereYear('created_at',$mesDobleAnt->year)->get()->sum('valorPagado');
+	$ingresosMeses[1] = \App\Pago::whereMonth('created_at',$mesAnt->month)->whereYear('created_at',$mesAnt->year)->get()->sum('valorPagado');
+	$ingresosMeses[2] = \App\Pago::whereMonth('created_at',$hoy->month)->whereYear('created_at',$hoy->year)->get()->sum('valorPagado');
 
 	return [
 		'mes' => $nombreMeses,

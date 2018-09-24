@@ -60,6 +60,7 @@ Route::group(['middleware'=>['auth','administrador']],function(){
 		  $bandeja = 'entrada';
 			return view('Administrador.pqrs',compact('tipoPqrs','listaPqrs','bandeja'));
 		});
+
 		Route::get('pqrs/{id}', 'pqrsController@verMensajesPqrs');
 		Route::post('pqrs/{id}','pqrsController@responderPqrs');
 			
@@ -72,6 +73,7 @@ Route::group(['middleware'=>['auth','administrador']],function(){
 		Route::get('Pagos/{facturaId}', 'pagosController@showPago')->name('pagos.examinar');
 		Route::get('Pagos/generar/{mes}', 'pagosController@generarRecibos')->name('pagos.generar');
 		Route::post('Pagos', 'pagosController@realizarPago')->name('pagos.pagar');
+		Route::post('Pagos/abonar', 'pagosController@abonarPago')->name('pagos.abonar');
 
 		Route::get('Cartera', function () {
 			$casasPaginate = \App\Casa::paginate(10);
@@ -112,7 +114,7 @@ Route::group(['middleware'=>['auth','administrador']],function(){
 			}
 			
 			$nombreMes  = \App\Mes::find($mes)->nombre;
-			$pagosMes = App\Pago::where('mes_id',$mes)->get();
+			$pagosMes = App\Pago::where('mes_id',$mes)->whereYear('created_at',2018)->get();
 			$casaAlDia = $pagosMes->where('estado','Pagado')->count();
 			$casaPendiente = $pagosMes->where('estado','Pendiente')->count();
 			$casas = \App\Casa::all();
