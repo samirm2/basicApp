@@ -54,7 +54,7 @@ class pagosController extends Controller
         $facturaId = Request()->facturaId;
         $factura = Pago::find($facturaId);
         $factura->estado = 'Pagado';
-        $factura->valorPagado = 50000;
+        $factura->valorPagado += $factura->saldo;
         $factura->saldo = $factura->valor - $factura->valorPagado;
         $factura->fecha_pago = Carbon::now();
         $factura->save();
@@ -63,23 +63,18 @@ class pagosController extends Controller
 
     public function abonarPago(){
         $facturasId = Request()->facturasId;
-        if(count($facturasId) == 1){
-            $factura = Pago::find($facturasId[0]);
-            $pagoAnterior = $factura->valorPagado;
-            $factura->valorPagado = Request()->abono;
-            $factura->saldo = $factura->saldo - $factura->valorPagado;
+        $abono = Request()->abono;
+        foreach($facturasId as $pago){
+            $factura = Pago::find($pago);
+            $factura->valorPagado += $abono;
+            $factura->saldo = $factura->valor - $factura->valorPagado;
             if($factura->saldo == 0){
                 $factura->estado = 'Pagado';
             }
-            $factura->valorPagado += $pagoAnterior;
             $factura->fecha_pago = Carbon::now();
             $factura->save();
-            return ['bandera' => 1];
-        }else{
-            //multiples facturas
-            return ['bandera' => 0];
         }
-        
+        return ['bandera' => 1];
     }
 
     public function showPago($id){

@@ -36,7 +36,7 @@
                                 @endif
                                 <td>$ {{number_format($casa->valorCuantia)}}</td>
                                 <td>
-                                    <a class="btn-floating cyan buscarPagos modal-trigger" href="#modalPagos" data-casa='{{$casa->id}}' ><i class="material-icons">search</i></a>
+                                    <a class="btn-floating cyan buscarPagos modal-trigger" href="#modalPagos" data-casa="{{$casa->id}}" data-estado='{{$casa->estadoCartera}}'><i class="material-icons">search</i></a>
                                     @if(!$casa->estadoCartera)
                                         <a href="{{Route('reportes.pazysalvo',['casaId'=>$casa->id])}}" class="btn-floating cyan tooltipped generarPazySalvo" data-tooltip="Generar Paz y Salvo" data-position="left" data-delay="50"><i class="material-icons">spellcheck</i></a>
                                     @endif
@@ -55,7 +55,7 @@
         <div class="modal-content">
             <h5>
                 <i class="material-icons">how_to_vote</i> Pagos de la <b>Casa <span id="spanNCasa"></span></b>
-                <div class="switch right">
+                <div id="switch" class="switch right">
                     <small>Abonar</small><br>
                     <label>
                     No
@@ -65,8 +65,35 @@
                     </label>
                 </div>
             </h5>
-            
             <div class="divider"></div>
+
+            <div class="row">
+                <div id="abonar" class="hide card-panel hoverable col s12 m8 l6" style="padding:10px;">
+                    <div class="row">
+                        <div class="input-field col s12 m6">
+                            <i class="material-icons prefix">multiline_chart</i>
+                            <input type="number" name="valorAbono">
+                            <label for="valorAbono">Valor del Abono</label>
+                        </div>
+                        <div class="input-field col s12 m6">
+                            <i class="material-icons prefix">monetization_on</i>
+                            <input type="number" name="saldoTotal" readonly="true" value="0">
+                            <label for="saldoTotal">Saldo Total</label>
+                            </div>
+                    </div>
+                    <div class="row ">
+                        <div class="input-field col s12 m6">
+                            <i class="material-icons prefix">money_off</i>
+                            <input type="number" name="saldoPendiente" readonly="true" value="0">
+                            <label for="saldoPendiente">Saldo Pendiente</label>
+                        </div>
+                        
+                        <button style="margin-top:10%" class="btn cyan right" id="btnAbonar">Abonar <i class="material-icons right">done</i></button>
+                        
+                    </div>
+                </div>
+            </div>
+
             <table class="highlight bordered">
                 <thead>
                     <tr style="text-align:center">
@@ -83,32 +110,6 @@
                 </thead>
                 <tbody id="tableCasaPago"></tbody>
             </table>
-            <div class="row"></div>
-            
-            <div id="abonar" class="hide">
-                <div class="row">
-                    <div class="input-field col s6">
-                        <i class="material-icons prefix">multiline_chart</i>
-                        <input type="number" name="valorAbono">
-                        <label for="valorAbono">Valor del Abono</label>
-                    </div>
-                    <div class="input-field col s6">
-                        <i class="material-icons prefix">monetization_on</i>
-                        <input type="number" name="saldoTotal" readonly="true" value="0">
-                        <label for="saldoTotal">Saldo Total</label>
-                        </div>
-                </div>
-                <div class="row valign-wrapper">
-                    <div class="input-field">
-                        <i class="material-icons prefix">money_off</i>
-                        <input type="number" name="saldoPendiente" readonly="true" value="0">
-                        <label for="saldoPendiente">Saldo Pendiente</label>
-                    </div>
-                    
-                    <button class="btn cyan right" id="btnAbonar">Abonar <i class="material-icons right">done</i></button>
-                </div>
-            </div>
-			
         </div>
         <div class="modal-footer">
             <button class="btn-flat modal-action modal-close">Cerrar <i class="material-icons right">close</i></button>
@@ -120,15 +121,19 @@
 @section('scripts')
 <script>
     $(function(){
-        var valorAcumulado =0;
+        var valorAcumulado = 0;
         $('#btnAbonar').click(function(){
-            if($('[name=valorAbono]').val() == 0){
+            var abono          = parseFloat($('[name=valorAbono]').val()),
+                saldoTotal     = parseFloat($('[name=saldoTotal]').val()),
+                saldoPendiente = parseFloat($('[name=valorPendiente]').val());
+
+            if(abono == 0){
                 Materialize.toast('Error, No hay abono registrado',1500,'red darken-2');
             }else{
-                if($('[name=saldoTotal]').val() == 0){
+                if(saldoTotal == 0){
                     Materialize.toast('Error, No hay pagos seleccionados',1500,'red darken-2');
                 }else{
-                    if($('[name=valorAbono]').val() > $('[name=saldoTotal]').val()){
+                    if(abono > saldoTotal){
                     Materialize.toast('Advertencia, El abono es mayor que los pagos',1500,'amber'); 
                     }else{
                         var listaPagos = [];
@@ -165,9 +170,10 @@
 
         $('[name=valorAbono]').change(function(){
             $('[name=saldoPendiente]').val(0);
-            if($('[name=saldoTotal]').val() != 0 && $(this).val() < $('[name=saldoTotal]').val()){
-                valorAcumulado = valorAcumulado - $(this).val();
-                $('[name=saldoPendiente]').val(valorAcumulado);
+            if(parseFloat($('[name=saldoTotal]').val()) != 0 && parseFloat($(this).val()) <= parseFloat($('[name=saldoTotal]').val())){
+                var resta = parseFloat($('[name=saldoTotal]').val()) - parseFloat($(this).val());
+                //valorAcumulado = valorAcumulado - $(this).val();
+                $('[name=saldoPendiente]').val(resta);
             } 
 		});
 
@@ -195,13 +201,22 @@
 			window.open($(this).attr('href'),'pago','height=600,width=750');
 			return false;
         });
+        
         $('body').on('click','.verFactura' ,function(){
 			window.open($(this).attr('href'),'pago','height=500,width=750');
 			return false;
 		});
+        
         $('.buscarPagos').click(function(){
             valorAcumulado = 0;
             $('#spanNCasa').text($(this).data('casa'));
+            // console.log($(this).data('estado'));
+            if(!$(this).data('estado')){
+                $('#switch').addClass('hide');
+            }else{
+                $('#switch').removeClass('hide');
+            }
+            
             $.ajax({
                 url:'{{route("api.pagos.casas")}}',
                 method:'get',

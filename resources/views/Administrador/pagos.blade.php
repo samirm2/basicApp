@@ -137,7 +137,7 @@
 						<th>Factura N°</th>
 						<th>Mes</th>
 						<th>Valor a Pagar</th>
-						<th>Valor Abonado</th>
+						<th>Valor Pagado</th>
 						<th>Saldo Pendiente</th>
 						<th>Estado</th>
 						<th>Fecha de Pago</th>
@@ -239,6 +239,7 @@
 			$('#spanEstado').text('');
 			$('#spanEstado').removeClass('yellow darken-2 green');
 		});
+
 		$('#btnBuscarFactura').click(function(){
 			if($('[name=factura]').val() == ''){
 				Materialize.toast('Error, el campo esta vacio',2000,'red');
@@ -265,7 +266,7 @@
 							}
 							$('[name=casa]').val(rta.casa.nombre);
 							$('[name=casa]').attr('disabled',true);
-							$('[name=valorPagar]').val(rta.pago.valor);
+							$('[name=valorPagar]').val(rta.pago.saldo);
 							$('[name=valorPagar]').attr('disabled',true);
 							$('[name=mes]').val(rta.pago.mes_id);
 							$('[name=mes]').attr('disabled',true);
