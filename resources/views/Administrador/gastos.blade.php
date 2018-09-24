@@ -41,7 +41,13 @@
 								<td><img class="materialboxed" src="/uploads/{{$gasto->evidencia}}" height="100"></td>
 							@endif
 							
-							<td><a href="#modal" class="btnExaminar btn-floating cyan modal-trigger" data-concepto="{{$gasto->concepto}}" data-valor="{{$gasto->valor}}" data-observacion="{{$gasto->observaciones}}" data-evidencia="{{$gasto->evidencia}}"><i class="material-icons">description</i></a></td>
+							<td>
+								<a href="/Administrador/Gastos/Recibo/Imprimir/{{explode('gastos/',$gasto->evidencia)[1]}}" target="_blank" class="btn-floating cyan modal-trigger">
+									<i class="material-icons">print</i>
+								</a>
+								
+								<a href="#modal" class="btnExaminar btn-floating cyan modal-trigger" data-concepto="{{$gasto->concepto}}" data-valor="{{$gasto->valor}}" data-observacion="{{$gasto->observaciones}}" data-evidencia="{{$gasto->evidencia}}"><i class="material-icons">description</i></a>
+							</td>
 						</tr>
 						@endforeach
 					</tbody>
@@ -70,9 +76,10 @@
 					</select>
 					<label for="tipo_gasto">Tipo de Gasto</label>
 				</div>
-				<!-- <div class="col s6" id="filebox" style="display: none;margin-top: 15px;">
-					<button type="button" id="btnGenerar" class="btn-flat waves-effect waves-light">Generar Recibo <i class="material-icons light-green-text right">check_circle</i></button>
-				</div> -->
+				<div class="col s6" id="filebox" style="display: none;margin-top: 25px;">
+			      <input type="checkbox" class="filled-in" id="optImprimir" checked="checked" />
+			      <label for="optImprimir">Imprimir</label>
+				</div>
 			</div>
 			<div class="row">
 				<div class="input-field col s6">
@@ -178,9 +185,11 @@
 
 		$('[name=tipo_gasto]').change(function(e) {
 			if( $('[name=tipo_gasto]').val() == 'Cotidiano' ){
+				$('#filebox').hide();
 				$('#uploadbox').show();
 			}else{
 				$('#uploadbox').hide();
+				$('#filebox').show();
 			}
 		});
 
