@@ -76,10 +76,10 @@
 					</select>
 					<label for="tipo_gasto">Tipo de Gasto</label>
 				</div>
-				<div class="col s6" id="filebox" style="display: none;margin-top: 25px;">
+				<!-- <div class="col s6" id="filebox" style="display: none;margin-top: 25px;">
 			      <input type="checkbox" class="filled-in" id="optImprimir" checked="checked" />
 			      <label for="optImprimir">Imprimir</label>
-				</div>
+				</div> -->
 			</div>
 			<div class="row">
 				<div class="input-field col s6">
@@ -129,6 +129,7 @@
 		$('#modal').modal({
 			 dismissible: false
 		});
+		$("#optModal").css({"display":''});
 		$('#botonRojo').click(function(){
 			limpiarCampos();
 			inputsDisabled(false);

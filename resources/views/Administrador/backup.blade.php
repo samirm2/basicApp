@@ -18,23 +18,29 @@
 							</tr>
 						</thead>
 						<tbody>
-							@for ($i = 0; $i < count($arrayBackups); $i++)
-							<tr>
-								<td>{{$i+1}}</td>
-								<td>{{$arrayBackups[$i]['file_name']}}</td>
-								<td>{{number_format($arrayBackups[$i]['file_size'])}}KB</td>
-								<td>{{date('d/m/Y - H:i:s',$arrayBackups[$i]['last_modified'])}}</td>
-								<td>
-									<a href="#{{ $arrayBackups[$i]['file_name'] }}" class="btn-floating light-blue tooltipped RestoreBtn" data-tooltip="Restaurar" data-position="botton" data-delay="50"><i class="material-icons">refresh</i></a>
-								</td>
-								<td>
-									<a href="{{ url('Administrador/Backup/download/'.$arrayBackups[$i]['file_name']) }}" class="btn-floating light-blue tooltipped" data-tooltip="Descargar" data-position="botton" data-delay="50"><i class="material-icons">file_download</i></a>
-								</td>
-								<td>
-									<a href="#{{ $arrayBackups[$i]['file_name'] }}" class="btn-floating light-blue tooltipped DeleteBtn" data-tooltip="Eliminar" data-position="botton" data-delay="50"><i class="material-icons">delete</i></a>
-								</td>
-							</tr>
-							@endfor
+							@if( count($arrayBackups) > 0 )
+								@for ($i = 0; $i < count($arrayBackups); $i++)
+									<tr>
+										<td>{{$i+1}}</td>
+										<td>{{$arrayBackups[$i]['file_name']}}</td>
+										<td>{{number_format($arrayBackups[$i]['file_size'])}}KB</td>
+										<td>{{date('d/m/Y - H:i:s',$arrayBackups[$i]['last_modified'])}}</td>
+										<td>
+											<a href="#{{ $arrayBackups[$i]['file_name'] }}" class="btn-floating light-blue tooltipped RestoreBtn" data-tooltip="Restaurar" data-position="botton" data-delay="50"><i class="material-icons">refresh</i></a>
+										</td>
+										<td>
+											<a href="{{ url('Administrador/Backup/download/'.$arrayBackups[$i]['file_name']) }}" class="btn-floating light-blue tooltipped" data-tooltip="Descargar" data-position="botton" data-delay="50"><i class="material-icons">file_download</i></a>
+										</td>
+										<td>
+											<a href="#{{ $arrayBackups[$i]['file_name'] }}" class="btn-floating light-blue tooltipped DeleteBtn" data-tooltip="Eliminar" data-position="botton" data-delay="50"><i class="material-icons">delete</i></a>
+										</td>
+									</tr>
+								@endfor
+							@else
+								<tr>
+									<td colspan="7" style="text-align:center"><h4 class="grey-text"> <i>No existen copias en el sistema</i> </h4></td>
+								</tr>
+							@endif
 						</tbody>
 					</table>
 				</div>
