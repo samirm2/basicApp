@@ -4,7 +4,7 @@
 @endsection
 
 @section('contenido')
-<script src="http://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script src="/js/html2canvas.min.js"></script>
 <div class="caja">
 	<div class="row">
 		<div class="col s12">
