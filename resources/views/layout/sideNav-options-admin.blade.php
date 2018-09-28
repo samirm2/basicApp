@@ -1,7 +1,10 @@
 <li>
 	<ul class="collapsible" style="padding-left: 16px">
 		<li>
-			<a class="collapsible-header" href="{{url('/Administrador/Propietarios')}}"><i class="material-icons">home</i>Propietarios</a>
+			<a class="collapsible-header" href="{{url('/Administrador/Propietarios')}}"><i class="material-icons">contacts</i>Propietarios</a>
+		</li>
+		<li>
+			<a class="collapsible-header" href="{{url('/Administrador/Historial/Casas/')}}"><i class="material-icons">home</i>Historial Casas</a>
 		</li>
 		<li>
 			<a class="collapsible-header" href="{{url('/Administrador/Pagos')}}"><i class="material-icons">receipt</i>Pagos</a>

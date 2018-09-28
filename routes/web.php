@@ -43,6 +43,8 @@ Route::group(['middleware'=>['auth','administrador']],function(){
 
 		Route::post('Casas/Liberar/{casaId}','casaController@liberar')->name('liberar.casa');
 
+		Route::get('Historial/Casas/', 'administradorController@historialCasas');
+
 		Route::get('Gastos', 'gastosController@index');
 		Route::get('Gastos/Recibo', 'gastosController@generarRecibo');
 		Route::get('Gastos/Recibo/Imprimir/{file}', 'gastosController@imprimirRecibo');
@@ -167,6 +169,9 @@ Route::group(['middleware'=>['auth','propietario']],function(){
 	Route::prefix('Propietario')->group(function(){
 		Route::get('/','propietarioController@index');
 		Route::get('/casas','propietarioController@misCasasForm');
+
+		Route::post('Arrendar/{id}','propietarioController@guardarArrendatario');
+		Route::get('Liberar/{id}','propietarioController@liberarCasa');
 
 		Route::get('pqrs', 'pqrsController@indexPropietarioPqrs');
 		Route::get('pqrs/{id}', 'pqrsController@verMensajesPqrs')->middleware('pqrs');

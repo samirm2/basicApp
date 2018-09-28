@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Casa;
 use App\Persona;
 use App\propietario;
+use App\HistorialArrendatarios;
 use App\User;
 use Alert;
 use PDF;
@@ -18,6 +19,18 @@ class administradorController extends Controller
   public function propietariosIndex(){
   	$casas = Casa::paginate(10);
   	return view('Administrador.propietarios')->with('listadoCasas',$casas);
+  }
+
+  public function historialCasas(){
+    $historial = HistorialArrendatarios::all();
+    if ($historial) {
+      foreach ($historial as $key => $value) {
+        $historial[$key]['casa'] = $historial[$key]->casaDatos()->first()['nombre'];
+        $historial[$key]['arrendado'] = $historial[$key]->personaDatos()->first();
+      }
+    }
+
+    return view('Administrador.historialCasas')->with('listadoCasas', $historial);
   }
 
   public function reportePropietarios(){
