@@ -69,9 +69,13 @@
 										<td>{{$pqrs->infoRemitente->NombreCompleto}}</td>
 										<td>{{$pqrs->infoRemitente->usuario->rol}}</td>
 										<td>
-											@foreach ($pqrs->infoRemitente->propietario->misCasas->pluck('nombre') as $casa)
-												{{'['.$casa.']'}}
-											@endforeach
+											@if($pqrs->infoRemitente['usuario']['rol'] == 'Propietario')
+												@foreach ($pqrs->infoRemitente->propietario->misCasas->pluck('nombre') as $casa)
+													{{'['.$casa.']'}}
+												@endforeach
+											@else
+													{{'['.$pqrs->infoRemitente->arrendatario->casaDatos()->first()['nombre'].']'}}
+											@endif
 										</td>
 										<td>{{$pqrs->created_at->diffForHumans()}}</td>
 										<td>{{$pqrs->mensajes->last()->created_at->diffForHumans()}}</td>

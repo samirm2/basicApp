@@ -15,4 +15,8 @@ class Persona extends Model
     public function propietario(){
     	return $this->hasOne('\App\Propietario');
     }
+
+    public function arrendatario(){
+    	return $this->hasOne('\App\Arrendatarios');
+    }
 }

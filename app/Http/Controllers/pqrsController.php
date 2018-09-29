@@ -56,4 +56,10 @@ class pqrsController extends Controller
 	  	$listaPqrs = \App\Pqrs::all();
 	    return view('Propietario.pqrs',compact('tipoPqrs','listaPqrs'));
     }
+
+     public function indexArrendatarioPqrs(){
+      $tipoPqrs = \App\TipoPqrs::all()->pluck('nombre');
+      $listaPqrs = \App\Pqrs::all();
+      return view('Arrendatario.pqrs',compact('tipoPqrs','listaPqrs'));
+    }
 }

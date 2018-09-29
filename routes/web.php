@@ -200,8 +200,32 @@ Route::group(['middleware'=>['auth','propietario']],function(){
 
 //Rutas de Arrendatarios
 Route::group(['middleware'=>['auth','arrendatario']],function(){
-	Route::get('/Arrendatario', function () {
-	    return view('Arrendatario.index');
+	Route::prefix('Arrendatario')->group(function(){
+		Route::get('/', function () {
+		    return view('Arrendatario.index');
+		});
+
+		Route::get('/pagos', function () {
+			$meses = \App\Mes::all();
+			$id = Auth::user()->persona['id'];
+			$pagos = [];
+
+			$casas = \App\Arrendatarios::where('persona_id', $id)->first()->casaDatos()->get();
+
+			$pagos[] = $casas[0]->pagos()->first();
+
+
+		    return view('Arrendatario.misPagos',compact('pagos','meses','casas'));
+		});
+
+		Route::get('/Pagos/{id}', function ($id) {
+			$pago = \App\Pago::find($id);
+		    return view('showReciboPago')->with('pago',$pago);
+		});
+
+		Route::get('pqrs', 'pqrsController@indexArrendatarioPqrs');
+		Route::get('pqrs/{id}', 'pqrsController@verMensajesPqrs')->middleware('pqrs');
+		Route::post('pqrs/{id}','pqrsController@responderPqrs');
 	});
 });
 
