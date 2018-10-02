@@ -105,7 +105,7 @@
         title: {
           display: true,
           fontSize: 18,
-          text: 'Balance Trimensual de Ingresos y Gastos'
+          text: 'Balance Trimestral de Ingresos y Gastos'
         },
         scales: {
           yAxes: [{
