@@ -133,8 +133,7 @@ Route::get('charts/consulta/barras', function() {
 	$ano = request()->ano;
 	$nombreMes = App\Mes::find($mesId)->nombre;
 	$gastos = \App\Gasto::whereMonth('created_at',$mesId)->whereYear('created_at',$ano)->get();
-	// $pagos  = \App\Pago::where('estado','Pagado')->whereMonth('created_at',$mesId)->whereYear('created_at',$ano)->get();
-	$pagos  = \App\Pago::whereMonth('created_at',$hoy->month)->whereYear('created_at',$hoy->year)->get();
+	$pagos  = \App\Pago::whereMonth('created_at',$mesId)->whereYear('created_at',$ano)->get();
 	$totalGastos = $gastos->sum('valor');
 	$totalIngresos = $pagos->sum('valorPagado');
 

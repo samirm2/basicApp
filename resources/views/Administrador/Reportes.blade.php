@@ -104,7 +104,6 @@
                     data: {mes:$('[name=mes]').val(),ano:$('[name=ano]').val()},
                     success: function(rta){
                         // console.log(rta);
-                        console.log(rta.totalIngresos + rta.totalGastos);
                         if(rta.totalIngresos == 0 && rta.totalGastos == 0){
                             Materialize.toast('No Existen Datos para Esta Solicitud','2000','purple');
                         }
